@@ -1,26 +1,29 @@
-NAME	:= philo
+NAME	:= minishell
 CC		:= cc
-CFLAGS	:= -Wall -Werror -Wextra -Iinclude -pthread -fsanitize=thread
+CFLAGS	:= -Wall -Werror -Wextra -Iinclude
 
-SRC_DIR	:= src
-OBJ_DIR	:= obj
+SRC_DIR	:= ./src/
+OBJ_DIR	:= ./obj/
 
-SRC		:= src/main.c
-OBJ		:= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+SRC		:= main.c
+
+SOURCES	:= $(addprefix $(SRC_DIR), $(SRC))
+OBJS	:= $(SRC:.c=.o)
+OBJ		:= $(addprefix $(OBJ_DIR), $(OBJS))
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPS) | $(OBJ_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $@
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)
