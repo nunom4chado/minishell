@@ -1,6 +1,7 @@
 NAME	:= minishell
 CC		:= cc
 CFLAGS	:= -Wall -Werror -Wextra -Iinclude
+DEPS	:= -lreadline
 
 SRC_DIR	:= ./src/
 OBJ_DIR	:= ./obj/
@@ -14,7 +15,7 @@ OBJ		:= $(addprefix $(OBJ_DIR), $(OBJS))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) $(DEPS)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
