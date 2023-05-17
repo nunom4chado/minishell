@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/17 15:45:02 by numartin         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:19:43 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ void	handle_ctrl_c(int signo)
 	rl_redisplay();
 }
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
 	char *cmd;
 	int count = 1;
-
+	
+	(void)argc;
+	(void)argv;
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
@@ -37,9 +39,12 @@ int main()
 		}
 		if (strcmp (cmd, "exit") == 0)
 			break;
+		last_cmd(cmd, envp);
+		wait(NULL);
 		add_history(cmd);
 		free(cmd);
 		count++;
+		
 	}
 	rl_clear_history();
 	free (cmd);
