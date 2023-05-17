@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/16 17:33:06 by numartin         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:04:05 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	handle_ctrl_c(int signo, siginfo_t *info, void *context)
 	rl_redisplay();
 }
 
-void	handle_ctrl_slash(int signo, siginfo_t *info, void *context)
+void	handle_ctrl_d(int signo, siginfo_t *info, void *context)
 {
 	(void)signo;
 	(void)info;
@@ -34,30 +34,31 @@ int main()
 {
 
 	struct sigaction	act;
-	struct sigaction	act2;
 	char *cmd;
 	int count = 1;
 
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = &handle_ctrl_c;
-	act2.sa_flags = SA_SIGINFO;
-	act2.sa_sigaction = &handle_ctrl_slash;
 
 	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act2, NULL);
+	signal(SIGQUIT, SIG_IGN);
 	(void)cmd;
 
-	while ((cmd = readline("minishell$ ")))
+	while (1)
 	{
-		if (strcmp (cmd, "exit") == 0)
+		cmd = readline("minishell$ ");
+		if (!cmd)
 		{
-			free (cmd);
+			printf("exit\n");
 			break;
 		}
+		if (strcmp (cmd, "exit") == 0)
+			break;
 		add_history(cmd);
 		free(cmd);
 		count++;
 	}
+	free (cmd);
 
 	return (EXIT_SUCCESS);
 }
