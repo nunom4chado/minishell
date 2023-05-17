@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/17 18:18:26 by jodos-sa         ###   ########.fr       */
+/*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
+/*   Updated: 2023/05/17 16:45:38 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-# include <fcntl.h>
-# include <errno.h>
-# include <sys/wait.h>
-#include "libft.h"
+#include "minishell.h"
 
+void	free_split(char **args)
+{
+	int	size;
+	int	i;
 
-
-char	*path(char *cmd, char **envp);
-
-void	free_split(char **args);
-
-void	last_cmd(char *comand, char **envp);
+	i = 0;
+	size = 0;
+	while (args[size])
+		size++;
+	while (i < size)
+		free(args[i++]);
+	free(args);
+}
