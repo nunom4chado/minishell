@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/17 18:18:26 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:43:14 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,5 @@ char	*path(char *cmd, char **envp);
 
 void	free_split(char **args);
 
-void	last_cmd(char *comand, char **envp);
+void	open_cmd(int *pipefd,int fd, char *cmd, char **envp);
+void	last_cmd(int *pipefd,int fd, char *comand, char **envp);

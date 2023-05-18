@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/17 18:19:43 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:58:48 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,15 @@ int main(int argc, char **argv, char **envp)
 {
 	char *cmd;
 	int count = 1;
+	char **comands;
+	int	i;
+	int	x;
+	int	fd;
+	int	pipefd[2];
 	
 	(void)argc;
 	(void)argv;
+	fd = 1;
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
@@ -39,7 +45,13 @@ int main(int argc, char **argv, char **envp)
 		}
 		if (strcmp (cmd, "exit") == 0)
 			break;
-		last_cmd(cmd, envp);
+		i = -1;
+		x = -1;
+		comands = ft_split(cmd, '|');
+		while(comands[++i]);
+		while(++x < i - 1)
+			open_cmd(pipefd, fd, comands[x], envp);
+		last_cmd(pipefd, fd, comands[x], envp);
 		wait(NULL);
 		add_history(cmd);
 		free(cmd);
