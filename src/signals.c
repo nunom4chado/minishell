@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/30 18:05:14 by numartin         ###   ########.fr       */
+/*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
+/*   Updated: 2023/05/30 18:01:55 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	handle_ctrl_c(int signo)
 {
-	char	*cmd;
-	int		count;
+	(void)signo;
+	printf("\n");
+	rl_replace_line("", rl_on_new_line());
+	rl_redisplay();
+}
 
-	count = 1;
-	(void)argc;
-	(void)argv;
-	signal(SIGINT, handle_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
-	while (1)
+int	handle_ctrl_d(char *cmd)
+{
+	if (!cmd)
 	{
-		cmd = readline("minishell$ ");
-		if (handle_ctrl_d(cmd) || typed_exit(cmd))
-			break ;
-		last_cmd(cmd, envp);
-		wait(NULL);
-		add_history(cmd);
-		free(cmd);
-		count++;
+		printf("exit\n");
+		return (1);
 	}
-	rl_clear_history();
-	free (cmd);
-	return (EXIT_SUCCESS);
+	return (0);
+}
+
+int	typed_exit(char *cmd)
+{
+	if (strcmp (cmd, "exit") == 0)
+		return (1);
+	return (0);
 }
