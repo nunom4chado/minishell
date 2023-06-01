@@ -17,7 +17,9 @@ LIB			= $(LIB_PATH)$(LIB_NAME)
 SRC		:=	main.c \
 			path.c \
 			utils.c \
-			cmd.c
+			cmd.c \
+			signals.c \
+			cd_cmd.c
 
 SOURCES	:= $(addprefix $(SRC_DIR), $(SRC))
 OBJS	:= $(SRC:.c=.o)
