@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/30 18:06:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:21:31 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@
 # include <sys/wait.h>
 # include "libft.h"
 
+# define EXEC 1
+# define REDIR 2
+# define PIPE 3
+# define LIST 4
+
+/* typedef struct s_token
+{
+	int	type;
+	t_token	*left;
+	t_token	*right;
+}			t_token; */
+
+
 /* --------------------------------- Signals -------------------------------- */
 void	handle_ctrl_c(int signo);
 int		handle_ctrl_d(char *cmd);
@@ -32,6 +45,9 @@ int		typed_exit(char *cmd);
 
 char	*path(char *cmd, char **envp);
 void	free_split(char **args);
+int		ft_strcmp(char *s1, char *s2);
 void	last_cmd(char *comand, char **envp);
+
+void	cd_cmd(char *cmd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/30 18:05:14 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:22:18 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	main(int argc, char **argv, char **envp)
 	count = 1;
 	(void)argc;
 	(void)argv;
+	//(void)envp;
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
@@ -27,6 +28,18 @@ int	main(int argc, char **argv, char **envp)
 		cmd = readline("minishell$ ");
 		if (handle_ctrl_d(cmd) || typed_exit(cmd))
 			break ;
+		if (cmd[0] == 'c' && cmd[1] == 'd' && cmd[2] == ' ')
+		{
+			cd_cmd(cmd);
+			continue ;
+		}
+
+
+	/* 	if (fork1() == 0)
+			runcmd(parsecmd(cmd)); // parsecmd() and runcmd() */
+
+
+
 		last_cmd(cmd, envp);
 		wait(NULL);
 		add_history(cmd);
@@ -34,6 +47,6 @@ int	main(int argc, char **argv, char **envp)
 		count++;
 	}
 	rl_clear_history();
-	free (cmd);
+	free(cmd);
 	return (EXIT_SUCCESS);
 }
