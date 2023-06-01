@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/18 16:58:48 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:25:57 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,13 @@ int main(int argc, char **argv, char **envp)
 		x = -1;
 		comands = ft_split(cmd, '|');
 		while(comands[++i]);
-		while(++x < i - 1)
-			open_cmd(pipefd, fd, comands[x], envp);
-		last_cmd(pipefd, fd, comands[x], envp);
-		wait(NULL);
 		add_history(cmd);
 		free(cmd);
 		count++;
-		
+		while(++x < i - 1)
+			open_cmd(pipefd, 0, comands[x], envp);
+		last_cmd(pipefd, fd, comands[x], envp);
+		wait(NULL);
 	}
 	rl_clear_history();
 	free (cmd);
