@@ -6,19 +6,42 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/01 16:21:23 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/02 18:32:01 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd_cmd(char *cmd)
+//				UPDATE OLDPWD
+void	cd_cmd(char *cmd, t_state *state)
 {
-	if (chdir(cmd + 3) < 0)
+	char	*path;
+	char	*home;
+
+	path = ft_strtrim(cmd + 3, " ");
+	if (chdir(path) < 0)
 	{
-		if (cmd[0] == 'c' && cmd[1] == 'd' && cmd[2] == ' ' && (cmd[3] == '\0' || cmd[3] == '~'))
-			chdir(getenv("HOME"));
+		if (*path == '\0')
+			state->exit_status = chdir(getenv("HOME"));
+		else if (*path == '~')
+		{
+			home = ft_strjoin(getenv("HOME"), path + 1);
+			state->exit_status = chdir(home);
+			free(home);
+		}
+		else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')
+			state->exit_status = chdir(getenv("HOME"));
+		else if (*path == '-' && *(path + 1) == '\0')
+		{
+			printf("%s\n", getenv("OLDPWD"));
+			state->exit_status = chdir(getenv("OLDPWD")); 
+		}
 		else
-			printf("cannot cd %s\n", cmd + 3);
+		{
+			state->exit_status = 1;
+			perror("cd");
+		}
 	}
+	else
+		state->exit_status = 0;
 }
