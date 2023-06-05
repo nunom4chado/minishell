@@ -3,38 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   cd_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/02 18:32:01 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:39:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//				UPDATE OLDPWD
+void	update_oldpwd(t_state *state)
+{
+	int i;
+	char	newpwd[256];
+
+	i = 0;
+	getcwd(newpwd, sizeof(newpwd));
+	ft_setenv("OLDPWD=", ft_strjoin("OLDPWD=", ft_getenv("PWD=", state)), state);
+	ft_setenv("PWD=", ft_strjoin("PWD=", newpwd), state);
+}
+
+int	handle_cd(char *path, t_state *state)
+{
+	state->exit_status = chdir(path);
+	if (state->exit_status < 0)
+		return (state->exit_status);
+	// update oldpwd
+	update_oldpwd(state);
+
+	return (state->exit_status);
+}
+
 void	cd_cmd(char *cmd, t_state *state)
 {
 	char	*path;
 	char	*home;
 
 	path = ft_strtrim(cmd + 3, " ");
-	if (chdir(path) < 0)
+	if (handle_cd(path, state) < 0)
 	{
 		if (*path == '\0')
-			state->exit_status = chdir(getenv("HOME"));
+			handle_cd(getenv("HOME"), state);
 		else if (*path == '~')
 		{
 			home = ft_strjoin(getenv("HOME"), path + 1);
-			state->exit_status = chdir(home);
+			handle_cd(home, state);
 			free(home);
 		}
 		else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')
-			state->exit_status = chdir(getenv("HOME"));
+			handle_cd(getenv("HOME"), state);
 		else if (*path == '-' && *(path + 1) == '\0')
 		{
 			printf("%s\n", getenv("OLDPWD"));
-			state->exit_status = chdir(getenv("OLDPWD")); 
+			handle_cd(getenv("OLDPWD"), state);
 		}
 		else
 		{
@@ -42,6 +63,4 @@ void	cd_cmd(char *cmd, t_state *state)
 			perror("cd");
 		}
 	}
-	else
-		state->exit_status = 0;
 }

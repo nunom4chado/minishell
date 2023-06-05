@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/02 18:21:52 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:34:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 typedef struct s_state
 {
 	int	exit_status;
+	char	**envp;
 }		t_state;
 
 
@@ -55,5 +56,9 @@ int		ft_strcmp(char *s1, char *s2);
 void	last_cmd(char *comand, char **envp);
 
 void	cd_cmd(char *cmd, t_state *state);
+
+
+int		ft_setenv(char *key, char *newvalue, t_state *state);
+char	*ft_getenv(char *key, t_state *state);
 
 #endif

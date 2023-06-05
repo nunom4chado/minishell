@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/02 18:21:49 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:34:21 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ int	main(int argc, char **argv, char **envp)
 	int		count;
 	t_state	state;
 
+
+
 	count = 1;
 	(void)argc;
 	(void)argv;
-	//(void)envp;
+	state.envp = envp;
+
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
