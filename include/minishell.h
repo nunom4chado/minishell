@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/05 18:34:24 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/06 15:09:32 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		typed_exit(char *cmd);
 char	*path(char *cmd, char **envp);
 void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
-void	last_cmd(char *comand, char **envp);
+void	last_cmd(char *comand, t_state *state);
 
 void	cd_cmd(char *cmd, t_state *state);
 

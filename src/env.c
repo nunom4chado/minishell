@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/05 18:36:11 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/06 15:27:17 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int	ft_setenv(char *key, char *newvalue, t_state *state)
 	char *res;
 
 	i = 0;
-	while(*(state->envp + i))
+	while(state->envp[i])
 	{
-		if (ft_strncmp(key, *(state->envp + i), ft_strlen(key)) == 0)
+		if (ft_strncmp(key, state->envp[i], ft_strlen(key)) == 0)
 		{
 			res = ft_strjoin(key, newvalue);
-			*(state->envp + i) = res;
+			state->envp[i] = ft_strdup(res);
 			free(res);
 			return (0);
 		}
@@ -38,10 +38,10 @@ char	*ft_getenv(char *key, t_state *state)
 	int i;
 
 	i = 0;
-	while(*(state->envp + i))
+	while(state->envp[i])
 	{
-		if (ft_strncmp(key, *(state->envp + i), ft_strlen(key)) == 0)
-			return(*(state->envp + i));
+		if (ft_strncmp(key, state->envp[i], ft_strlen(key)) == 0)
+			return(state->envp[i] + ft_strlen(key));
 		i++;
 	}
 

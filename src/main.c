@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/05 17:34:21 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/06 15:11:32 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern char **environ;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -23,7 +25,8 @@ int	main(int argc, char **argv, char **envp)
 	count = 1;
 	(void)argc;
 	(void)argv;
-	state.envp = envp;
+	(void)envp;
+	state.envp = environ;
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
@@ -44,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 
 
 
-		last_cmd(cmd, envp);
+		last_cmd(cmd, &state);
 		wait(NULL);
 		add_history(cmd);
 		free(cmd);
