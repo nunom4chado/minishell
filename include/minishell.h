@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/01 16:21:31 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/06 15:09:32 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@
 	t_token	*right;
 }			t_token; */
 
+typedef struct s_state
+{
+	int	exit_status;
+	char	**envp;
+}		t_state;
+
+
 
 /* --------------------------------- Signals -------------------------------- */
 void	handle_ctrl_c(int signo);
@@ -46,8 +53,12 @@ int		typed_exit(char *cmd);
 char	*path(char *cmd, char **envp);
 void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
-void	last_cmd(char *comand, char **envp);
+void	last_cmd(char *comand, t_state *state);
 
-void	cd_cmd(char *cmd);
+void	cd_cmd(char *cmd, t_state *state);
+
+
+int		ft_setenv(char *key, char *newvalue, t_state *state);
+char	*ft_getenv(char *key, t_state *state);
 
 #endif

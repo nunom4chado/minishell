@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/05/17 18:18:20 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/06 15:09:35 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 
 /* This one is the last cmd not the open cmd */
-void	last_cmd(char *cmd, char **envp)
+void	last_cmd(char *cmd, t_state *state)
 {
 	char	**comand;
 	pid_t	pid;
@@ -32,9 +32,9 @@ void	last_cmd(char *cmd, char **envp)
 		close(pipefd[1]);
 		dup2(fd[1], STDOUT_FILENO);
 		dup2(pipefd[0], STDIN_FILENO);
-		if (comand[0] && path(comand[0], envp))
+		if (comand[0] && path(comand[0], state->envp))
 		{
-			execve(path(comand[0], envp), comand, envp);
+			execve(path(comand[0], state->envp), comand, state->envp);
 			free_split(comand);
 			exit(EXIT_SUCCESS);
 		}
