@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/06 15:09:32 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/07 16:00:05 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ void	cd_cmd(char *cmd, t_state *state);
 
 int		ft_setenv(char *key, char *newvalue, t_state *state);
 char	*ft_getenv(char *key, t_state *state);
+char	*expand(char *cmd, t_state *state);
 
 #endif

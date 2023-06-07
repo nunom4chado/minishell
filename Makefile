@@ -39,7 +39,8 @@ SRC			:=	main.c \
 				cmd.c \
 				signals.c \
 				cd_cmd.c \
-				env.c
+				env.c \
+				expand.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJS		:=	$(SRC:.c=.o)

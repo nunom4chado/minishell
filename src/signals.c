@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/05/30 18:01:55 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/07 14:54:20 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ int	handle_ctrl_d(char *cmd)
 
 int	typed_exit(char *cmd)
 {
-	if (strcmp (cmd, "exit") == 0)
+	cmd = ft_strtrim(cmd, " \t\v");
+	if (strcmp(cmd, "exit") == 0)
+	{
+		printf("exit\n");
 		return (1);
+	}
 	return (0);
 }
