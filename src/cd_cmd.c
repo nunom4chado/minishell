@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/06 15:27:17 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/09 17:27:08 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@ int	handle_cd(char *path, t_state *state)
 void	cd_cmd(char *cmd, t_state *state)
 {
 	char	*path;
-	char	*home;
+	/* char	*home; */
 
 	path = ft_strtrim(cmd + 3, " ");
 	if (handle_cd(path, state) < 0)
 	{
 		if (*path == '\0')
 			handle_cd(ft_getenv("HOME=", state), state);
-		else if (*path == '~')
+		/* else if (*path == '~')
 		{
 			home = ft_strjoin(ft_getenv("HOME=", state), path + 1);
 			handle_cd(home, state);
 			free(home);
-		}
+		} */
 		else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')
 			handle_cd(ft_getenv("HOME=", state), state);
 		else if (*path == '-' && *(path + 1) == '\0')

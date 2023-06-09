@@ -3,42 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/07 16:05:08 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/09 17:43:38 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_tilde_expand(char *cmd, int i, t_state *state)
+char	*ft_expand(char *cmd, int i, char *expand)
 {
-	char *end;
-	char *res;
+	char	*total;
 
-
-
-	cmd[i] = '\0';
-	end = (cmd + i + 1);
-	printf("END Before %s\n", end);
-
-	res = ft_strjoin(cmd, ft_getenv("HOME=", state));
+	total = malloc(ft_strlen(cmd) + ft_strlen(expand) - 1);
+	ft_memcpy(total, cmd, i);
+	total[i] = '\0';
+	ft_strcat(total, expand);
+	ft_strcat(total, cmd + i + 1);
+	//printf("END: %s\n", total);
 	free(cmd);
-	cmd = ft_strdup(res);
-	free(res);
-
-	if (*end)
-	{
-		printf("END %s\n", end);
-		res = ft_strjoin(cmd, end);
-		free(cmd);
-		free(end);
-		cmd = ft_strdup(res);
-		free(res);
-	}
-
-	printf("%s\n", cmd);
+	return (total);
 }
 
 char	*expand(char *cmd, t_state *state)
@@ -49,7 +34,11 @@ char	*expand(char *cmd, t_state *state)
 	while (cmd[i])
 	{
 		if (cmd[i] == '~')
-			ft_tilde_expand(cmd, i, state);
+		{
+			cmd = ft_expand(cmd, i, ft_getenv("HOME=", state));
+			i += ft_strlen(ft_getenv("HOME=", state)) - 1;
+			return(expand(cmd, state));
+		}
 		i++;
 	}
 	return (cmd);
