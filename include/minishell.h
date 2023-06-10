@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/09 16:44:50 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/10 13:14:29 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ char	*expand(char *cmd, t_state *state);
 /* --------------------------------- Utils --------------------------------- */
 void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
-char *ft_strcat(char *dest, char *src);
+char	*ft_strcat(char *dest, char *src);
+char	*ft_read_until(char *cmd);
 /* ------------------------------------------------------------------------- */
 
 #endif

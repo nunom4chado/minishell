@@ -6,13 +6,13 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/09 17:43:38 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:15:53 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_expand(char *cmd, int i, char *expand)
+char	*ft_expand(char *cmd, int i, char *expand, int over)
 {
 	char	*total;
 
@@ -20,8 +20,7 @@ char	*ft_expand(char *cmd, int i, char *expand)
 	ft_memcpy(total, cmd, i);
 	total[i] = '\0';
 	ft_strcat(total, expand);
-	ft_strcat(total, cmd + i + 1);
-	//printf("END: %s\n", total);
+	ft_strcat(total, cmd + i + 1 + over);
 	free(cmd);
 	return (total);
 }
@@ -29,14 +28,22 @@ char	*ft_expand(char *cmd, int i, char *expand)
 char	*expand(char *cmd, t_state *state)
 {
 	int i;
+	char	*envari;
 
 	i = 0;
 	while (cmd[i])
 	{
 		if (cmd[i] == '~')
 		{
-			cmd = ft_expand(cmd, i, ft_getenv("HOME=", state));
+			cmd = ft_expand(cmd, i, ft_getenv("HOME=", state), 0);
 			i += ft_strlen(ft_getenv("HOME=", state)) - 1;
+			return(expand(cmd, state));
+		}
+		if (cmd[i] == '$')
+		{
+			envari = ft_read_until(cmd + i + 1);
+			cmd = ft_expand(cmd, i, ft_getenv(envari, state), ft_strlen(envari) - 1);
+			i += ft_strlen(ft_getenv(envari, state)) - 1;
 			return(expand(cmd, state));
 		}
 		i++;

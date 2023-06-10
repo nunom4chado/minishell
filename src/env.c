@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/06 15:27:17 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:17:42 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,5 @@ char	*ft_getenv(char *key, t_state *state)
 			return(state->envp[i] + ft_strlen(key));
 		i++;
 	}
-
 	return (NULL);
 }

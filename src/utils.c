@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/09 17:12:13 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/10 13:57:25 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-char *ft_strcat(char *dest, char *src)
+char	*ft_strcat(char *dest, char *src)
 {
 	int i;
 	int j;
@@ -52,4 +52,24 @@ char *ft_strcat(char *dest, char *src)
 	}
 	dest[i + j] = '\0';
 	return (dest);
+}
+
+char	*ft_read_until(char *cmd)
+{
+	char	*str;
+	int	i;
+	int	x;
+
+	i = 0;
+	x = -1;
+	if (!cmd)
+		return (NULL);
+	while (ft_isalnum(cmd[i]))
+		i++;
+	str = malloc(sizeof(char *) + i + 2);
+	while (++x < i)
+		str[x] = cmd[x];
+	str[x] = '=';
+	str[++x] = '\0';
+	return (str);
 }

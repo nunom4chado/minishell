@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/09 17:49:04 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/10 16:06:07 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ int	main(int argc, char **argv, char **envp)
 		if (handle_ctrl_d(cmd) || typed_exit(cmd))
 			break ;
 		add_history(cmd);
-		cmd = expand(cmd, &state);
-		//printf("END: %s\n", cmd);
-		if (cmd[0] == 'c' && cmd[1] == 'd')
+		//cmd = expand(cmd, &state);
+		if (cmd[0] == 'c' && cmd[1] == 'd' && (cmd[2] == ' ' || cmd [2] == '\0'))
 		{
 			cd_cmd(cmd, &state);
+			free(cmd);
+			count++;
 			continue ;
 		}
-
 
 	/* 	if (fork1() == 0)
 			runcmd(parsecmd(cmd)); // parsecmd() and runcmd() */
