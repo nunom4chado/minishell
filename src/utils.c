@@ -3,14 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/10 13:57:25 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:15:27 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_split_quote(t_state *state, char *input)
+{
+	char *matching_dquote;
+	char *word;
+	t_word *node;
+
+	while(*input)
+	{
+
+		while (*input == ' ' || *input == '\t' || *input == '\v')
+			input++;
+		if (*input == '\"')
+		{
+			matching_dquote = ft_strchr(input + 1, '\"');
+			if(!matching_dquote)
+				return (1);
+			word = ft_substr(input, 0, matching_dquote - input + 1);
+			node = ft_new_word(word);
+			ft_word_add_back(&state->words, node);
+			input = matching_dquote + 1;
+			continue ;
+		}
+		else if (*input == '\'')
+		{
+			matching_dquote = ft_strchr(input + 1, '\'');
+			if(!matching_dquote)
+				return (1);
+			word = ft_substr(input, 0, matching_dquote - input + 1);
+			node = ft_new_word(word);
+			ft_word_add_back(&state->words, node);
+			input = matching_dquote + 1;
+			continue ;
+		}
+		else
+		{
+			int i = 0;
+			while(input[i] && !(input[i] == ' ' || input[i] == '\t' || input[i] == '\v'))
+				i++;
+			word = ft_substr(input, 0, i);
+			node = ft_new_word(word);
+			ft_word_add_back(&(state->words), node);
+			input = input + i + 1;
+		}
+	}
+	return (0);
+}
+
 
 void	free_split(char **args)
 {

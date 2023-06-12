@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 15:32:07 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:13:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,47 @@ int	main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 	state.envp = environ;
+	state.words = NULL;
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		input = readline("minishell$ ");
+		add_history(input);
 		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
 		state.cmd = ft_strdup(input);
-		add_history(input);
-		free(input);
-		state.cmd = expand(&state);
-		if (state.cmd[0] == 'c' && state.cmd[1] == 'd' && (state.cmd[2] == ' ' || state.cmd[2] == '\0'))
+
+		if(ft_split_quote(&state, input))
 		{
-			cd_cmd(&state);
-			count++;
+			printf("error: unclosed quote\n");
+			free(input);
 			continue ;
 		}
+		free(input);
+
+
+		t_word *lst = state.words;
+		while (lst)
+		{
+			printf("%s\n", lst->word);
+			free(lst->word);
+			t_word *old = lst;
+			lst = lst->next;
+			free(old);
+			state.words = NULL;
+		}
+
+		printf("---------------------\n");
+
+
+
+
+
+		state.cmd = expand(&state);
+		if (handle_builtin(&state, &count))
+			continue ;
 
 	/* 	if (fork1() == 0)
 			runcmd(parseinput(input)); // parsecmd() and runcmd() */

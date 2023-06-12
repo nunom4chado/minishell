@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 15:04:50 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:56:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,19 @@
 	t_token	*right;
 }			t_token; */
 
+typedef struct s_word
+{
+	char	*word;
+	struct s_word	*next;
+	//t_word	*prev;
+}		t_word;
+
 typedef struct s_state
 {
 	int	exit_status;
 	char	*cmd;
 	char	**envp;
+	t_word	*words;
 }		t_state;
 
 
@@ -78,6 +86,13 @@ void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_read_until(char *cmd);
+int		handle_builtin(t_state *state, int *count);
+int	ft_split_quote(t_state *state, char *input);
 /* ------------------------------------------------------------------------- */
+
+/* ------------------------------- List Utils ------------------------------- */
+void	ft_word_add_back(t_word **lst, t_word *new);
+t_word	*ft_last_word(t_word *lst);
+t_word	*ft_new_word(void *word);
 
 #endif
