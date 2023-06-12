@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 11:27:45 by jodos-sa          #+#    #+#             */
-/*   Updated: 2022/11/05 11:46:16 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/09 16:45:11 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,3 @@ void	*ft_memcpy(void *dest, const void *src, size_t	n)
 	}
 	return (dest);
 }
-/*
-int	main()
-{
-	char	str[10] = "NICE";
-	char	dest[10];
-
-	ft_memcpy(dest, str, 5);
-	printf("NORMAL: %s", dest);
-	return 0;
-}*/

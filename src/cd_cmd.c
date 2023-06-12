@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/06 15:27:17 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/12 15:31:08 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,37 +29,26 @@ int	handle_cd(char *path, t_state *state)
 	if (state->exit_status < 0)
 		return (state->exit_status);
 	update_oldpwd(state);
-
 	return (state->exit_status);
 }
 
-void	cd_cmd(char *cmd, t_state *state)
+void	cd_cmd(t_state *state)
 {
 	char	*path;
-	char	*home;
-
-	path = ft_strtrim(cmd + 3, " ");
+	
+	path = ft_strtrim(state->cmd + 2, " \t\v");
+ 	if (path == NULL || *path == '\0')
+		path = ft_getenv("HOME=", state);
+	else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')
+		path = ft_getenv("HOME=", state);
+	else if (*path == '-' && *(path + 1) == '\0')
+	{
+		printf("%s\n", ft_getenv("OLDPWD=", state));
+		path = ft_getenv("OLDPWD=", state);
+	}
 	if (handle_cd(path, state) < 0)
 	{
-		if (*path == '\0')
-			handle_cd(ft_getenv("HOME=", state), state);
-		else if (*path == '~')
-		{
-			home = ft_strjoin(ft_getenv("HOME=", state), path + 1);
-			handle_cd(home, state);
-			free(home);
-		}
-		else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')
-			handle_cd(ft_getenv("HOME=", state), state);
-		else if (*path == '-' && *(path + 1) == '\0')
-		{
-			printf("%s\n", ft_getenv("OLDPWD=", state));
-			handle_cd(ft_getenv("OLDPWD=", state), state);
-		}
-		else
-		{
-			state->exit_status = 1;
-			perror("cd");
-		}
+		state->exit_status = 1;
+		perror("cd");
 	}
 }

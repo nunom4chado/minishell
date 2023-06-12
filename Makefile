@@ -19,7 +19,7 @@ _GONE		=	\e[2K\r
 
 NAME		:=	minishell
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra
+CFLAGS		:=	-Wall -Werror -Wextra -g
 DEPS		:=	-lreadline -lXext -lX11 -lm
 
 
@@ -39,7 +39,8 @@ SRC			:=	main.c \
 				cmd.c \
 				signals.c \
 				cd_cmd.c \
-				env.c
+				env.c \
+				expand.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJS		:=	$(SRC:.c=.o)

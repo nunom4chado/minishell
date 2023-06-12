@@ -6,7 +6,7 @@
 #    By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/11 12:05:15 by jodos-sa          #+#    #+#              #
-#    Updated: 2023/06/06 14:15:19 by jodos-sa         ###   ########.fr        #
+#    Updated: 2023/06/09 15:51:32 by jodos-sa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	libft.a
 LIBC		=	ar rc
 CC			=	cc
 RM			=	rm -f
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g
 
 SRC			=	ft_isalpha.c \
 				ft_isdigit.c \

@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/06 15:11:32 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/12 15:32:07 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,45 @@
 
 extern char **environ;
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv)
 {
-	char	*cmd;
+	char	*input;
 	int		count;
 	t_state	state;
 
 
-
+	errno = 0;
 	count = 1;
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	state.envp = environ;
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		cmd = readline("minishell$ ");
-		if (handle_ctrl_d(cmd) || typed_exit(cmd))
+		input = readline("minishell$ ");
+		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
-		if (cmd[0] == 'c' && cmd[1] == 'd')
+		state.cmd = ft_strdup(input);
+		add_history(input);
+		free(input);
+		state.cmd = expand(&state);
+		if (state.cmd[0] == 'c' && state.cmd[1] == 'd' && (state.cmd[2] == ' ' || state.cmd[2] == '\0'))
 		{
-			cd_cmd(cmd, &state);
+			cd_cmd(&state);
+			count++;
 			continue ;
 		}
 
-
 	/* 	if (fork1() == 0)
-			runcmd(parsecmd(cmd)); // parsecmd() and runcmd() */
+			runcmd(parseinput(input)); // parsecmd() and runcmd() */
 
-
-
-		last_cmd(cmd, &state);
+		last_cmd(&state);
 		wait(NULL);
-		add_history(cmd);
-		free(cmd);
 		count++;
 	}
 	rl_clear_history();
-	free(cmd);
+	free(state.cmd);
 	return (EXIT_SUCCESS);
 }
