@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/10 16:06:41 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/12 15:31:08 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	handle_cd(char *path, t_state *state)
 	return (state->exit_status);
 }
 
-void	cd_cmd(char *cmd, t_state *state)
+void	cd_cmd(t_state *state)
 {
 	char	*path;
 	
-	path = ft_strtrim(cmd + 3, " ");
- 	if (*path == '\0')
+	path = ft_strtrim(state->cmd + 2, " \t\v");
+ 	if (path == NULL || *path == '\0')
 		path = ft_getenv("HOME=", state);
 	else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')
 		path = ft_getenv("HOME=", state);
@@ -51,22 +51,4 @@ void	cd_cmd(char *cmd, t_state *state)
 		state->exit_status = 1;
 		perror("cd");
 	}
-	/* if (handle_cd(path, state) < 0)
-	{
-		//printf("ERROR:%s\n", path);
-		if (*path == '\0')
-			handle_cd(ft_getenv("HOME=", state), state);
-		else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')
-			handle_cd(ft_getenv("HOME=", state), state);
-		else if (*path == '-' && *(path + 1) == '\0')
-		{
-			printf("%s\n", ft_getenv("OLDPWD=", state));
-			handle_cd(ft_getenv("OLDPWD=", state), state);
-		}
-		else
-		{
-			state->exit_status = 1;
-			perror("cd");
-		}
-	} */
 }
