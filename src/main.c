@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 18:13:24 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:17:55 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,13 @@
 
 extern char **environ;
 
-int	main(int argc, char **argv)
+int	main()
 {
 	char	*input;
 	int		count;
 	t_state	state;
 
-
-	errno = 0;
 	count = 1;
-	(void)argc;
-	(void)argv;
 	state.envp = environ;
 	state.words = NULL;
 
@@ -46,7 +42,7 @@ int	main(int argc, char **argv)
 		}
 		free(input);
 
-
+/* 
 		t_word *lst = state.words;
 		while (lst)
 		{
@@ -56,10 +52,9 @@ int	main(int argc, char **argv)
 			lst = lst->next;
 			free(old);
 			state.words = NULL;
-		}
+		} */
 
 		printf("---------------------\n");
-
 
 
 
