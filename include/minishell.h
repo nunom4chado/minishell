@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 17:45:26 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:59:00 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int	ft_split_words(t_state *state, char *input);
 void	ft_word_add_back(t_word **lst, t_word *new);
 t_word	*ft_last_word(t_word *lst);
 t_word	*ft_new_word(void *word, int space);
+void	ft_wordclear(t_word **lst, void (*del)(void *));
 
 #endif

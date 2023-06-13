@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:30:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 16:47:09 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:57:51 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,22 @@ void	ft_word_add_back(t_word **lst, t_word *new)
 	}
 	tail = ft_last_word(*lst);
 	tail->next = new;
+}
+
+void	ft_wordclear(t_word **lst, void (*del)(void *))
+{
+	t_word	*temp;
+	t_word	*next_node;
+
+	if (!lst || !del)
+		return ;
+	temp = *lst;
+	while (temp != NULL)
+	{
+		next_node = temp->next;
+		del(temp->word);
+		free(temp);
+		temp = next_node;
+	}
+	*lst = NULL;
 }

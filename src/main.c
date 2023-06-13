@@ -6,13 +6,24 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 17:49:40 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:59:56 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern char **environ;
+
+void	print_words(t_state *state)
+{
+	t_word *lst = state->words;
+	while (lst)
+	{
+		printf("word: %s > space: %d\n", lst->word, lst->space);
+		//free(lst->word);
+		lst = lst->next;
+	}
+}
 
 int	main()
 {
@@ -42,18 +53,6 @@ int	main()
 		}
 		free(input);
 
-
-		t_word *lst = state.words;
-		while (lst)
-		{
-			printf("word: %s > space: %d\n", lst->word, lst->space);
-			free(lst->word);
-			t_word *old = lst;
-			lst = lst->next;
-			free(old);
-			state.words = NULL;
-		}
-
 		printf("---------------------\n");
 
 
@@ -68,6 +67,7 @@ int	main()
 
 		last_cmd(&state);
 		wait(NULL);
+		ft_wordclear(&state.words, free);
 		count++;
 	}
 	rl_clear_history();
