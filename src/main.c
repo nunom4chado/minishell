@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 13:17:55 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/13 15:38:56 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main()
 		}
 		free(input);
 
-/* 
+
 		t_word *lst = state.words;
 		while (lst)
 		{
@@ -52,7 +52,7 @@ int	main()
 			lst = lst->next;
 			free(old);
 			state.words = NULL;
-		} */
+		}
 
 		printf("---------------------\n");
 
