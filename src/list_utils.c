@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:30:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 17:53:47 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 16:47:09 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_word	*ft_new_word(void *word)
+t_word	*ft_new_word(void *word, int space)
 {
 	t_word	*node;
 
@@ -20,6 +20,7 @@ t_word	*ft_new_word(void *word)
 	if (!node)
 		return (0);
 	node->word = word;
+	node->space = space;
 	node->next = NULL;
 	return (node);
 }

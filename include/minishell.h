@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 17:56:08 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:45:26 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 typedef struct s_word
 {
 	char	*word;
+	int		space;
 	struct s_word	*next;
 	//t_word	*prev;
 }		t_word;
@@ -87,12 +88,12 @@ int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_read_until(char *cmd);
 int		handle_builtin(t_state *state, int *count);
-int	ft_split_quote(t_state *state, char *input);
+int	ft_split_words(t_state *state, char *input);
 /* ------------------------------------------------------------------------- */
 
 /* ------------------------------- List Utils ------------------------------- */
 void	ft_word_add_back(t_word **lst, t_word *new);
 t_word	*ft_last_word(t_word *lst);
-t_word	*ft_new_word(void *word);
+t_word	*ft_new_word(void *word, int space);
 
 #endif

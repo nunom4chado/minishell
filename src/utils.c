@@ -6,83 +6,74 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/13 16:17:13 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:49:06 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	ft_is_space(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\v')
+		return (1);
+	return (0);
+}
+
 char	*create_word(char *input, char *end, t_state *state)
 {
 	char	*word;
 	t_word *node;
+	int	space;
 
+	space = 0;
 	word = ft_substr(input, 0, end - input + 1);
-	node = ft_new_word(word);
+	if (end && ft_is_space(*(end + 1)))
+		space = 1;
+	node = ft_new_word(word, space);
 	ft_word_add_back(&state->words, node);
-	//input = end + 1;
 	return (end + 1);
 }
-/*
-int	advance_quotes(char *input, char quote_type, t_state *state)
+
+char	*advance_quotes(char *input, char quote_type, t_state *state)
 {
 	char *matching_quote;
 
 	matching_quote = ft_strchr(input + 1, quote_type);
 	if(!matching_quote)
-		return (1);
+		return (NULL);
 	input = create_word(input, matching_quote, state);
-	return (0);
+	return (input);
 }
-*/
 
-int	ft_split_quote(t_state *state, char *input)
+char *ft_split_quotes(t_state *state, char *input)
 {
-	char *matching_quote;
+	if (*input == '\"')
+		input = advance_quotes(input, '\"', state);
+	if (*input == '\'')
+		input = advance_quotes(input, '\'', state);
+	return (input);
+}
+
+
+int	ft_split_words(t_state *state, char *input)
+{
+	int i;
 
 	while(*input)
 	{
-		while (*input == ' ' || *input == '\t' || *input == '\v')
+		while (ft_is_space(*input))
 			input++;
-		if (*input == '\"')
+		if (*input == '\"' || *input == '\'')
 		{
-			matching_quote = ft_strchr(input + 1, '\"');
-			if(!matching_quote)
+			input = ft_split_quotes(state, input);
+			if (input == NULL)
 				return (1);
-			input = create_word(input, matching_quote, state);
 			continue ;
 		}
-		else if (*input == '\'')
-		{
-			matching_quote = ft_strchr(input + 1, '\'');
-			if(!matching_quote)
-				return (1);
-			input = create_word(input, matching_quote, state);
-			continue ;
-		}
-		else
-		{
-			int i = 0;
-			while(input[i] && !(input[i] == ' ' || input[i] == '\t' || input[i] == '\v'))
-			{
-				if (input[i] == '\"')
-				{
-					matching_quote = ft_strchr(input + i + 1, '\"');
-					if(!matching_quote)
-						return (1);
-					i = matching_quote - input + i;
-				}
-				if (input[i] == '\'')
-				{
-					matching_quote = ft_strchr(input + i + 1, '\'');
-					if(!matching_quote)
-						return (1);
-					i = matching_quote - input + i;
-				}
-				i++;
-			}
-			input = create_word(input, input + i, state);
-		}
+		i = 0;
+		while(input[i] && !(ft_is_space(input[i]) || input[i] == '\"' || input[i] == '\''))
+			i++;
+		input = create_word(input, input + i - 1, state);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 15:38:56 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:49:40 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main()
 			break ;
 		state.cmd = ft_strdup(input);
 
-		if(ft_split_quote(&state, input))
+		if(ft_split_words(&state, input))
 		{
 			printf("error: unclosed quote\n");
 			free(input);
@@ -46,7 +46,7 @@ int	main()
 		t_word *lst = state.words;
 		while (lst)
 		{
-			printf("%s\n", lst->word);
+			printf("word: %s > space: %d\n", lst->word, lst->space);
 			free(lst->word);
 			t_word *old = lst;
 			lst = lst->next;
