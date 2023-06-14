@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 15:36:03 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/14 18:33:26 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ int	is_valid_key(char *key)
 	return (1);
 }
 
+/**
+ * TODO: export without args must work
+*/
 void	builtin_export(t_state *state)
 {
 	char	*line;

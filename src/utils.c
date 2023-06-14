@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/13 17:49:06 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/14 18:59:53 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 int	ft_is_space(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\v')
+		return (1);
+	return (0);
+}
+
+int	ft_is_quote(char c)
+{
+	if (c == '\'' || c == '\"')
+		return (1);
+	return (0);
+}
+
+int	ft_is_specialchar(char c)
+{
+	if (c == '|' || c == '>' || c == '<')
 		return (1);
 	return (0);
 }
@@ -71,9 +85,16 @@ int	ft_split_words(t_state *state, char *input)
 			continue ;
 		}
 		i = 0;
-		while(input[i] && !(ft_is_space(input[i]) || input[i] == '\"' || input[i] == '\''))
+		if (ft_is_specialchar(input[i]))
+		(
+			// must check if next is valid
+			// >, >>, <, <<, |
+			// errors: >>>, <<<, <<|, >>|, |||, ||
+		)
+		while(input[i] && !(ft_is_space(input[i]) || ft_is_quote(input[i]) || ft_is_specialchar(input[i])))
 			i++;
 		input = create_word(input, input + i - 1, state);
+		printf("sadfadsf\n");
 	}
 	return (0);
 }
