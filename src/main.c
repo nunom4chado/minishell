@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 18:15:46 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:26:33 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,11 @@ int	main()
 	count = 1;
 	state.envp = environ;
 	state.tokens = NULL;
-	state.last_input = NULL;
+	/**
+	 * TODO: will be used to identify heredoc
+	 * if the same heredoc is entered it will close the heredoc
+	*/
+	state.heredoc = NULL;
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);

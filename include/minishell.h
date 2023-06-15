@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 16:48:19 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:24:52 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_token
 typedef struct s_state
 {
 	int		exit_status;
-	char	*last_input;
+	char	*heredoc;
 	char	*cmd;
 	char	**envp;
 	t_token	*tokens;
