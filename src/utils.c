@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/15 10:56:38 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:03:09 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ int	ft_is_quote(char c)
 int	ft_is_specialchar(char c)
 {
 	if (c == '|' || c == '>' || c == '<')
+		return (1);
+	return (0);
+}
+
+int	ft_is_redirect(char c)
+{
+	if (c == '<' || c == '>')
 		return (1);
 	return (0);
 }

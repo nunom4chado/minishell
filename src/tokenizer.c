@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:02:53 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 11:52:45 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:23:11 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*advance_quotes(char *input, char quote_type, t_state *state)
 	matching_quote = ft_strchr(input + 1, quote_type);
 	if(!matching_quote)
 	{
-		handle_input_error("error: unclosed quote", input, state);
+		printf("error: unclosed quote\n");
 		return (NULL);
 	}
 	input = create_token(input, matching_quote, state);
@@ -50,24 +50,54 @@ char *ft_split_quotes(t_state *state, char *input)
 	return (input);
 }
 
+
 /**
- * Split on special characters
+ * Must check if the previous token is a special char
+ * and can be used with the current token
  * 
- * Valid chars: <, <<, >, >>, |
+ * Valid: [perv, cur]
+ * ["|", ">>"]
+ * ["|", ">"]
  * 
- * If the previous token is also another special character
- * throw error because it will be a syntax error
- * 
- * Errors: >>>, <<<, <<|, >>|, |||, ||
+ * Errors: [perv, cur]
+ * [">>", ">"]
+ * [">", ">"]
+ * [">", ">>"]
+ * ["<<", "<"]
+ * ... any combination of these arrows
+ * ["<", "|"]
+ * ["<<", "|"]
+ * [">", "|"]
+ * [">>", "|"]
+ * ["|", "|"]
 */
-char	*ft_split_specialchar(char *input, t_state *state)
+int	validate_token_sequence(char *input, t_state *state)
 {
 	t_token *last;
 	
 	last = lst_last_token(state->tokens);
 	if (last && ft_is_specialchar(*(last->word)))
 	{
-		printf("syntax error near unexpected token\n");
+		if(ft_is_redirect(*last->word) && (ft_is_redirect(*input) || *input == '|'))
+			return (1);
+		if(ft_is_redirect(*last->word) && ft_is_redirect(*input))
+			return (1);
+	}
+	return (0);
+}
+
+/**
+ * TODO: missing $?
+ * Split on special characters
+ * 
+ * chars: <, <<, >, >>, |
+ * 
+*/
+char	*ft_split_specialchar(char *input, t_state *state)
+{
+	if(validate_token_sequence(input, state))
+	{
+		printf("syntax error near unexpected token `%c'\n", *input);
 		return (NULL);
 	}
 	if (*input == '|')
@@ -87,6 +117,20 @@ char	*ft_split_specialchar(char *input, t_state *state)
 			return (create_token(input, input, state));
 	}
 	return (input);
+}
+
+int	validate_last_token(t_state *state)
+{
+	t_token *last;
+	
+	last = lst_last_token(state->tokens);
+	if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0
+	|| ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
+	{
+		printf("syntax error near unexpected token `newline'\n");
+		return (1);
+	}
+	return (0);
 }
 
 /**
@@ -120,5 +164,5 @@ int	tokenizer(t_state *state, char *input)
 			i++;
 		input = create_token(input, input + i - 1, state);
 	}
-	return (0);
+	return (validate_last_token(state));
 }

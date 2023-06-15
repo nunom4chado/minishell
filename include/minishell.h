@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 11:29:21 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:03:37 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ char	*expand(t_state *state);
 int		ft_is_space(char c);
 int		ft_is_quote(char c);
 int		ft_is_specialchar(char c);
+int		ft_is_redirect(char c);
 void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);
@@ -122,8 +123,8 @@ char	*ft_split_quotes(t_state *state, char *input);
 char	*advance_quotes(char *input, char quote_type, t_state *state);
 char	*create_token(char *input, char *end, t_state *state);
 
-/* --------------------------------- Errors --------------------------------- */
-void	handle_input_error(char *msg, char *input, t_state *state);
+/* -------------------------------- Clean up -------------------------------- */
+void	clean_input(char *input, t_state *state);
 
 /* ---------------------------------- Debug --------------------------------- */
 void	print_tokens(t_state *state);

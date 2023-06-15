@@ -6,13 +6,29 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 11:33:48 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 13:09:09 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern char **environ;
+
+int	incomplete_input(t_state *state)
+{
+	t_token *last;
+
+	last = lst_last_token(state->tokens);
+
+	if (last && *(last->word) == '|')
+		return (1);
+	/**
+	 * TODO: heredoc must be checked here
+	 * input: << o
+	 * must add to input until the same word is entered 
+	*/
+	return (0);
+}
 
 int	main()
 {
@@ -30,16 +46,30 @@ int	main()
 	while (1)
 	{
 		input = readline("minishell$ ");
-		add_history(input);
+		// TODO: history is in wrong place
+		//add_history(input);
 
 		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
 
+		// if input has errors tokenizer will return 1 and show another prompt
+		// TODO: maybe count must increase
 		if(tokenizer(&state, input))
+		{
+			add_history(input);
+			clean_input(input, &state);
 			continue ;
+		}
 
 		// TODO: after tokenizer if last token is | must join next command to it
 		// prompt will change from minishell> to >
+		if (incomplete_input(&state))
+		{
+
+			//reprompt(input, &state);
+		}
+
+
 
 		printf("---------------------\n");
 		print_tokens(&state);
