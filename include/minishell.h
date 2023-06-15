@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 18:24:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:28:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,15 +113,18 @@ int		handle_builtin(t_state *state, int *count);
 
 
 /* ------------------------------- List Tokens ------------------------------ */
+
 t_token	*lst_new_token(void *word, int space);
 t_token	*lst_last_token(t_token *lst);
 void	lst_token_add_back(t_token **lst, t_token *new);
 void	lst_token_clear(t_token **lst, void (*del)(void *));
 
 /* -------------------------------- Tokenizer ------------------------------- */
+
 int		tokenizer(t_state *state, char *input);
 
 /* ------------------------------- Token Utils ------------------------------ */
+
 char	*ft_split_specialchar(char *input, t_state *state);
 char	*ft_split_quotes(t_state *state, char *input);
 char	*advance_quotes(char *input, char quote_type, t_state *state);
@@ -129,13 +132,16 @@ char	*create_token(char *input, char *end, t_state *state);
 char	*handle_normal_token(char *input, t_state *state);
 
 /* ---------------------------- Token validation ---------------------------- */
+
 int		validate_last_token(t_state *state);
 int		validate_token_sequence(char *input, t_state *state);
 
 /* -------------------------------- Clean up -------------------------------- */
+
 void	clean_input(char *input, t_state *state);
 
 /* ---------------------------------- Debug --------------------------------- */
+
 void	print_tokens(t_state *state);
 
 #endif
