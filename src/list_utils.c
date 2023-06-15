@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:30:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 17:57:51 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:41:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_word	*ft_new_word(void *word, int space)
+t_token	*lst_new_token(void *word, int space)
 {
-	t_word	*node;
+	t_token	*node;
 
-	node = malloc(sizeof(t_word));
+	node = malloc(sizeof(t_token));
 	if (!node)
 		return (0);
 	node->word = word;
@@ -25,7 +25,7 @@ t_word	*ft_new_word(void *word, int space)
 	return (node);
 }
 
-t_word	*ft_last_word(t_word *lst)
+t_token	*lst_last_token(t_token *lst)
 {
 	if (lst)
 	{
@@ -36,9 +36,9 @@ t_word	*ft_last_word(t_word *lst)
 	return (NULL);
 }
 
-void	ft_word_add_back(t_word **lst, t_word *new)
+void	lst_token_add_back(t_token **lst, t_token *new)
 {
-	t_word	*tail;
+	t_token	*tail;
 
 	if (!new)
 		return ;
@@ -47,14 +47,14 @@ void	ft_word_add_back(t_word **lst, t_word *new)
 		*lst = new;
 		return ;
 	}
-	tail = ft_last_word(*lst);
+	tail = lst_last_token(*lst);
 	tail->next = new;
 }
 
-void	ft_wordclear(t_word **lst, void (*del)(void *))
+void	lst_token_clear(t_token **lst, void (*del)(void *))
 {
-	t_word	*temp;
-	t_word	*next_node;
+	t_token	*temp;
+	t_token	*next_node;
 
 	if (!lst || !del)
 		return ;

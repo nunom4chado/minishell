@@ -6,23 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/14 18:46:17 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:33:48 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern char **environ;
-
-void	print_words(t_state *state)
-{
-	t_word *lst = state->words;
-	while (lst)
-	{
-		printf("word: %s > space: %d\n", lst->word, lst->space);
-		lst = lst->next;
-	}
-}
 
 int	main()
 {
@@ -32,7 +22,7 @@ int	main()
 
 	count = 1;
 	state.envp = environ;
-	state.words = NULL;
+	state.tokens = NULL;
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
@@ -45,15 +35,14 @@ int	main()
 		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
 
-		if(ft_split_words(&state, input))
-		{
-			printf("error: unclosed quote\n");
-			free(input);
-			ft_wordclear(&state.words, free);
+		if(tokenizer(&state, input))
 			continue ;
-		}
+
+		// TODO: after tokenizer if last token is | must join next command to it
+		// prompt will change from minishell> to >
+
 		printf("---------------------\n");
-		print_words(&state);
+		print_tokens(&state);
 		printf("---------------------\n");
 
 		state.cmd = ft_strdup(input);
@@ -73,7 +62,7 @@ int	main()
 
 		// last_cmd(&state);
 		// wait(NULL);
-		ft_wordclear(&state.words, free);
+		lst_token_clear(&state.tokens, free);
 		count++;
 	}
 	rl_clear_history();

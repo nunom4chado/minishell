@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 17:59:00 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:29:21 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/* -------------------------------------------------------------------------- */
+/*                                  Includes                                  */
+/* -------------------------------------------------------------------------- */
 # include <stdio.h>
 # include <signal.h>
 # include <unistd.h>
@@ -25,11 +28,17 @@
 # include <sys/wait.h>
 # include "libft.h"
 
+/* -------------------------------------------------------------------------- */
+/*                                   Defines                                  */
+/* -------------------------------------------------------------------------- */
 # define EXEC 1
 # define REDIR 2
 # define PIPE 3
 # define LIST 4
 
+/* -------------------------------------------------------------------------- */
+/*                                   Structs                                  */
+/* -------------------------------------------------------------------------- */
 /* typedef struct s_token
 {
 	int	type;
@@ -37,23 +46,25 @@
 	t_token	*right;
 }			t_token; */
 
-typedef struct s_word
+typedef struct s_token
 {
 	char	*word;
 	int		space;
-	struct s_word	*next;
-	//t_word	*prev;
-}		t_word;
+	struct s_token	*next;
+	//t_token	*prev;
+}		t_token;
 
 typedef struct s_state
 {
-	int	exit_status;
+	int		exit_status;
 	char	*cmd;
 	char	**envp;
-	t_word	*words;
+	t_token	*tokens;
 }		t_state;
 
-
+/* -------------------------------------------------------------------------- */
+/*                                 Prototypes                                 */
+/* -------------------------------------------------------------------------- */
 
 /* --------------------------------- Signals ------------------------------- */
 void	handle_ctrl_c(int signo);
@@ -83,18 +94,38 @@ char	*expand(t_state *state);
 /* ------------------------------------------------------------------------- */
 
 /* --------------------------------- Utils --------------------------------- */
+int		ft_is_space(char c);
+int		ft_is_quote(char c);
+int		ft_is_specialchar(char c);
 void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_read_until(char *cmd);
+
 int		handle_builtin(t_state *state, int *count);
-int	ft_split_words(t_state *state, char *input);
 /* ------------------------------------------------------------------------- */
 
-/* ------------------------------- List Utils ------------------------------- */
-void	ft_word_add_back(t_word **lst, t_word *new);
-t_word	*ft_last_word(t_word *lst);
-t_word	*ft_new_word(void *word, int space);
-void	ft_wordclear(t_word **lst, void (*del)(void *));
+
+
+
+
+/* ------------------------------- List Tokens ------------------------------ */
+t_token	*lst_new_token(void *word, int space);
+t_token	*lst_last_token(t_token *lst);
+void	lst_token_add_back(t_token **lst, t_token *new);
+void	lst_token_clear(t_token **lst, void (*del)(void *));
+
+/* -------------------------------- Tokenizer ------------------------------- */
+int		tokenizer(t_state *state, char *input);
+char	*ft_split_specialchar(char *input, t_state *state);
+char	*ft_split_quotes(t_state *state, char *input);
+char	*advance_quotes(char *input, char quote_type, t_state *state);
+char	*create_token(char *input, char *end, t_state *state);
+
+/* --------------------------------- Errors --------------------------------- */
+void	handle_input_error(char *msg, char *input, t_state *state);
+
+/* ---------------------------------- Debug --------------------------------- */
+void	print_tokens(t_state *state);
 
 #endif

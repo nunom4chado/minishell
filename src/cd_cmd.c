@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/12 15:31:08 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:39:13 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	update_oldpwd(t_state *state)
 {
-	int i;
+	//int i;
 	char	newpwd[256];
 
-	i = 0;
+	//i = 0;
 	getcwd(newpwd, sizeof(newpwd));
 	ft_setenv("OLDPWD=", ft_getenv("PWD=", state), state);
 	ft_setenv("PWD=", newpwd, state);

@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/14 18:33:26 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:40:32 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	builtin_export(t_state *state)
 	}
 	printf("KEY: %s\n", key);
 	value = ft_strdup(line + len + 1);
+	printf("VALUE: %s\n", value);
 
 
 

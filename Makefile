@@ -36,13 +36,16 @@ LIB			=	$(LIB_PATH)$(LIB_NAME)
 SRC			:=	main.c \
 				path.c \
 				utils.c \
+				tokenizer.c \
 				cmd.c \
 				signals.c \
 				cd_cmd.c \
 				env.c \
 				expand.c \
 				builtin.c \
-				list_utils.c
+				list_utils.c \
+				debug.c \
+				error.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJS		:=	$(SRC:.c=.o)
