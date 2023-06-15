@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/15 14:03:09 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:36:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@ int	ft_is_space(char c)
 	if (c == ' ' || c == '\t' || c == '\v')
 		return (1);
 	return (0);
+}
+
+int	ft_only_spaces(char *c)
+{
+	while (*c)
+	{
+		if (!ft_is_space(*c))
+			return (0);
+		c++;
+	}
+	return (1);
 }
 
 int	ft_is_quote(char c)

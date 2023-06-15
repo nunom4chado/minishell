@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 15:40:24 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:48:19 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_token
 typedef struct s_state
 {
 	int		exit_status;
+	char	*last_input;
 	char	*cmd;
 	char	**envp;
 	t_token	*tokens;
@@ -98,6 +99,7 @@ int		ft_is_space(char c);
 int		ft_is_quote(char c);
 int		ft_is_specialchar(char c);
 int		ft_is_redirect(char c);
+int		ft_only_spaces(char *c);
 void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);

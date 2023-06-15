@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 13:09:09 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:15:46 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,53 @@ int	incomplete_input(t_state *state)
 	if (last && *(last->word) == '|')
 		return (1);
 	/**
-	 * TODO: heredoc must be checked here
+	 * TODO: heredoc must be checked here or after this function runs
 	 * input: << o
 	 * must add to input until the same word is entered 
 	*/
+	return (0);
+}
+
+
+int	reprompt(char *input, t_state *state)
+{
+	char *additional_input;
+	char *tmp;
+	
+	additional_input = readline("> ");
+	if (!additional_input)
+	{
+		printf("syntax error: unexpected end of file\nexit\n");
+		// TODO: handle leaks and show correct exit status
+		exit(1);
+	}
+
+	/**
+	 * Append to input
+	 * TODO: if last was pipe, add a space in the middle
+	 * TODO: for heredocs, add new line in the middle
+	*/
+	tmp = ft_strjoin(input, additional_input);
+	free(input);
+	input = tmp;
+
+	if (ft_only_spaces(additional_input))
+	{
+		free(additional_input);
+		return(reprompt(input, state));
+	}
+
+	// if reaches here means has content and its time to extract tokens
+	if(tokenizer(state, additional_input))
+	{
+		add_history(input);
+		clean_input(input, state);
+		return (1);
+	}
+	// recursively call reprompt if not finished submitting input
+	if (incomplete_input(state))
+		return(reprompt(input, state));
+	add_history(input);
 	return (0);
 }
 
@@ -39,6 +82,7 @@ int	main()
 	count = 1;
 	state.envp = environ;
 	state.tokens = NULL;
+	state.last_input = NULL;
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
@@ -46,13 +90,16 @@ int	main()
 	while (1)
 	{
 		input = readline("minishell$ ");
-		// TODO: history is in wrong place
-		//add_history(input);
 
 		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
 
-		// if input has errors tokenizer will return 1 and show another prompt
+		if (ft_only_spaces(input))
+		{
+			free(input);
+			continue ;
+		}
+
 		// TODO: maybe count must increase
 		if(tokenizer(&state, input))
 		{
@@ -61,22 +108,18 @@ int	main()
 			continue ;
 		}
 
-		// TODO: after tokenizer if last token is | must join next command to it
+		// TODO: after tokenizer runs, if last token is | must join next command to it
 		// prompt will change from minishell> to >
 		if (incomplete_input(&state))
 		{
-
-			//reprompt(input, &state);
+			if(reprompt(input, &state))
+				continue ;
 		}
 
-
-
-		printf("---------------------\n");
 		print_tokens(&state);
-		printf("---------------------\n");
 
-		state.cmd = ft_strdup(input);
-		free(input);
+		//state.cmd = ft_strdup(input);
+		//free(input);
 
 		//state.cmd = expand(&state);
 /*
@@ -96,6 +139,6 @@ int	main()
 		count++;
 	}
 	rl_clear_history();
-	free(state.cmd);
+	//free(state.cmd);
 	return (EXIT_SUCCESS);
 }
