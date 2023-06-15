@@ -6,14 +6,14 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:09:14 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 15:18:59 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 15:47:28 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * Last token can not be a redirect
+ * Last token can not be a redirect and first cannot be pipe '|'
 */
 int	validate_last_token(t_state *state)
 {
@@ -24,6 +24,11 @@ int	validate_last_token(t_state *state)
 	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
 		printf("syntax error near unexpected token `newline'\n");
+		return (1);
+	}
+	if (state->tokens && *(state->tokens->word) == '|')
+	{
+		printf("syntax error near unexpected token `|'\n");
 		return (1);
 	}
 	return (0);
