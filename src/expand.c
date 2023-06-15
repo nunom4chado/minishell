@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 16:11:32 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:36:53 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ char	*ft_del_non_var(char *cmd, int i, int over)
 	return (total);
 }
 
+/**
+ * TODO: expand $? to the exit status of the most recent recently executed foreground pipeline
+ * DON'T expand if enclosed with single quotes
+*/
 char	*expand(t_state *state)
 {
 	int i;

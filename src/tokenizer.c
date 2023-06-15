@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:02:53 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 14:23:11 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:38:53 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,13 @@ int	validate_token_sequence(char *input, t_state *state)
 			return (1);
 		if(ft_is_redirect(*last->word) && ft_is_redirect(*input))
 			return (1);
+		if(*input == '|' && *last->word == '|')
+			return (1);
 	}
 	return (0);
 }
 
 /**
- * TODO: missing $?
  * Split on special characters
  * 
  * chars: <, <<, >, >>, |
