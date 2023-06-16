@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:02:53 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 15:39:50 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:52:45 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
  * 
  * At the end will check the last token if is valid
  * return 0 if valid, 1 otherwise
+*/
+
+/**
+ * If input ends with pipe or has heredoc in it:
+ * 		- means input is not finished
+ * 		- set in state why is incomplete (maybe a number? 1-pipe 2-heredoc 3-both)
+ * 		- show new prompt (pipe heredoc>) (pipe>) (heredoc>)
 */
 int	tokenizer(t_state *state, char *input)
 {
@@ -41,5 +48,5 @@ int	tokenizer(t_state *state, char *input)
 		}
 		input = handle_normal_token(input, state);
 	}
-	return (validate_last_token(state));
+	return (validate_tokens(state));
 }

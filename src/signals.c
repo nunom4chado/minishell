@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/14 16:04:25 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:42:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void	handle_ctrl_c(int signo)
 {
+	/**
+	 * TODO: we must add to history is input is imcompleted
+	 * add inputed lines (this happens inputs ending with pipes or heredocs)
+	*/
 	(void)signo;
 	printf("\n");
 	rl_replace_line("", rl_on_new_line());

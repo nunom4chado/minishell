@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 14:29:42 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:11:18 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define EXEC 1
 # define REDIR 2
 # define PIPE 3
-# define LIST 4
+# define HEREDOC 4
 
 /* -------------------------------------------------------------------------- */
 /*                                   Structs                                  */
@@ -57,9 +57,9 @@ typedef struct s_token
 typedef struct s_state
 {
 	int		exit_status;
-	char	*heredoc;
 	char	*cmd;
 	char	**envp;
+	t_token	*heredocs;
 	t_token	*tokens;
 }		t_state;
 
@@ -110,7 +110,15 @@ int		handle_builtin(t_state *state, int *count);
 
 
 
+/* ---------------------------------- Init ---------------------------------- */
 
+void    init_state(t_state *state, char **environ);
+
+/* --------------------------------- Parser --------------------------------- */
+
+int 	parser(char *input, t_state *state);
+int		incomplete_input(t_state *state);
+int		reprompt(char *input, t_state *state);
 
 /* ------------------------------- List Tokens ------------------------------ */
 
@@ -133,7 +141,7 @@ char	*handle_normal_token(char *input, t_state *state);
 
 /* ---------------------------- Token validation ---------------------------- */
 
-int		validate_last_token(t_state *state);
+int		validate_tokens(t_state *state);
 int		validate_token_sequence(char *input, t_state *state);
 
 /* -------------------------------- Clean up -------------------------------- */

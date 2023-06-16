@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:09:14 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 15:47:28 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:55:06 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 /**
  * Last token can not be a redirect and first cannot be pipe '|'
+ * NOTE: if has heredocs before, syntax error will only show after closing all heredocs
 */
-int	validate_last_token(t_state *state)
+int	validate_tokens(t_state *state)
 {
 	t_token	*last;
 
@@ -24,11 +25,6 @@ int	validate_last_token(t_state *state)
 	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
 		printf("syntax error near unexpected token `newline'\n");
-		return (1);
-	}
-	if (state->tokens && *(state->tokens->word) == '|')
-	{
-		printf("syntax error near unexpected token `|'\n");
 		return (1);
 	}
 	return (0);
@@ -58,6 +54,9 @@ int	validate_token_sequence(char *input, t_state *state)
 {
 	t_token	*last;
 
+	// first token cannot be a pipe '|'
+	if (!state->tokens && *input == '|')
+		return (1);
 	last = lst_last_token(state->tokens);
 	if (last && ft_is_specialchar(*(last->word)))
 	{

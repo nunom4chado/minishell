@@ -48,7 +48,9 @@ SRC			:=	main.c \
 				cleanup.c \
 				token_validation.c \
 				token_utils.c \
-				errors.c
+				errors.c \
+				parser.c \
+				init.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJS		:=	$(SRC:.c=.o)
