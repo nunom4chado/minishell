@@ -6,14 +6,14 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:09:14 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 15:55:06 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:21:33 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * Last token can not be a redirect and first cannot be pipe '|'
+ * Last token can not be a redirect
  * NOTE: if has heredocs before, syntax error will only show after closing all heredocs
 */
 int	validate_tokens(t_state *state)
@@ -37,6 +37,8 @@ int	validate_tokens(t_state *state)
  * Valid: [perv, cur]
  * ["|", ">>"]
  * ["|", ">"]
+ * 
+ * First token CANNOT be a |
  * 
  * Errors: [perv, cur]
  * [">>", ">"]

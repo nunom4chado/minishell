@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 16:11:56 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:38:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int parser(char *input, t_state *state)
     }
 
     print_tokens(state);
+    print_heredocs(state);
     return (0);
 }
