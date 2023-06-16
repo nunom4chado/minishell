@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:28:39 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 17:09:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 18:57:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ void	print_tokens(t_state *state)
 
 void	print_heredocs(t_state *state)
 {
-	t_token *heredocs = state->heredocs;
+	t_token *heredoc = state->heredocs;
 	printf("---------------------\n");
-	while (heredocs)
+	while (heredoc)
 	{
-		printf("heredoc: %s\n", heredocs->word);
-		heredocs = heredocs->next;
+		if (heredoc->word)
+			printf("heredoc: %s\n", heredoc->word);
+		heredoc = heredoc->next;
 	}
 	printf("---------------------\n");
 }

@@ -6,14 +6,14 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:09:14 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 16:21:33 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 18:49:27 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * Last token can not be a redirect
+ * Last token can not be a redirect without open heredocs
  * NOTE: if has heredocs before, syntax error will only show after closing all heredocs
 */
 int	validate_tokens(t_state *state)
@@ -21,11 +21,15 @@ int	validate_tokens(t_state *state)
 	t_token	*last;
 
 	last = lst_last_token(state->tokens);
-	if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
-	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
+
+	if (state->heredocs)
 	{
-		printf("syntax error near unexpected token `newline'\n");
-		return (1);
+		if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
+		ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
+		{
+			printf("syntax error near unexpected token `newline'\n");
+			return (1);
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 16:37:56 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 18:48:14 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 # define EXEC 1
 # define REDIR 2
 # define PIPE 3
-# define HEREDOC 4
 
 /* -------------------------------------------------------------------------- */
 /*                                   Structs                                  */
@@ -117,7 +116,7 @@ void    init_state(t_state *state, char **environ);
 /* --------------------------------- Parser --------------------------------- */
 
 int 	parser(char *input, t_state *state);
-int		incomplete_input(t_state *state);
+int		pending_pipe(t_state *state);
 int		reprompt(char *input, t_state *state);
 
 /* ------------------------------- List Tokens ------------------------------ */
