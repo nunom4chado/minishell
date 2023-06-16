@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:30:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 11:41:08 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 13:45:50 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_token	*lst_new_token(void *word, int space)
 	node->word = word;
 	node->space = space;
 	node->next = NULL;
+	node->prev = NULL;
 	return (node);
 }
 
@@ -49,6 +50,7 @@ void	lst_token_add_back(t_token **lst, t_token *new)
 	}
 	tail = lst_last_token(*lst);
 	tail->next = new;
+	new->prev = tail;
 }
 
 void	lst_token_clear(t_token **lst, void (*del)(void *))

@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 18:26:33 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 14:27:54 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,8 @@ int	reprompt(char *input, t_state *state)
 	char *tmp;
 	
 	additional_input = readline("> ");
-	if (!additional_input)
-	{
-		printf("syntax error: unexpected end of file\nexit\n");
-		// TODO: handle leaks and show correct exit status
-		exit(1);
-	}
-
+	handle_unexpected_eof(additional_input, input, state);
+	
 	/**
 	 * Append to input
 	 * TODO: if last was pipe, add a space in the middle
@@ -73,6 +68,11 @@ int	reprompt(char *input, t_state *state)
 	return (0);
 }
 
+
+/**
+ * TODO: submitting new command from history must divide on newline when creating tokens
+ * newlines '\n' will come from heredocs when added to history
+*/
 int	main()
 {
 	char	*input;
@@ -98,6 +98,7 @@ int	main()
 		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
 
+		// if input has only spaces discard input and DON'T add to history
 		if (ft_only_spaces(input))
 		{
 			free(input);

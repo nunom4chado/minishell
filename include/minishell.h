@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 18:28:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 14:29:42 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_token
 	char	*word;
 	int		space;
 	struct s_token	*next;
-	//t_token	*prev;
+	struct s_token	*prev;
 }		t_token;
 
 typedef struct s_state
@@ -143,5 +143,9 @@ void	clean_input(char *input, t_state *state);
 /* ---------------------------------- Debug --------------------------------- */
 
 void	print_tokens(t_state *state);
+
+/* --------------------------------- Errors --------------------------------- */
+
+void    handle_unexpected_eof(char *added_input, char *input, t_state *state);
 
 #endif
