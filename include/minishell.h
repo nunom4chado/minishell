@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 18:48:14 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 19:34:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,15 @@
 	t_token	*right;
 }			t_token; */
 
+
+/**
+ * TODO: make sure when verifyng if can expand the proper flag and not the first char in *word
+*/
 typedef struct s_token
 {
 	char	*word;
 	int		space;
+	int		expandable; // when creating tokens mark if can expand (for heredocs no expand)
 	struct s_token	*next;
 	struct s_token	*prev;
 }		t_token;

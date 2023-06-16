@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 19:02:27 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/16 19:32:46 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ int	reprompt(char *input, t_state *state)
 
     /**
      * If closed an heredoc reprompt
+     * 
+     * TODO: must refactor this!!
+     * heredoc will accept input as is until closing word
+     * This means not interpert pipes redirect and no expands
+     * 
+     * if not closing word just make additional_input a token and mark as no expand
     */
     if (closed_heredoc(additional_input, state))
     {
