@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/17 09:33:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 12:25:31 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void    init_state(t_state *state, char **environ);
 
 int 	process_input(char *input, t_state *state);
 int		pending_pipe(t_state *state);
-int		reprompt(char *input, t_state *state);
+char	*reprompt(char *input, t_state *state);
 
 /* ------------------------------- List Tokens ------------------------------ */
 

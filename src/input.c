@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/17 12:00:07 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 12:29:50 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,10 @@ char    *handle_heredoc(char *additional_input, char *input, t_state *state)
 /**
  * TODO: ctr-c must cancel reprompt
 */
-int	reprompt(char *input, t_state *state)
+char	*reprompt(char *input, t_state *state)
 {
 	char *additional_input;
 	char *tmp;
-
-    if (pending_pipe(state))
-        printf("PENDING PIPE\n");
-    if (state->heredocs)
-    {
-        printf("HEREDOCS OPEN\n");
-    }
 
 	additional_input = readline(prompt_style(state));
 	handle_unexpected_eof(additional_input, input, state);
@@ -122,7 +115,7 @@ int	reprompt(char *input, t_state *state)
     {
         //print_heredocs(state);
         input = handle_heredoc(additional_input, input, state);
-        return(reprompt(input, state));
+        return (input);
     }
 	
     if (*additional_input)
@@ -132,6 +125,7 @@ int	reprompt(char *input, t_state *state)
         input = tmp;
     } 
 
+    // TODO: check if lexar already handles this right
 	if (ft_only_spaces(additional_input))
 	{
 		free(additional_input);
@@ -143,13 +137,13 @@ int	reprompt(char *input, t_state *state)
 	{
 		add_history(input);
 		clean_input(input, state);
-		return (1);
+		return (NULL);
 	}
     /**
      * TODO: if first char in input is space will not add to history
     */
 	add_history(input);
-	return (0);
+	return (input);
 }
 
 /**
@@ -184,7 +178,8 @@ int process_input(char *input, t_state *state)
     // TODO: after lexar runs, if last token is | or has heredocs, must concat next input to previous
     while (pending_pipe(state) || state->heredocs)
     {
-        if(reprompt(input, state))
+        input = reprompt(input, state);
+        if(!input)
             return (1);
     }
 

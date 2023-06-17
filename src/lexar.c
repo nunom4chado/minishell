@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 09:37:51 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/17 09:37:54 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 12:08:19 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@
  * 
  * At the end will check the last token if is valid
  * return 0 if valid, 1 otherwise
-*/
-
-/**
- * If input ends with pipe or has heredoc in it:
- * 		- means input is not finished
- * 		- set in state why is incomplete (maybe a number? 1-pipe 2-heredoc 3-both)
- * 		- show new prompt (pipe heredoc>) (pipe>) (heredoc>)
 */
 int	lexar(t_state *state, char *input)
 {
