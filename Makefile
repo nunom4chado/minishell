@@ -36,7 +36,7 @@ LIB			=	$(LIB_PATH)$(LIB_NAME)
 SRC			:=	main.c \
 				path.c \
 				utils.c \
-				tokenizer.c \
+				input.c \
 				cmd.c \
 				signals.c \
 				cd_cmd.c \
@@ -49,7 +49,7 @@ SRC			:=	main.c \
 				token_validation.c \
 				token_utils.c \
 				errors.c \
-				parser.c \
+				lexar.c \
 				init.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))

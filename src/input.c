@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 19:32:46 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 09:34:05 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	reprompt(char *input, t_state *state)
 
 
 	// if reaches here means has content and its time to extract tokens
-	if(tokenizer(state, additional_input))
+	if(lexar(state, additional_input))
 	{
 		add_history(input);
 		clean_input(input, state);
@@ -117,7 +117,7 @@ int	reprompt(char *input, t_state *state)
  * TODO: submitting new command from history must divide on newline when creating tokens
  * newlines '\n' will come from heredocs when added to history
 */
-int parser(char *input, t_state *state)
+int process_input(char *input, t_state *state)
 {
     // if input has only spaces discard input and DON'T add to history
     if (ft_only_spaces(input))
@@ -127,7 +127,7 @@ int parser(char *input, t_state *state)
     }
 
     // TODO: maybe count must increase
-    if(tokenizer(state, input))
+    if(lexar(state, input))
     {
         add_history(input);
         clean_input(input, state);

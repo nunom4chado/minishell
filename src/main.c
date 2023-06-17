@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 16:10:37 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 09:31:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main()
 		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
 
-		if (parser(input, &state))
+		if (process_input(input, &state))
 			continue ;
 
 		//state.cmd = ft_strdup(input);

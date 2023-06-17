@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 19:34:08 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 09:33:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,9 @@ int		handle_builtin(t_state *state, int *count);
 
 void    init_state(t_state *state, char **environ);
 
-/* --------------------------------- Parser --------------------------------- */
+/* ------------------------------ Process input ----------------------------- */
 
-int 	parser(char *input, t_state *state);
+int 	process_input(char *input, t_state *state);
 int		pending_pipe(t_state *state);
 int		reprompt(char *input, t_state *state);
 
@@ -131,9 +131,9 @@ t_token	*lst_last_token(t_token *lst);
 void	lst_token_add_back(t_token **lst, t_token *new);
 void	lst_token_clear(t_token **lst, void (*del)(void *));
 
-/* -------------------------------- Tokenizer ------------------------------- */
+/* ---------------------------------- Lexar --------------------------------- */
 
-int		tokenizer(t_state *state, char *input);
+int		lexar(t_state *state, char *input);
 
 /* ------------------------------- Token Utils ------------------------------ */
 

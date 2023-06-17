@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   lexar.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 11:02:53 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 15:52:45 by numartin         ###   ########.fr       */
+/*   Created: 2023/06/17 09:37:51 by numartin          #+#    #+#             */
+/*   Updated: 2023/06/17 09:37:54 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * Tokenizer is responsible for dividing the input stream
+ * Lexar is responsible for dividing the input stream
  * into individual tokens (words and special characters)
  * 
  * At the end will check the last token if is valid
@@ -26,7 +26,7 @@
  * 		- set in state why is incomplete (maybe a number? 1-pipe 2-heredoc 3-both)
  * 		- show new prompt (pipe heredoc>) (pipe>) (heredoc>)
 */
-int	tokenizer(t_state *state, char *input)
+int	lexar(t_state *state, char *input)
 {
 	while (*input)
 	{
