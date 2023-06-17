@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:28:39 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 18:57:41 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 09:54:19 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,24 @@
 void	print_tokens(t_state *state)
 {
 	t_token *tokens = state->tokens;
-	printf("---------------------\n");
+	printf("DEBUG: (current tokens)\n");
 	while (tokens)
 	{
 		printf("word: %s, space: %d\n", tokens->word, tokens->space);
 		tokens = tokens->next;
 	}
-	printf("---------------------\n");
+	printf("<<<<<<<<<<<<<<<<<<<<<<<<<\n");
 }
 
 void	print_heredocs(t_state *state)
 {
 	t_token *heredoc = state->heredocs;
-	printf("---------------------\n");
+	printf("DEBUG: (current heredocs)\n");
 	while (heredoc)
 	{
 		if (heredoc->word)
 			printf("heredoc: %s\n", heredoc->word);
 		heredoc = heredoc->next;
 	}
-	printf("---------------------\n");
+	printf("<<<<<<<<<<<<<<<<<<<<<<<<<\n");
 }

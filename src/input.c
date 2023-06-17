@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/17 09:34:05 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/17 12:00:07 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,70 @@ char    *prompt_style(t_state *state)
     return ("> ");
 }
 
-int closed_heredoc(char *input, t_state *state)
+/**
+ * Closes the current heredoc
+*/
+void close_heredoc(t_state *state)
 {
     t_token *heredoc;
 
-    state->heredocs = state->heredocs;
     if (state->heredocs)
     {
-        if (ft_strcmp(state->heredocs->word, input) == 0)
-        {
-            // close heredoc
-            heredoc = state->heredocs;
-            state->heredocs = state->heredocs->next;
-            free(heredoc);
+        heredoc = state->heredocs;
+        state->heredocs = state->heredocs->next;
+        free(heredoc);
+    }
+}
+
+/**
+ * Checks if word will close the current heredoc
+ * 
+ * Returns 1 if true, 0 otherwise
+*/
+int is_closing_word(char *word, t_state *state)
+{
+    if (state->heredocs)
+    {
+        if (ft_strcmp(state->heredocs->word, word) == 0)
             return (1);
-        }
     }
     return (0);
+}
+
+/**
+ * Process current open heredoc.
+ * 
+ * Note: Heredoc content will not be inserted into state->tokens because
+ * it will not be interpreted by execve or built-ins. We just need
+ * to concat to previous input to create a correct history similar to bash.
+ * 
+ * Heredocs does not expand variables.
+*/
+char    *handle_heredoc(char *additional_input, char *input, t_state *state)
+{
+    char *tmp;
+    
+    //printf("before: %s$\n addinput: %s\n", input, additional_input);
+    // concat additional_input to input separeted with a newline
+    tmp = ft_strjoin(input, "\n");
+	free(input);
+	input = tmp;
+
+    tmp = ft_strjoin(input, additional_input);
+	free(input);
+	input = tmp;
+    //printf("after: %s$\n", input);
+
+    if (is_closing_word(additional_input, state))
+    {
+        // when closing heredoc must add newline two
+        tmp = ft_strjoin(input, "\n");
+        free(input);
+        input = tmp;
+        close_heredoc(state);
+    }
+    free(additional_input);
+    return (input);
 }
 
 
@@ -61,19 +108,29 @@ int	reprompt(char *input, t_state *state)
 	char *additional_input;
 	char *tmp;
 
-     print_heredocs(state);
-	
+    if (pending_pipe(state))
+        printf("PENDING PIPE\n");
+    if (state->heredocs)
+    {
+        printf("HEREDOCS OPEN\n");
+    }
+
 	additional_input = readline(prompt_style(state));
 	handle_unexpected_eof(additional_input, input, state);
+
+    if (state->heredocs)
+    {
+        //print_heredocs(state);
+        input = handle_heredoc(additional_input, input, state);
+        return(reprompt(input, state));
+    }
 	
-	/**
-	 * Append to input
-	 * TODO: if last was pipe, add a space in the middle
-	 * TODO: for heredocs, add new line in the middle
-	*/
-	tmp = ft_strjoin(input, additional_input);
-	free(input);
-	input = tmp;
+    if (*additional_input)
+    {
+        tmp = ft_strjoin(input, additional_input);
+        free(input);
+        input = tmp;
+    } 
 
 	if (ft_only_spaces(additional_input))
 	{
@@ -81,39 +138,29 @@ int	reprompt(char *input, t_state *state)
 		return(reprompt(input, state));
 	}
 
-    /**
-     * If closed an heredoc reprompt
-     * 
-     * TODO: must refactor this!!
-     * heredoc will accept input as is until closing word
-     * This means not interpert pipes redirect and no expands
-     * 
-     * if not closing word just make additional_input a token and mark as no expand
-    */
-    if (closed_heredoc(additional_input, state))
-    {
-        free(additional_input);
-        if (!state->heredocs)
-            return (0);
-		return(reprompt(input, state));
-    }
-
-
-	// if reaches here means has content and its time to extract tokens
+	// if reaches here means has pending pipe and its time to extract more tokens
 	if(lexar(state, additional_input))
 	{
 		add_history(input);
 		clean_input(input, state);
 		return (1);
 	}
-	// recursively call reprompt if not finished submitting input
-	if (pending_pipe(state) || state->heredocs)
-		return(reprompt(input, state));
+    /**
+     * TODO: if first char in input is space will not add to history
+    */
 	add_history(input);
 	return (0);
 }
 
 /**
+ * Process inserted input.
+ * 
+ * For blank chars, discard input;
+ * Do lexical analysis;
+ * If has pending pipe or heredocs means user can still enter subsquent inputs;
+ * 
+ * Return 1 on syntax error, 0 if successful.
+ * 
  * TODO: submitting new command from history must divide on newline when creating tokens
  * newlines '\n' will come from heredocs when added to history
 */
@@ -134,9 +181,8 @@ int process_input(char *input, t_state *state)
         return (1);
     }
 
-    // TODO: after tokenizer runs, if last token is | must join next command to it
-    // prompt will change from minishell> to >
-    if (pending_pipe(state) || state->heredocs)
+    // TODO: after lexar runs, if last token is | or has heredocs, must concat next input to previous
+    while (pending_pipe(state) || state->heredocs)
     {
         if(reprompt(input, state))
             return (1);
