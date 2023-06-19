@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:06:49 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 13:06:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/19 15:47:53 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 void	clean_input(char *input, t_state *state)
 {
 	free(input);
+	free(state->history);
 	lst_token_clear(&(state->tokens), free);
 }

@@ -6,11 +6,26 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/17 12:29:50 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:11:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void    apply_prompt_style(char *prompt, t_state *state)
+{
+    int i;
+
+    i = 0;
+    while (prompt[i])
+    {
+        state->prompt[i] = prompt[i];
+        i++;
+    }
+    state->prompt[i] = '\0';
+
+    printf("PROMPT MODIFIED: %s\n", state->prompt);
+}
 
 int pending_pipe(t_state *state)
 {
@@ -22,15 +37,24 @@ int pending_pipe(t_state *state)
     return (0);
 }
 
-char    *prompt_style(t_state *state)
+void    prompt_style(t_state *state)
 {
     if (pending_pipe(state) && state->heredocs)
-        return ("pipe heredoc> ");
-    if (state->heredocs)
-        return ("heredoc> ");
-    if (pending_pipe(state))
-        return ("pipe> ");
-    return ("> ");
+    {
+        apply_prompt_style(PROMPT_PIPE_HEREDOC, state);
+    }
+    else if (state->heredocs)
+    {
+        apply_prompt_style(PROMPT_HEREDOC, state);
+    }
+    else if (pending_pipe(state))
+    {
+        apply_prompt_style(PROMPT_PIPE, state);
+    }
+    else
+    {
+        apply_prompt_style(PROMPT_DEFAULT, state);
+    }
 }
 
 /**
@@ -64,6 +88,27 @@ int is_closing_word(char *word, t_state *state)
 }
 
 /**
+ * This function will help build the command to be added to history.
+ * It will hold all subsequent commands until there are no pending
+ * pipes or open heredocs
+ * 
+ * Will append the must recent input to the previous entered, divided
+ * by the separator. ("\n" for heredocs, " " for pipes)
+*/
+void    append_to_history(char *line, t_state *state, char *separator)
+{
+    char *tmp;
+    
+    tmp = ft_strjoin(state->history, separator);
+	free(state->history);
+	state->history = tmp;
+
+    tmp = ft_strjoin(state->history, line);
+	free(state->history);
+	state->history = tmp;
+}
+
+/**
  * Process current open heredoc.
  * 
  * Note: Heredoc content will not be inserted into state->tokens because
@@ -72,118 +117,54 @@ int is_closing_word(char *word, t_state *state)
  * 
  * Heredocs does not expand variables.
 */
-char    *handle_heredoc(char *additional_input, char *input, t_state *state)
+void    handle_heredoc(char *input, t_state *state)
 {
+
+    append_to_history(input, state, "\n");
     char *tmp;
-    
-    //printf("before: %s$\n addinput: %s\n", input, additional_input);
-    // concat additional_input to input separeted with a newline
-    tmp = ft_strjoin(input, "\n");
-	free(input);
-	input = tmp;
 
-    tmp = ft_strjoin(input, additional_input);
-	free(input);
-	input = tmp;
-    //printf("after: %s$\n", input);
-
-    if (is_closing_word(additional_input, state))
+    if (is_closing_word(input, state))
     {
-        // when closing heredoc must add newline two
-        tmp = ft_strjoin(input, "\n");
-        free(input);
-        input = tmp;
+        // when closing heredoc must add newline too
+        tmp = ft_strjoin(state->history, "\n");
+        free(state->history);
+        state->history = tmp;
         close_heredoc(state);
     }
-    free(additional_input);
-    return (input);
-}
-
-
-/**
- * TODO: ctr-c must cancel reprompt
-*/
-char	*reprompt(char *input, t_state *state)
-{
-	char *additional_input;
-	char *tmp;
-
-	additional_input = readline(prompt_style(state));
-	handle_unexpected_eof(additional_input, input, state);
-
-    if (state->heredocs)
-    {
-        //print_heredocs(state);
-        input = handle_heredoc(additional_input, input, state);
-        return (input);
-    }
-	
-    if (*additional_input)
-    {
-        tmp = ft_strjoin(input, additional_input);
-        free(input);
-        input = tmp;
-    } 
-
-    // TODO: check if lexar already handles this right
-	if (ft_only_spaces(additional_input))
-	{
-		free(additional_input);
-		return(reprompt(input, state));
-	}
-
-	// if reaches here means has pending pipe and its time to extract more tokens
-	if(lexar(state, additional_input))
-	{
-		add_history(input);
-		clean_input(input, state);
-		return (NULL);
-	}
-    /**
-     * TODO: if first char in input is space will not add to history
-    */
-	add_history(input);
-	return (input);
 }
 
 /**
  * Process inserted input.
  * 
- * For blank chars, discard input;
  * Do lexical analysis;
  * If has pending pipe or heredocs means user can still enter subsquent inputs;
  * 
- * Return 1 on syntax error, 0 if successful.
+ * Return 1 on syntax error or incomplete input (heredocs, pending pipes), 0 if successful.
+ * This will make reprompt until the user enter a complete, valid command
  * 
- * TODO: submitting new command from history must divide on newline when creating tokens
- * newlines '\n' will come from heredocs when added to history
+ * TODO: make sure history it cannot build history if starts with space
 */
 int process_input(char *input, t_state *state)
 {
-    // if input has only spaces discard input and DON'T add to history
-    if (ft_only_spaces(input))
+    if (state->heredocs)
     {
-        free(input);
+        handle_heredoc(input, state);
         return (1);
     }
-
-    // TODO: maybe count must increase
     if(lexar(state, input))
     {
-        add_history(input);
+        add_history(state->history);
         clean_input(input, state);
         return (1);
     }
-
-    // TODO: after lexar runs, if last token is | or has heredocs, must concat next input to previous
-    while (pending_pipe(state) || state->heredocs)
+    if (pending_pipe(state) || state->heredocs)
     {
-        input = reprompt(input, state);
-        if(!input)
-            return (1);
+        printf("heredocs or pending pipes\n");
+        return (1);
     }
 
-    print_tokens(state);
-    print_heredocs(state);
+    //print_tokens(state);
+    //print_heredocs(state);
+    add_history(state->history);
     return (0);
 }

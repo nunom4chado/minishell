@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:39:29 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 17:16:21 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:19:57 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	create_heredoc(char *input, char *end, t_state *state)
 	char	*word;
 	t_token	*node;
 	
+	// TODO: bug here, last word if followed by null byte it does not add
+	// removing the if check will give invalid read
 	if (*end)
 	{
 		word = ft_substr(input, 0, end - input);

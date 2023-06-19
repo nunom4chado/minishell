@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/17 12:25:31 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:40:57 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@
 # define REDIR 2
 # define PIPE 3
 
+# define PROMPT_DEFAULT "minishell> "
+# define PROMPT_PIPE "pipe> "
+# define PROMPT_HEREDOC "heredoc> "
+# define PROMPT_PIPE_HEREDOC "pipe heredoc> "
+
+# define CODE_CTR_C 130
+
 /* -------------------------------------------------------------------------- */
 /*                                   Structs                                  */
 /* -------------------------------------------------------------------------- */
@@ -61,8 +68,11 @@ typedef struct s_token
 typedef struct s_state
 {
 	int		exit_status;
+	char	*input;
 	char	*cmd;
 	char	**envp;
+	char	*history;
+	char	prompt[32];
 	t_token	*heredocs;
 	t_token	*tokens;
 }		t_state;
@@ -73,7 +83,7 @@ typedef struct s_state
 
 /* --------------------------------- Signals ------------------------------- */
 void	handle_ctrl_c(int signo);
-int		handle_ctrl_d(char *cmd);
+int		handle_ctrl_d(char *cmd, t_state *state);
 int		typed_exit(char *cmd);
 /* ------------------------------------------------------------------------- */
 
@@ -122,7 +132,7 @@ void    init_state(t_state *state, char **environ);
 
 int 	process_input(char *input, t_state *state);
 int		pending_pipe(t_state *state);
-char	*reprompt(char *input, t_state *state);
+void	prompt_style(t_state *state);
 
 /* ------------------------------- List Tokens ------------------------------ */
 
@@ -159,6 +169,8 @@ void	print_heredocs(t_state *state);
 
 /* --------------------------------- Errors --------------------------------- */
 
-void    handle_unexpected_eof(char *added_input, char *input, t_state *state);
+
+void    apply_prompt_style(char *prompt, t_state *state);
+
 
 #endif

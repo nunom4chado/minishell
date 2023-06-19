@@ -6,29 +6,20 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 15:42:44 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:55:38 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_ctrl_c(int signo)
-{
-	/**
-	 * TODO: we must add to history is input is imcompleted
-	 * add inputed lines (this happens inputs ending with pipes or heredocs)
-	*/
-	(void)signo;
-	printf("\n");
-	rl_replace_line("", rl_on_new_line());
-	rl_redisplay();
-}
-
-int	handle_ctrl_d(char *cmd)
+int	handle_ctrl_d(char *cmd, t_state *state)
 {
 	if (!cmd)
 	{
-		printf("exit\n");
+		if (state->heredocs || pending_pipe(state))
+			printf("syntax error: unexpected end of file\nexit\n");
+		else
+			printf("exit\n");
 		return (1);
 	}
 	return (0);

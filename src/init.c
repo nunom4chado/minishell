@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 18:49:58 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:42:00 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void    init_state(t_state *state, char **environ)
 {
     state->envp = environ;
+	state->input = NULL;
+	state->history = NULL;
 	state->tokens = NULL;
-	/**
-	 * TODO: will be used to identify heredocs
-	 * if the same heredoc is entered it will close the heredoc
-	*/
 	state->heredocs = NULL;
 }

@@ -6,43 +6,119 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/17 09:31:44 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:06:34 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern char **environ;
+// #include <setjmp.h>
+// sigjmp_buf mark;
+
+extern char	**environ;
+
+t_state		g_state;
+
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	if (s)
+	{
+		write(fd, s, ft_strlen(s));
+		write(fd, "\n", 1);
+	}
+}
+
+void	handle_ctrlc_(int status)
+{
+	lst_token_clear(&g_state.tokens, free);
+	lst_token_clear(&g_state.heredocs, free);
+	ft_putendl_fd("", STDOUT_FILENO);
+	rl_on_new_line();
+	(void)status;
+}
+
+/**
+ * Pressing Ctr-c will print ^C after prompt a return a new, clean prompt
+ * 
+ * If prompt is in pipe mode, or with heredocs open, must exit them and
+ * display the normal prompt.
+ * 
+ * Will always set exit status of 130.
+ * 
+ * TODO: we must add to history is input is imcompleted
+ * add inputed lines (this happens inputs ending with pipes or heredocs)
+*/
+
+void	handle_ctrl_c_alternate_prompt(int signo)
+{
+	(void)signo;
+
+printf("debugging ctr-c 2\n");
+	g_state.exit_status = CODE_CTR_C;
+	
+	if (g_state.heredocs || pending_pipe(&g_state))
+	{
+		lst_token_clear(&g_state.tokens, free);
+		lst_token_clear(&g_state.heredocs, free);
+	}
+
+	char *reset = readline("reset> ");
+	
+	(void)reset;
+	
+	printf("\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	handle_ctrl_c(int signo)
+{
+	(void)signo;
+
+	printf("debugging ctr-c 1\n");
+	g_state.exit_status = CODE_CTR_C;
+	
+	printf("\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+
+}
 
 int	main()
 {
-	char	*input;
 	int		count;
-	t_state	state;
 
 	count = 1;
-	
-	init_state(&state, environ);
+
+	init_state(&g_state, environ);
+
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 
+	//sigsetjmp(mark, 1);
 	while (1)
 	{
-		input = readline("minishell$ ");
+		prompt_style(&g_state);
+		g_state.input = readline(g_state.prompt);
 
-		if (handle_ctrl_d(input) || typed_exit(input))
+		//signal(SIGINT, handle_ctrlc_);
+
+		if (handle_ctrl_d(g_state.input, &g_state) || typed_exit(g_state.input))
 			break ;
 
-		if (process_input(input, &state))
+		if (process_input(g_state.input, &g_state))
 			continue ;
 
-		//state.cmd = ft_strdup(input);
+		//g_state.cmd = ft_strdup(input);
 		//free(input);
 
-		//state.cmd = expand(&state);
+		//g_state.cmd = expand(&g_state);
 /*
 
-		if (handle_builtin(&state, &count))
+		if (handle_builtin(&g_state, &count))
 			continue ;
 */
 
@@ -51,12 +127,12 @@ int	main()
 			runcmd(parseinput(input)); // parsecmd() and runcmd()
 		*/
 
-		// last_cmd(&state);
+		// last_cmd(&g_state);
 		// wait(NULL);
-		lst_token_clear(&state.tokens, free);
+		lst_token_clear(&g_state.tokens, free);
 		count++;
 	}
 	rl_clear_history();
-	//free(state.cmd);
+	//free(g_state.cmd);
 	return (EXIT_SUCCESS);
 }
