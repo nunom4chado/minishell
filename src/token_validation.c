@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: numarrtin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:09:14 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 18:49:27 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/20 14:23:16 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,15 @@ int	validate_tokens(t_state *state)
  * Must check if the previous token is a special char
  * and can be used with the current token
  * 
- * Valid: [perv, cur]
+ * Valid: [prev, cur]
  * ["|", ">>"]
  * ["|", ">"]
+ * ["|", "<"]
+ * ["|", "<<"]
  * 
  * First token CANNOT be a |
  * 
- * Errors: [perv, cur]
+ * Errors: [prev, cur]
  * [">>", ">"]
  * [">", ">"]
  * [">", ">>"]
