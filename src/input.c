@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/19 20:11:12 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 15:52:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,15 @@ int pending_pipe(t_state *state)
     return (0);
 }
 
-void    prompt_style(t_state *state)
+char *prompt_style(t_state *state)
 {
-    if (pending_pipe(state) && state->heredocs)
-    {
-        apply_prompt_style(PROMPT_PIPE_HEREDOC, state);
-    }
-    else if (state->heredocs)
-    {
-        apply_prompt_style(PROMPT_HEREDOC, state);
-    }
-    else if (pending_pipe(state))
-    {
-        apply_prompt_style(PROMPT_PIPE, state);
-    }
-    else
-    {
-        apply_prompt_style(PROMPT_DEFAULT, state);
-    }
+	if (pending_pipe(state) && state->heredocs)
+		return (PROMPT_PIPE_HEREDOC);
+	if (state->heredocs)
+		return (PROMPT_HEREDOC);
+	if (pending_pipe(state))
+		return (PROMPT_PIPE);
+	return (PROMPT_DEFAULT);
 }
 
 /**
@@ -74,7 +65,7 @@ void close_heredoc(t_state *state)
 
 /**
  * Checks if word will close the current heredoc
- * 
+ *
  * Returns 1 if true, 0 otherwise
 */
 int is_closing_word(char *word, t_state *state)
@@ -91,14 +82,14 @@ int is_closing_word(char *word, t_state *state)
  * This function will help build the command to be added to history.
  * It will hold all subsequent commands until there are no pending
  * pipes or open heredocs
- * 
+ *
  * Will append the must recent input to the previous entered, divided
  * by the separator. ("\n" for heredocs, " " for pipes)
 */
 void    append_to_history(char *line, t_state *state, char *separator)
 {
     char *tmp;
-    
+
     tmp = ft_strjoin(state->history, separator);
 	free(state->history);
 	state->history = tmp;
@@ -110,11 +101,11 @@ void    append_to_history(char *line, t_state *state, char *separator)
 
 /**
  * Process current open heredoc.
- * 
+ *
  * Note: Heredoc content will not be inserted into state->tokens because
  * it will not be interpreted by execve or built-ins. We just need
  * to concat to previous input to create a correct history similar to bash.
- * 
+ *
  * Heredocs does not expand variables.
 */
 void    handle_heredoc(char *input, t_state *state)
@@ -135,13 +126,13 @@ void    handle_heredoc(char *input, t_state *state)
 
 /**
  * Process inserted input.
- * 
+ *
  * Do lexical analysis;
  * If has pending pipe or heredocs means user can still enter subsquent inputs;
- * 
+ *
  * Return 1 on syntax error or incomplete input (heredocs, pending pipes), 0 if successful.
  * This will make reprompt until the user enter a complete, valid command
- * 
+ *
  * TODO: make sure history it cannot build history if starts with space
 */
 int process_input(char *input, t_state *state)

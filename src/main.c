@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/19 20:06:34 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:20:09 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,67 +19,30 @@ extern char	**environ;
 
 t_state		g_state;
 
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	if (s)
-	{
-		write(fd, s, ft_strlen(s));
-		write(fd, "\n", 1);
-	}
-}
-
-void	handle_ctrlc_(int status)
-{
-	lst_token_clear(&g_state.tokens, free);
-	lst_token_clear(&g_state.heredocs, free);
-	ft_putendl_fd("", STDOUT_FILENO);
-	rl_on_new_line();
-	(void)status;
-}
-
 /**
  * Pressing Ctr-c will print ^C after prompt a return a new, clean prompt
- * 
+ *
  * If prompt is in pipe mode, or with heredocs open, must exit them and
  * display the normal prompt.
- * 
+ *
  * Will always set exit status of 130.
- * 
+ *
  * TODO: we must add to history is input is imcompleted
  * add inputed lines (this happens inputs ending with pipes or heredocs)
 */
-
-void	handle_ctrl_c_alternate_prompt(int signo)
-{
-	(void)signo;
-
-printf("debugging ctr-c 2\n");
-	g_state.exit_status = CODE_CTR_C;
-	
-	if (g_state.heredocs || pending_pipe(&g_state))
-	{
-		lst_token_clear(&g_state.tokens, free);
-		lst_token_clear(&g_state.heredocs, free);
-	}
-
-	char *reset = readline("reset> ");
-	
-	(void)reset;
-	
-	printf("\n");
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
 void	handle_ctrl_c(int signo)
 {
 	(void)signo;
 
 	printf("debugging ctr-c 1\n");
 	g_state.exit_status = CODE_CTR_C;
-	
+
+	if (g_state.heredocs || pending_pipe(&g_state))
+	{
+		lst_token_clear(&g_state.tokens, free);
+		lst_token_clear(&g_state.heredocs, free);
+	}
+
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -98,13 +61,9 @@ int	main()
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 
-	//sigsetjmp(mark, 1);
 	while (1)
 	{
-		prompt_style(&g_state);
-		g_state.input = readline(g_state.prompt);
-
-		//signal(SIGINT, handle_ctrlc_);
+		g_state.input = readline(prompt_style(&g_state));
 
 		if (handle_ctrl_d(g_state.input, &g_state) || typed_exit(g_state.input))
 			break ;

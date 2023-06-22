@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/19 19:40:57 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:20:52 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,9 @@ void    init_state(t_state *state, char **environ);
 
 /* ------------------------------ Process input ----------------------------- */
 
-int 	process_input(char *input, t_state *state);
+int		process_input(char *input, t_state *state);
 int		pending_pipe(t_state *state);
-void	prompt_style(t_state *state);
+char	*prompt_style(t_state *state);
 
 /* ------------------------------- List Tokens ------------------------------ */
 
