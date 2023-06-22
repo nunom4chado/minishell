@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/22 15:52:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:33:02 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ int pending_pipe(t_state *state)
 
 char *prompt_style(t_state *state)
 {
+	/*
 	if (pending_pipe(state) && state->heredocs)
 		return (PROMPT_PIPE_HEREDOC);
-	if (state->heredocs)
-		return (PROMPT_HEREDOC);
 	if (pending_pipe(state))
 		return (PROMPT_PIPE);
+	*/
+	if (state->heredocs)
+		return (PROMPT_HEREDOC);
 	return (PROMPT_DEFAULT);
 }
 
@@ -148,9 +150,14 @@ int process_input(char *input, t_state *state)
         clean_input(input, state);
         return (1);
     }
-    if (pending_pipe(state) || state->heredocs)
+	if (pending_pipe(state))
     {
-        printf("heredocs or pending pipes\n");
+		ft_putendl_fd("error: pending pipe", 2);
+        return (1);
+    }
+    if (state->heredocs)
+    {
+		ft_putendl_fd("heredocs\n", 2);
         return (1);
     }
 
