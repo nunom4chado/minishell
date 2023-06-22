@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/22 16:20:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:07:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@
 /* -------------------------------------------------------------------------- */
 /*                                   Defines                                  */
 /* -------------------------------------------------------------------------- */
-# define EXEC 1
-# define REDIR 2
-# define PIPE 3
 
 # define PROMPT_DEFAULT "minishell> "
 # define PROMPT_PIPE "pipe> "
@@ -53,14 +50,24 @@
 }			t_token; */
 
 
-/**
- * TODO: make sure when verifyng if can expand the proper flag and not the first char in *word
-*/
+typedef enum e_tk_type
+{
+	ASSIGN,
+	EXEC,
+	ARG,
+	PIPE,
+	HEREDOC,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+}	t_tk_type;
+
 typedef struct s_token
 {
-	char	*word;
-	int		space;
-	int		expandable; // when creating tokens mark if can expand (for heredocs no expand)
+	t_tk_type		type;
+	char			*word;
+	int				space;
+	int				expandable; // when creating tokens mark if can expand (for heredocs no expand)
 	struct s_token	*next;
 	struct s_token	*prev;
 }		t_token;

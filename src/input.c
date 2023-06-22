@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/22 16:36:34 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:11:36 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,14 @@ void    handle_heredoc(char *input, t_state *state)
 }
 
 /**
+ * Checks if tokens have heredocs
+*/
+int	has_heredoc(t_state * state)
+{
+
+}
+
+/**
  * Process inserted input.
  *
  * Do lexical analysis;
@@ -139,11 +147,6 @@ void    handle_heredoc(char *input, t_state *state)
 */
 int process_input(char *input, t_state *state)
 {
-    if (state->heredocs)
-    {
-        handle_heredoc(input, state);
-        return (1);
-    }
     if(lexar(state, input))
     {
         add_history(state->history);
@@ -157,9 +160,9 @@ int process_input(char *input, t_state *state)
 		lst_token_clear(&state->tokens, free);
         return (1);
     }
-    if (state->heredocs)
+    if (has_heredocs(state))
     {
-		ft_putendl_fd("heredocs\n", 2);
+		ft_putendl_fd("TODO: handle heredocs\n", 2);
         return (1);
     }
 
