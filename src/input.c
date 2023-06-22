@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/22 16:33:02 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:36:34 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ int process_input(char *input, t_state *state)
 	if (pending_pipe(state))
     {
 		ft_putendl_fd("error: pending pipe", 2);
+		lst_token_clear(&state->heredocs, free);
+		lst_token_clear(&state->tokens, free);
         return (1);
     }
     if (state->heredocs)

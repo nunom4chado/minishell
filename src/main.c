@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/22 16:20:09 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:34:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	handle_ctrl_c(int signo)
 {
 	(void)signo;
 
-	printf("debugging ctr-c 1\n");
+	//printf("debugging ctr-c 1\n");
 	g_state.exit_status = CODE_CTR_C;
 
 	if (g_state.heredocs || pending_pipe(&g_state))
