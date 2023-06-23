@@ -6,26 +6,11 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/22 18:11:36 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/23 13:56:36 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void    apply_prompt_style(char *prompt, t_state *state)
-{
-    int i;
-
-    i = 0;
-    while (prompt[i])
-    {
-        state->prompt[i] = prompt[i];
-        i++;
-    }
-    state->prompt[i] = '\0';
-
-    printf("PROMPT MODIFIED: %s\n", state->prompt);
-}
 
 int pending_pipe(t_state *state)
 {
@@ -81,27 +66,6 @@ int is_closing_word(char *word, t_state *state)
 }
 
 /**
- * This function will help build the command to be added to history.
- * It will hold all subsequent commands until there are no pending
- * pipes or open heredocs
- *
- * Will append the must recent input to the previous entered, divided
- * by the separator. ("\n" for heredocs, " " for pipes)
-*/
-void    append_to_history(char *line, t_state *state, char *separator)
-{
-    char *tmp;
-
-    tmp = ft_strjoin(state->history, separator);
-	free(state->history);
-	state->history = tmp;
-
-    tmp = ft_strjoin(state->history, line);
-	free(state->history);
-	state->history = tmp;
-}
-
-/**
  * Process current open heredoc.
  *
  * Note: Heredoc content will not be inserted into state->tokens because
@@ -112,18 +76,8 @@ void    append_to_history(char *line, t_state *state, char *separator)
 */
 void    handle_heredoc(char *input, t_state *state)
 {
-
-    append_to_history(input, state, "\n");
-    char *tmp;
-
     if (is_closing_word(input, state))
-    {
-        // when closing heredoc must add newline too
-        tmp = ft_strjoin(state->history, "\n");
-        free(state->history);
-        state->history = tmp;
         close_heredoc(state);
-    }
 }
 
 /**
@@ -131,7 +85,8 @@ void    handle_heredoc(char *input, t_state *state)
 */
 int	has_heredoc(t_state * state)
 {
-
+    (void)state;
+    return (1);
 }
 
 /**
@@ -149,25 +104,18 @@ int process_input(char *input, t_state *state)
 {
     if(lexar(state, input))
     {
-        add_history(state->history);
         clean_input(input, state);
         return (1);
     }
-	if (pending_pipe(state))
-    {
-		ft_putendl_fd("error: pending pipe", 2);
-		lst_token_clear(&state->heredocs, free);
-		lst_token_clear(&state->tokens, free);
-        return (1);
-    }
+    /*
     if (has_heredocs(state))
     {
 		ft_putendl_fd("TODO: handle heredocs\n", 2);
         return (1);
     }
+    */
 
-    //print_tokens(state);
+    print_tokens(state);
     //print_heredocs(state);
-    add_history(state->history);
     return (0);
 }

@@ -12,24 +12,23 @@
 
 #include "minishell.h"
 
-/**
- * Last token can not be a redirect without open heredocs
- * NOTE: if has heredocs before, syntax error will only show after closing all heredocs
-*/
-int	validate_tokens(t_state *state)
+int	validate_last_token(t_state *state)
 {
 	t_token	*last;
 
 	last = lst_last_token(state->tokens);
 
-	if (state->heredocs)
+	if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
+	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
-		if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
-		ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
-		{
-			printf("syntax error near unexpected token `newline'\n");
-			return (1);
-		}
+		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
+		return (1);
+	}
+
+	if (pending_pipe(state))
+	{
+		ft_putendl_fd("error: pending pipe", 2);
+		return (1);
 	}
 	return (0);
 }

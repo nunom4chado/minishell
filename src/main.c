@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/22 16:34:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/23 13:38:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	main()
 		if (handle_ctrl_d(g_state.input, &g_state) || typed_exit(g_state.input))
 			break ;
 
+		add_history(g_state.input);
 		if (process_input(g_state.input, &g_state))
 			continue ;
 

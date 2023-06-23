@@ -6,21 +6,21 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 17:30:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/16 13:45:50 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:02:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*lst_new_token(void *word, int space)
+t_token	*lst_new_token(void *word, t_tk_type type)
 {
 	t_token	*node;
 
 	node = malloc(sizeof(t_token));
 	if (!node)
 		return (0);
+	node->type = type;
 	node->word = word;
-	node->space = space;
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);
