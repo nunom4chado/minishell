@@ -19,7 +19,7 @@ _GONE		=	\e[2K\r
 
 NAME		:=	minishell
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -g
+CFLAGS		:=	-Wall -Werror -Wextra -g -fsanitize=address
 DEPS		:=	-lreadline -lXext -lX11 -lm
 
 
