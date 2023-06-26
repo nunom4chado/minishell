@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/23 13:56:36 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:04:56 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,20 @@ void    handle_heredoc(char *input, t_state *state)
 /**
  * Checks if tokens have heredocs
 */
-int	has_heredoc(t_state * state)
+int	has_heredocs(t_state *state)
 {
-    (void)state;
-    return (1);
+	t_token *token;
+
+	if (!state->tokens)
+		return (0);
+	token = state->tokens;
+	while (token)
+	{
+		if (token->type == HEREDOC)
+			return (1);
+		token = token->next;
+	}
+    return (0);
 }
 
 /**
@@ -107,13 +117,9 @@ int process_input(char *input, t_state *state)
         clean_input(input, state);
         return (1);
     }
-    /*
+
     if (has_heredocs(state))
-    {
-		ft_putendl_fd("TODO: handle heredocs\n", 2);
-        return (1);
-    }
-    */
+		ft_putendl_fd("\nTODO: handle heredocs\n", 2);
 
     print_tokens(state);
     //print_heredocs(state);

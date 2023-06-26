@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/23 13:38:12 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:12:18 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int	main()
 		add_history(g_state.input);
 		if (process_input(g_state.input, &g_state))
 			continue ;
+
+		expand(&g_state);
 
 		//g_state.cmd = ft_strdup(input);
 		//free(input);

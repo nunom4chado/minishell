@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/15 14:36:53 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:58:19 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,13 @@ char	*ft_del_non_var(char *cmd, int i, int over)
 	return (total);
 }
 
+int	is_var_key_valid(char *key)
+
 /**
  * TODO: expand $? to the exit status of the most recent recently executed foreground pipeline
  * DON'T expand if enclosed with single quotes
+ *
+ * echo $7asdfsasdf   output: asdfsasdf
 */
 char	*expand(t_state *state)
 {
@@ -74,4 +78,22 @@ char	*expand(t_state *state)
 		i++;
 	}
 	return (state->cmd);
+}
+
+ft_tilde_expand();
+
+ft_var_expand();
+
+ft_exit_expand();
+
+void	expand(t_state *state)
+{
+	t_token *token;
+
+	token = state->tokens;
+	while (token)
+	{
+
+		token = token->next;
+	}
 }
