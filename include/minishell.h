@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/23 15:43:16 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/26 14:56:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 // WARNING: when changing these values you must also update in debug functions
 typedef enum e_tk_type
 {
+	WORD,
 	EXEC,
 	ARG,
 	PIPE,

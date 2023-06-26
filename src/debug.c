@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:28:39 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/23 15:51:21 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/26 14:57:50 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	print_tokens(t_state *state)
 {
 	const char* token_types[] = {
+	"WORD",
 	"EXEC",
 	"ARG",
 	"PIPE",
@@ -29,7 +30,7 @@ void	print_tokens(t_state *state)
 	printf("\nDEBUG: (current tokens)\n");
 	while (token)
 	{
-		printf(" - type: %s, word: %s\n", token_types[token->type], token->word);
+		printf(" - type: %s, data: %s\n", token_types[token->type], token->word);
 		token = token->next;
 	}
 	printf("\n");

@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 15:39:29 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/23 15:45:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/26 14:56:59 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	create_heredoc(char *input, char *end, t_state *state)
 {
 	char	*word;
 	t_token	*node;
-	
+
 	// TODO: bug here, last word if followed by null byte it does not add
 	// removing the if check will give invalid read
 	if (*end)
@@ -82,9 +82,9 @@ char	*get_meta_characters(char *input)
 
 /**
  * Split on special characters
- * 
+ *
  * chars: <, <<, >, >>, |
- * 
+ *
 */
 char	*ft_split_specialchar(char *input, t_state *state)
 {
@@ -138,7 +138,5 @@ char	*handle_normal_token(char *input, t_state *state)
 	last = lst_last_token(state->tokens);
 	if (last && last->type == HEREDOC)
 		return(create_token(input, input + i - 1, HEREDOC_DELIMITER, state));
-	if (last && last->type != PIPE)
-		return (create_token(input, input + i - 1, ARG, state));
-	return (create_token(input, input + i - 1, EXEC, state));
+	return (create_token(input, input + i - 1, WORD, state));
 }
