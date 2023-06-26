@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/26 15:58:19 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/26 21:07:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ char	*ft_del_non_var(char *cmd, int i, int over)
 	return (total);
 }
 
-int	is_var_key_valid(char *key)
+
+//int	is_var_key_valid(char *key)
 
 /**
  * TODO: expand $? to the exit status of the most recent recently executed foreground pipeline
@@ -45,6 +46,7 @@ int	is_var_key_valid(char *key)
  *
  * echo $7asdfsasdf   output: asdfsasdf
 */
+/*
 char	*expand(t_state *state)
 {
 	int i;
@@ -79,12 +81,44 @@ char	*expand(t_state *state)
 	}
 	return (state->cmd);
 }
+*/
 
-ft_tilde_expand();
+/**
+ * Expand tilde in a token.
+ * 
+ * It will only expand if the first char is '~' and the second is '\0' or '/'
+*/
+void ft_tilde_expand(t_token *token, t_state *state)
+{
+	char	*tmp;
 
-ft_var_expand();
+	if (token->word[0] == '~')
+	{
+		if (token->word[1] == '\0' || token->word[1] == '/')
+		{
+			tmp = ft_strjoin(ft_getenv("HOME=", state), token->word + 1);
+			free(token->word);
+			token->word = tmp;
+		}
+	}
+}
 
-ft_exit_expand();
+/**
+ * Expand variables and $? exit status
+*/
+void ft_variable_expand(t_token *token, t_state *state)
+{
+	char	*tmp;
+
+	if (token->word[0] == '$')
+	{
+		(void)tmp;
+		(void)state;
+	}
+}
+
+
+//ft_remove_quotes();
 
 void	expand(t_state *state)
 {
@@ -93,7 +127,8 @@ void	expand(t_state *state)
 	token = state->tokens;
 	while (token)
 	{
-
+		ft_tilde_expand(token, state);
+		ft_variable_expand(token, state);
 		token = token->next;
 	}
 }
