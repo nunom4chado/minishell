@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/14 18:59:53 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:05:36 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,16 @@ int	ft_split_words(t_state *state, char *input)
 			continue ;
 		}
 		i = 0;
-		if (ft_is_specialchar(input[i]))
+		/* if (ft_is_specialchar(input[i]))
 		(
 			// must check if next is valid
 			// >, >>, <, <<, |
 			// errors: >>>, <<<, <<|, >>|, |||, ||
-		)
+		) */
 		while(input[i] && !(ft_is_space(input[i]) || ft_is_quote(input[i]) || ft_is_specialchar(input[i])))
 			i++;
 		input = create_word(input, input + i - 1, state);
-		printf("sadfadsf\n");
+		//printf("sadfadsf\n");
 	}
 	return (0);
 }

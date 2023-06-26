@@ -6,13 +6,39 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/12 15:04:41 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:12:53 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	array_env(t_state *state)
+{
+	int	num;
+	int	i;
+	t_env	*current;
+	char	*string;
 
+	num = 0;
+	current = state->env;
+	while (current != NULL)
+	{
+		num++;
+		current = current->next;
+	}
+	state->envp = malloc(sizeof(char **) * num + 1);
+	current = state->env;
+	i = 0;
+	while (current != NULL)
+	{
+		string = malloc(ft_strlen(current->key) + ft_strlen(current->value) + 1);
+		string = ft_strjoin(current->key, current->value);
+		state->envp[i] = string;
+		current = current->next;
+		i++;
+	}
+	state->envp[i] = NULL;
+}
 
 /* This one is the last cmd not the open cmd */
 void	last_cmd(t_state *state)
@@ -22,6 +48,7 @@ void	last_cmd(t_state *state)
 	int	pipefd[2];
 	int	fd[2];
 
+	array_env(state);
 	pipe(pipefd);
 	pid = fork();
 	if (pid < 0)

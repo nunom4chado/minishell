@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 17:59:00 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/26 12:51:36 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,21 @@ typedef struct s_word
 	//t_word	*prev;
 }		t_word;
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+	struct	s_env	*next;
+}				t_env;
+
 typedef struct s_state
 {
 	int	exit_status;
 	char	*cmd;
 	char	**envp;
 	t_word	*words;
+	t_env	*env;
 }		t_state;
-
-
 
 /* --------------------------------- Signals ------------------------------- */
 void	handle_ctrl_c(int signo);
@@ -96,5 +102,12 @@ void	ft_word_add_back(t_word **lst, t_word *new);
 t_word	*ft_last_word(t_word *lst);
 t_word	*ft_new_word(void *word, int space);
 void	ft_wordclear(t_word **lst, void (*del)(void *));
+
+
+
+t_env	*ft_envlast(t_env *lst);
+void	ft_addenv_back(t_env **lst, t_env *new);
+t_env	*ft_newenv(void *content);
+void	create_env(t_state *state, char **envi);
 
 #endif

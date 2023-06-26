@@ -42,7 +42,8 @@ SRC			:=	main.c \
 				env.c \
 				expand.c \
 				builtin.c \
-				list_utils.c
+				list_utils.c \
+				env_utils.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJS		:=	$(SRC:.c=.o)

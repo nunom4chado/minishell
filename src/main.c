@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/14 18:46:17 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/24 15:12:47 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ extern char **environ;
 
 void	print_words(t_state *state)
 {
-	t_word *lst = state->words;
+	t_env *lst = state->env;
 	while (lst)
 	{
-		printf("word: %s > space: %d\n", lst->word, lst->space);
+		printf("word: %s=%s\n", lst->key, lst->value);
 		lst = lst->next;
 	}
 }
@@ -31,7 +31,14 @@ int	main()
 	t_state	state;
 
 	count = 1;
-	state.envp = environ;
+	create_env(&state, environ);
+	
+	/* printf("---------------------\n");
+	print_words(&state);
+	printf("---------------------\n"); */
+
+
+	//state.envp = environ;
 	state.words = NULL;
 
 	signal(SIGINT, handle_ctrl_c);
@@ -52,27 +59,24 @@ int	main()
 			ft_wordclear(&state.words, free);
 			continue ;
 		}
-		printf("---------------------\n");
-		print_words(&state);
-		printf("---------------------\n");
 
 		state.cmd = ft_strdup(input);
 		free(input);
 
 		//state.cmd = expand(&state);
-/*
+
 
 		if (handle_builtin(&state, &count))
 			continue ;
-*/
+
 
 		/*
 		if (fork1() == 0)
 			runcmd(parseinput(input)); // parsecmd() and runcmd()
 		*/
 
-		// last_cmd(&state);
-		// wait(NULL);
+		last_cmd(&state);
+		wait(NULL);
 		ft_wordclear(&state.words, free);
 		count++;
 	}

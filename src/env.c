@@ -6,28 +6,56 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 15:30:30 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:13:34 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	print_env(t_state *state)
+{
+	t_env *lst = state->env;
+	while (lst)
+	{
+		printf("word: %s%s\n", lst->key, lst->value);
+		lst = lst->next;
+	}
+}
+
+t_env	*findenv(t_state *state, char *key)
+{
+	t_env	*find;
+
+	find = state->env;
+	while(find != NULL)
+	{
+		if (ft_strcmp(key, find->key) == 0)
+		{
+			return (find);
+		}
+		find = find->next;
+	}
+	return (NULL);
+}
+
 int	ft_setenv(char *key, char *newvalue, t_state *state)
 {
-	int i;
-	char *res;
+	t_env	*newenv;
+	t_env	*find;
 
-	i = 0;
-	while(state->envp[i])
+	find = findenv(state, key);
+	if (find != NULL)
 	{
-		if (ft_strncmp(key, state->envp[i], ft_strlen(key)) == 0)
-		{
-			res = ft_strjoin(key, newvalue);
-			state->envp[i] = ft_strdup(res);
-			free(res);
-			return (0);
-		}
-		i++;
+		free(find->value);
+		find->value = ft_strdup(newvalue);
+		return (0);
+	}
+	else //add if not existent
+	{
+		newenv = malloc(sizeof(t_env));
+		newenv->key = ft_strdup(key);
+		newenv->value = ft_strdup(newvalue);
+		ft_addenv_back(&state->env, newenv);
 	}
 
 	return (-1);
@@ -35,14 +63,16 @@ int	ft_setenv(char *key, char *newvalue, t_state *state)
 
 char	*ft_getenv(char *key, t_state *state)
 {
-	int i;
+	t_env	*find;
 
-	i = 0;
-	while(state->envp[i])
+	find = state->env;
+	while(find != NULL)
 	{
-		if (ft_strncmp(key, state->envp[i], ft_strlen(key)) == 0)
-			return(state->envp[i] + ft_strlen(key));
-		i++;
+		if (ft_strcmp(key, find->key) == 0)
+		{
+			return (find->value);
+		}
+		find = find->next;
 	}
 	return (NULL);
 }
