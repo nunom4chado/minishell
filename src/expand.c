@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/27 17:08:22 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:12:14 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,12 @@ void ft_variable_expand(t_token *token, t_state *state)
 
 // TODO: ft_remove_quotes();
 
+/**
+ * Expand tokens
+ * 
+ * NOTE: expansions will not occur when the token is an HEREDOC_DELIMITER,
+ * only quote removal will be applied
+*/
 void	expand(t_state *state)
 {
 	t_token *token;
@@ -253,7 +259,6 @@ void	expand(t_state *state)
 	token = state->tokens;
 	while (token)
 	{
-		// TODO only do this if token is not heredoc delimiter
 		if (token->type != HEREDOC_DELIMITER)
 		{
 			ft_tilde_expand(token, state);
