@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/27 17:12:14 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/27 17:13:21 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ void	expand(t_state *state)
 			//ft_variable_expand(token, state);
 		}
 		// ft_remove_quotes(token);
-		// TODO: clear empty tokens
+		// TODO: clear empty tokens (some tokens may be left with only nullbyte - "")
 		token = token->next;
 	}
 }
