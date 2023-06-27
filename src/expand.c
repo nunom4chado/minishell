@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/27 13:17:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:16:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,27 +159,28 @@ void ft_variable_expand(t_token *token, t_state *state)
 void	sanitize_invalid_variables(t_token *token)
 {
 	char *sanitized;
+	char *aux;
 	char *old;
-	int		i;
 
-	i = 0;
 	old = token->word;
 	sanitized = malloc(ft_strlen(old) + 1);
 	// TODO: handle error
-	while (old[i])
+	aux = sanitized;
+	while (*old)
 	{
-		if (old[i] == '$' && old[i + 1])
+		if (*old == '$' && *(old + 1))
 		{
-			if(!ft_isalpha(old[i + 1]) && old[i + 1] != '_' && old[i + 1] != '?')
+			if(!ft_isalpha(*(old + 1)) && *(old + 1) != '_' && *(old + 1) != '?')
 			{
-				i = i + 2;
+				old = old + 2;
 				continue ;
 			}
 		}
-		sanitized[i] = old[i];
-		i++;
+		*aux = *old;
+		aux++;
+		old++;
 	}
-	sanitized[i] = '\0';
+	*aux = '\0';
 	free(token->word);
 	token->word = sanitized;
 }
@@ -194,9 +195,14 @@ void	expand(t_state *state)
 	while (token)
 	{
 		// TODO only do this if token is not heredoc delimiter
-		ft_tilde_expand(token, state);
-		sanitize_invalid_variables(token);
-		//ft_variable_expand(token, state);
+		if (token->type != HEREDOC_DELIMITER)
+		{
+			ft_tilde_expand(token, state);
+			sanitize_invalid_variables(token);
+			//ft_variable_expand(token, state);
+		}
+		// ft_remove_quotes(token);
+		// TODO: clear empty tokens
 		token = token->next;
 	}
 }
