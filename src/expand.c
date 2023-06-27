@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/26 21:07:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:17:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,21 +104,87 @@ void ft_tilde_expand(t_token *token, t_state *state)
 }
 
 /**
- * Expand variables and $? exit status
+ * Expand variables and $? (previous exit status)
+ * 
+ * In this implementation, if the next character after '$' is not
+ * '_', alpha char or '?', both the first and second chars will be
+ * skipped and not saved
 */
 void ft_variable_expand(t_token *token, t_state *state)
 {
-	char	*tmp;
+	char	*ptr;
+	int		singlequote;
 
-	if (token->word[0] == '$')
+	singlequote = 0;
+	ptr = token->word;
+
+	/**
+	 * $a = "Music Pictures"
+	 * $b = " Music Pictures"
+	 * $c = "Music Pictures "
+	 * 
+	 * $a"Videos" = ['Music', 'PicturesVideos']
+	 * $a" Videos" = ['Music', 'Pictures Videos']
+	 * $c"Videos" = ['Music', 'Pictures', 'Videos']
+	 * $c" Videos" = ['Music', 'Pictures', ' Videos']
+	 * "Videos"$b = ['Videos', 'Music', 'Pictures']
+	 * "Videos "$b = [' Videos', 'Music', 'Pictures']
+	 * "Videos"$a = ['VideosMusic', 'Pictures']
+	 * "Videos "$a = ['Videos Music', 'Pictures']
+	 * 
+	 * $c"Videos"$c$a
+	 * 
+	 * "asdf $b sd"$b
+	*/
+
+	(void)state;
+	(void)singlequote;
+
+	while(*ptr)
 	{
-		(void)tmp;
-		(void)state;
+
+		if (*ptr == '$')
+		{
+			
+		}
+		ptr++;
 	}
 }
 
+/**
+ * In this implementation, if the next character after '$' is not
+ * '_', alpha char or '?', both the first and second chars will be
+ * skipped and not saved
+*/
+void	sanitize_invalid_variables(t_token *token)
+{
+	char *sanitized;
+	char *old;
+	int		i;
 
-//ft_remove_quotes();
+	i = 0;
+	old = token->word;
+	sanitized = malloc(ft_strlen(old) + 1);
+	// TODO: handle error
+	while (old[i])
+	{
+		if (old[i] == '$' && old[i + 1])
+		{
+			if(!ft_isalpha(old[i + 1]) && old[i + 1] != '_' && old[i + 1] != '?')
+			{
+				i = i + 2;
+				continue ;
+			}
+		}
+		sanitized[i] = old[i];
+		i++;
+	}
+	sanitized[i] = '\0';
+	free(token->word);
+	token->word = sanitized;
+}
+
+// TODO: ft_remove_quotes();
 
 void	expand(t_state *state)
 {
@@ -127,8 +193,10 @@ void	expand(t_state *state)
 	token = state->tokens;
 	while (token)
 	{
+		// TODO only do this if token is not heredoc delimiter
 		ft_tilde_expand(token, state);
-		ft_variable_expand(token, state);
+		sanitize_invalid_variables(token);
+		//ft_variable_expand(token, state);
 		token = token->next;
 	}
 }
