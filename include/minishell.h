@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/26 20:42:47 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:03:45 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,14 @@ char	*ft_getenv(char *key, t_state *state);
 /* ------------------------------------------------------------------------- */
 
 /* --------------------------------- Expand -------------------------------- */
+
 void	expand(t_state *state);
+char	*skip_undefined_var(char *str, int start, int end);
+char	*ft_expand_var(char *str, int start, char *expandable, int end);
+void	ft_tilde_expand(t_token *token, t_state *state);
+void	sanitize_invalid_variables(t_token *token);
+char	*find_var_name(char *str);
+
 /* ------------------------------------------------------------------------- */
 
 /* --------------------------------- Utils --------------------------------- */

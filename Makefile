@@ -42,6 +42,7 @@ SRC			:=	main.c \
 				cd_cmd.c \
 				env.c \
 				expand.c \
+				expand_utils.c \
 				builtin.c \
 				list_utils.c \
 				debug.c \
