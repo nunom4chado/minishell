@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/27 18:03:37 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:52:04 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param str char * cointaining a portion to be removed
  * @param start position to start removing
  * @param end position to stop removing
- * 
+ *
  * @return char * of the resulted join
 */
 char	*skip_undefined_var(char *str, int start, int end)
@@ -35,14 +35,14 @@ char	*skip_undefined_var(char *str, int start, int end)
 
 /**
  * @brief Replace the variable name with the variable value
- * 
+ *
  * @param str the original char *
  * @param expandable the char * to be inserted
  * @param start position to start replacing
  * @param end position to stop replacing
- * 
+ *
  * @return pointer to the resulting string
- * 
+ *
 */
 char	*ft_expand_var(char *str, int start, char *expandable, int end)
 {
@@ -59,9 +59,9 @@ char	*ft_expand_var(char *str, int start, char *expandable, int end)
 
 /**
  * Expand tilde in a token.
- * 
+ *
  * @note It will only expand if the first char is '~' and the second is '\0' or '/'
- * 
+ *
  * @param token pointer to the token to be expanded
  * @param state pointer to the program state struct
 */
@@ -83,11 +83,11 @@ void ft_tilde_expand(t_token *token, t_state *state)
 
 /**
  * Remove invalid variable from the token
- * 
+ *
  * @note In this implementation, if the next character after '$' is not
  * '_', alpha char or '?', both the first and second chars will be
  * skipped and not saved
- * 
+ *
  * @param token pointer to a token
 */
 void	sanitize_invalid_variables(t_token *token)
@@ -121,10 +121,13 @@ void	sanitize_invalid_variables(t_token *token)
 
 /**
  * Find the full name of the variable
- * 
+ *
  * @param str a pointer to the next character after the '$'
- * 
+ *
  * @return char * with the name of the var
+ *
+ * @note If the variable has an invalid name, it will return the first char.
+ * This is necessary to know the length to skip when iterating a string.
 */
 char	*find_var_name(char *str)
 {
@@ -132,6 +135,8 @@ char	*find_var_name(char *str)
 
 	i = 0;
 	if (str[i] == '?')
+		return(ft_substr(str, 0, 1));
+	if (!ft_isalpha(str[i]) && str[i] != '_')
 		return(ft_substr(str, 0, 1));
 	while(str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
