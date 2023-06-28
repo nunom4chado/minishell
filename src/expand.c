@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/28 16:41:38 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:48:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ void	expand_and_remove_quotes(t_token *token, t_state *state)
 				tmp = ft_strjoin(new, nb);
 				free(new);
 				free(nb);
+				free(var_name);
 				new = tmp;
 				old += 2;
 				continue ;
@@ -197,12 +198,12 @@ void	expand_and_remove_quotes(t_token *token, t_state *state)
 			if (ft_getenv(env_name, state))
 			{
 				tmp = ft_strjoin(new, ft_getenv(env_name, state));
-				free(env_name);
 				free(new);
 				new = tmp;
 			}
 
 			old += 1 + ft_strlen(var_name);
+			free(env_name);
 			free(var_name);
 			continue ;
 		}
