@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   exp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/28 12:58:09 by jodos-sa         ###   ########.fr       */
+/*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
+/*   Updated: 2023/06/28 15:49:27 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env(t_state *state)
+void	print_export(t_state *state)
 {
-	t_env *lst = state->env;
+	t_export *lst = state->exp;
 	while (lst)
 	{
-		printf("word: %s%s\n", lst->key, lst->value);
+		if (lst->value == NULL)
+			printf("%s%s\n", lst->dec, lst->key);
+		else
+			printf("%s%s=\"%s\"\n", lst->dec, lst->key, lst->value);
 		lst = lst->next;
 	}
 }
-
-t_env	*findenv(t_state *state, char *key)
+t_export	*findexp(t_state *state, char *key)
 {
-	t_env	*find;
+	t_export	*find;
 
-	find = state->env;
+	find = state->exp;
 	while(find != NULL)
 	{
 		if (ft_strcmp(key, find->key) == 0)
@@ -38,12 +40,12 @@ t_env	*findenv(t_state *state, char *key)
 	return (NULL);
 }
 
-int	ft_setenv(char *key, char *newvalue, t_state *state)
+int	ft_setexp(char *key, char *newvalue, t_state *state)
 {
-	t_env	*newenv;
-	t_env	*find;
+	t_export	*newexp;
+	t_export	*find;
 
-	find = findenv(state, key);
+	find = findexp(state, key);
 	if (find != NULL)
 	{
 		free(find->value);
@@ -52,21 +54,19 @@ int	ft_setenv(char *key, char *newvalue, t_state *state)
 	}
 	else //add if not existent
 	{
-		newenv = malloc(sizeof(t_env));
-		newenv->key = ft_strdup(key);
-		newenv->value = ft_strdup(newvalue);
-		ft_addenv_back(&state->env, newenv);
+		newexp = ft_newexp(key, newvalue);
+		ft_addexp(&state->exp, newexp);
 		return (0);
 	}
 
 	return (-1);
 }
 
-char	*ft_getenv(char *key, t_state *state)
+char	*ft_getexp(char *key, t_state *state)
 {
-	t_env	*find;
+	t_export	*find;
 
-	find = state->env;
+	find = state->exp;
 	while(find != NULL)
 	{
 		if (ft_strcmp(key, find->key) == 0)

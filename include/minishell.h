@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/26 12:51:36 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:22:15 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,14 @@ typedef struct s_env
 	struct	s_env	*next;
 }				t_env;
 
+typedef struct s_export
+{
+	char	*dec;
+	char	*key;
+	char	*value;
+	struct	s_export	*next;
+}				t_export;
+
 typedef struct s_state
 {
 	int	exit_status;
@@ -59,6 +67,7 @@ typedef struct s_state
 	char	**envp;
 	t_word	*words;
 	t_env	*env;
+	t_export	*exp;
 }		t_state;
 
 /* --------------------------------- Signals ------------------------------- */
@@ -107,7 +116,29 @@ void	ft_wordclear(t_word **lst, void (*del)(void *));
 
 t_env	*ft_envlast(t_env *lst);
 void	ft_addenv_back(t_env **lst, t_env *new);
-t_env	*ft_newenv(void *content);
+t_env	*ft_newenv(void *key, void *value);
 void	create_env(t_state *state, char **envi);
+
+
+
+/*--------------------------------- Export -------------------------------*/
+void	print_export(t_state *state);
+t_export	*findexp(t_state *state, char *key);
+int	ft_setexp(char *key, char *newvalue, t_state *state);
+char	*ft_getexp(char *key, t_state *state);
+/*------------------------------------------------------------------------*/
+
+
+
+
+
+
+/*-------------------------------- Export Utils ------------------------------*/
+t_export	*ft_newexp(void *key, void	*value);
+/* t_export	*ft_explast(t_export *lst);
+void	ft_addexp_back(t_export **lst, t_export *new); */
+void	ft_addexp(t_export **lst, t_export *new);
+void	create_exp(t_state *state, char **envi);
+/*----------------------------------------------------------------------------*/
 
 #endif

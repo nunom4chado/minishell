@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/24 15:12:47 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:07:42 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main()
 
 	count = 1;
 	create_env(&state, environ);
+	create_exp(&state, environ);
 	
 	/* printf("---------------------\n");
 	print_words(&state);
@@ -63,7 +64,7 @@ int	main()
 		state.cmd = ft_strdup(input);
 		free(input);
 
-		//state.cmd = expand(&state);
+		state.cmd = expand(&state);
 
 
 		if (handle_builtin(&state, &count))

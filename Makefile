@@ -19,7 +19,7 @@ _GONE		=	\e[2K\r
 
 NAME		:=	minishell
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -g
+CFLAGS		:=	-Wall -Werror -Wextra -g #-fsanitize=address
 DEPS		:=	-lreadline -lXext -lX11 -lm
 
 
@@ -34,16 +34,18 @@ LIB_NAME	=	libft.a
 LIB			=	$(LIB_PATH)$(LIB_NAME)
 
 SRC			:=	main.c \
-				path.c \
-				utils.c \
-				cmd.c \
-				signals.c \
-				cd_cmd.c \
-				env.c \
-				expand.c \
 				builtin.c \
+				cd_cmd.c \
+				cmd.c \
+				env_utils.c \
+				env.c \
+				exp_utils.c \
+				exp.c \
+				expand.c \
 				list_utils.c \
-				env_utils.c
+				path.c \
+				signals.c \
+				utils.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJS		:=	$(SRC:.c=.o)

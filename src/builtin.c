@@ -6,32 +6,11 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/24 17:14:04 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:50:45 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-void	builtin_export(t_state *state)
-{
-	char	*path;
-	char	*key;
-	char	*value;
-
-	path = ft_strtrim(state->cmd + 6, " \t\v");
-	if (path && *path)
-	{
-		// path will be something like this "KEY=value"
-
-		// ensure pattern is OK and has a value
-		// extract key name
-		// extract value
-		ft_setenv(key, value, state);
-	}
-
-	// Does count increment if export failed? IDK
-}
- */
 
 int	is_valid_key(char *key)
 {
@@ -64,9 +43,7 @@ void	builtin_export(t_state *state)
 	line = ft_strtrim(state->cmd + 6, " \t\v");
 	while (line[len] != '\0' && line[len] != '=')
 		len++;
-	if (line[len] != '=')
-		return ;
-	key = ft_substr(line, 0, len + 1);
+	key = ft_substr(line, 0, len);
 	if (!is_valid_key(key))
 	{
 		printf("export: %s: not a valid identifier\n", line);
@@ -74,11 +51,15 @@ void	builtin_export(t_state *state)
 		free(line);
 		return ;
 	}
-	//printf("KEY: %s\n", key);
 	value = ft_strdup(line + len + 1);
-	//printf("VALUE: %s\n", value);
+	if (line[len] != '=')
+	{
+		value = NULL;
+		ft_setexp(key, value, state);
+		return ;
+	}
 	ft_setenv(key, value, state);
-	//printf("NEW CONTENT: ->%s<-\n", state->envp[0]);
+	ft_setexp(key, value, state);
 }
 
 int	handle_builtin(t_state *state, int *count)
@@ -94,6 +75,11 @@ int	handle_builtin(t_state *state, int *count)
 	}
 	if (ft_strcmp(comand[0], "export") == 0)
 	{
+		if (comand[1] == NULL)
+		{
+			print_export(state);
+			return 1;
+		}
 		builtin_export(state);
 		*count = *count + 1;
 		return 1;
