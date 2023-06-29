@@ -61,7 +61,6 @@ int	validate_token_sequence(char *input, t_state *state)
 {
 	t_token	*last;
 
-	// first token cannot be a pipe '|'
 	if (!state->tokens && *input == '|')
 		return (1);
 	last = lst_last_token(state->tokens);

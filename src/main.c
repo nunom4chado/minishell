@@ -6,14 +6,11 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/26 20:50:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:37:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// #include <setjmp.h>
-// sigjmp_buf mark;
 
 extern char	**environ;
 
@@ -47,7 +44,6 @@ void	handle_ctrl_c(int signo)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-
 }
 
 int	main()
@@ -72,11 +68,7 @@ int	main()
 		if (process_input(g_state.input, &g_state))
 			continue ;
 
-		print_tokens(&g_state);
 
-		expand(&g_state);
-
-		print_tokens(&g_state);
 		//g_state.cmd = ft_strdup(input);
 		//free(input);
 
