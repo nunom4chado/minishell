@@ -44,13 +44,12 @@ SRC			:=	main.c \
 				expand.c \
 				expand_utils.c \
 				builtin.c \
-				list_utils.c \
+				lst_tokens.c \
 				debug.c \
 				cleanup.c \
-				token_validation.c \
-				token_utils.c \
 				errors.c \
 				lexar.c \
+				lexar_utils.c \
 				init.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))

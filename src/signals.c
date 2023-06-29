@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/19 19:55:38 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/29 20:08:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 int	handle_ctrl_d(char *cmd, t_state *state)
 {
+	(void)state;
 	if (!cmd)
 	{
-		if (state->heredocs || pending_pipe(state))
-			printf("syntax error: unexpected end of file\nexit\n");
-		else
-			printf("exit\n");
+		printf("exit\n");
 		return (1);
 	}
 	return (0);

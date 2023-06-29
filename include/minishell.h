@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/27 18:03:45 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/29 20:09:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ typedef struct s_state
 	char	*input;
 	char	*cmd;
 	char	**envp;
-	t_token	*heredocs;
 	t_token	*tokens;
 }		t_state;
 
@@ -85,11 +84,6 @@ typedef struct s_state
 /*                                 Prototypes                                 */
 /* -------------------------------------------------------------------------- */
 
-/* --------------------------------- Signals ------------------------------- */
-void	handle_ctrl_c(int signo);
-int		handle_ctrl_d(char *cmd, t_state *state);
-int		typed_exit(char *cmd);
-/* ------------------------------------------------------------------------- */
 
 /* --------------------------------- Path ---------------------------------- */
 char	*path(char *cmd, char **envp);
@@ -108,16 +102,6 @@ int		ft_setenv(char *key, char *newvalue, t_state *state);
 char	*ft_getenv(char *key, t_state *state);
 /* ------------------------------------------------------------------------- */
 
-/* --------------------------------- Expand -------------------------------- */
-
-void	expand(t_state *state);
-char	*skip_undefined_var(char *str, int start, int end);
-char	*ft_expand_var(char *str, int start, char *expandable, int end);
-void	ft_tilde_expand(t_token *token, t_state *state);
-void	sanitize_invalid_variables(t_token *token);
-char	*find_var_name(char *str);
-
-/* ------------------------------------------------------------------------- */
 
 /* --------------------------------- Utils --------------------------------- */
 int		ft_is_space(char c);
@@ -129,9 +113,7 @@ void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_read_until(char *cmd);
-
 int		handle_builtin(t_state *state, int *count);
-/* ------------------------------------------------------------------------- */
 
 
 
@@ -155,19 +137,22 @@ void	lst_token_clear(t_token **lst, void (*del)(void *));
 /* ---------------------------------- Lexar --------------------------------- */
 
 int		lexar(t_state *state, char *input);
-
-/* ------------------------------- Token Utils ------------------------------ */
-
 char	*ft_split_specialchar(char *input, t_state *state);
 char	*ft_split_quotes(t_state *state, char *input);
 char	*advance_quotes(char *input, char quote_type, t_state *state);
 char	*create_token(char *input, char *end, t_tk_type type, t_state *state);
 char	*handle_normal_token(char *input, t_state *state);
-
-/* ---------------------------- Token validation ---------------------------- */
-
 int		validate_last_token(t_state *state);
 int		validate_token_sequence(char *input, t_state *state);
+
+/* --------------------------------- Expand -------------------------------- */
+
+void	expand(t_state *state);
+char	*skip_undefined_var(char *str, int start, int end);
+char	*ft_expand_var(char *str, int start, char *expandable, int end);
+void	ft_tilde_expand(t_token *token, t_state *state);
+void	sanitize_invalid_variables(t_token *token);
+char	*find_var_name(char *str);
 
 /* -------------------------------- Clean up -------------------------------- */
 
@@ -176,12 +161,15 @@ void	clean_input(char *input, t_state *state);
 /* ---------------------------------- Debug --------------------------------- */
 
 void	print_tokens(t_state *state);
-void	print_heredocs(t_state *state);
+
+/* --------------------------------- Signals ------------------------------- */
+
+void	handle_ctrl_c(int signo);
+int		handle_ctrl_d(char *cmd, t_state *state);
+int		typed_exit(char *cmd);
 
 /* --------------------------------- Errors --------------------------------- */
 
-
-void    apply_prompt_style(char *prompt, t_state *state);
 
 
 #endif

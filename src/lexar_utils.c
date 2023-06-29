@@ -1,17 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   lexar_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 15:39:29 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/26 14:56:59 by numartin         ###   ########.fr       */
+/*   Created: 2023/06/29 19:52:47 by numartin          #+#    #+#             */
+/*   Updated: 2023/06/29 19:59:58 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * Extract a word to create a token. Return a pointer to the next char after
+ * the current word
+*/
 char	*create_token(char *input, char *end, t_tk_type type, t_state *state)
 {
 	t_token		*node;
@@ -25,21 +29,6 @@ char	*create_token(char *input, char *end, t_tk_type type, t_state *state)
 		return (end + 1);
 	}
 	return (end);
-}
-
-void	create_heredoc(char *input, char *end, t_state *state)
-{
-	char	*word;
-	t_token	*node;
-
-	// TODO: bug here, last word if followed by null byte it does not add
-	// removing the if check will give invalid read
-	if (*end)
-	{
-		word = ft_substr(input, 0, end - input);
-		node = lst_new_token(word, 0);
-		lst_token_add_back(&state->heredocs, node);
-	}
 }
 
 /**
@@ -139,4 +128,70 @@ char	*handle_normal_token(char *input, t_state *state)
 	if (last && last->type == HEREDOC)
 		return(create_token(input, input + i - 1, HEREDOC_DELIMITER, state));
 	return (create_token(input, input + i - 1, WORD, state));
+}
+
+
+int	validate_last_token(t_state *state)
+{
+	t_token	*last;
+
+	last = lst_last_token(state->tokens);
+
+	if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
+	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
+	{
+		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
+		return (1);
+	}
+
+	if (pending_pipe(state))
+	{
+		ft_putendl_fd("error: pending pipe", 2);
+		return (1);
+	}
+	return (0);
+}
+
+/**
+ * Must check if the previous token is a special char
+ * and can be used with the current token
+ * 
+ * Valid: [prev, cur]
+ * ["|", ">>"]
+ * ["|", ">"]
+ * ["|", "<"]
+ * ["|", "<<"]
+ * 
+ * First token CANNOT be a |
+ * 
+ * Errors: [prev, cur]
+ * [">>", ">"]
+ * [">", ">"]
+ * [">", ">>"]
+ * ["<<", "<"]
+ * ... any combination of these arrows
+ * ["<", "|"]
+ * ["<<", "|"]
+ * [">", "|"]
+ * [">>", "|"]
+ * ["|", "|"]
+*/
+int	validate_token_sequence(char *input, t_state *state)
+{
+	t_token	*last;
+
+	if (!state->tokens && *input == '|')
+		return (1);
+	last = lst_last_token(state->tokens);
+	if (last && ft_is_specialchar(*(last->word)))
+	{
+		if (ft_is_redirect(*last->word) \
+		&& (ft_is_redirect(*input) || *input == '|'))
+			return (1);
+		if (ft_is_redirect(*last->word) && ft_is_redirect(*input))
+			return (1);
+		if (*input == '|' && *last->word == '|')
+			return (1);
+	}
+	return (0);
 }

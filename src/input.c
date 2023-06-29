@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 19:40:59 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/29 20:07:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 char *prompt_style(t_state *state)
 {
+	(void)state;
 	/*
 	if (pending_pipe(state) && state->heredocs)
 		return (PROMPT_PIPE_HEREDOC);
 	if (pending_pipe(state))
 		return (PROMPT_PIPE);
-	*/
 	if (state->heredocs)
 		return (PROMPT_HEREDOC);
+	*/
 	return (PROMPT_DEFAULT);
 }
 
