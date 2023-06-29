@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/28 17:48:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/29 14:31:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,15 +167,21 @@ void	expand_and_remove_quotes(t_token *token, t_state *state)
 	quote = 0;
 	while(*old)
 	{
-		// toglle quote and advance to next position
+		// toggle quote and advance to next position
 		if (ft_is_quote(*old))
 		{
-			if (quote)
+			if (quote == *old)
+			{
 				quote = 0;
-			else
+				old++;
+				continue ;
+			}
+			if (quote == 0)
+			{
 				quote = *old;
-			old++;
-			continue ;
+				old++;
+				continue ;
+			}
 		}
 
 		// Means it can expand the variable
@@ -243,10 +249,7 @@ void	expand(t_state *state)
 		if (token->type != HEREDOC_DELIMITER)
 		{
 			ft_tilde_expand(token, state);
-			//sanitize_invalid_variables(token);
 			expand_and_remove_quotes(token, state);
-			//token->word = expand_inside_double_quotes(token->word, state);
-			//ft_variable_expand(token, state);
 		}
 		// ft_remove_quotes(token);
 		// TODO: clear empty tokens (some tokens may be left with only nullbyte - "")
