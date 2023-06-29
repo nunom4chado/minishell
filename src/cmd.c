@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/28 14:37:45 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:22:08 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,13 @@ void	array_env(t_state *state)
 		num++;
 		current = current->next;
 	}
-	state->envp = malloc(sizeof(char **) * num + 1);
+	state->envp = ft_calloc(sizeof(char **), num + 1);
 	current = state->env;
 	i = 0;
 	while (current != NULL)
 	{
 		string = ft_strjoin(current->key, "=");
-		string = ft_strjoin(string, current->value);
-		state->envp[i] = string;
+		state->envp[i] = ft_strjoin(string, current->value);
 		current = current->next;
 		i++;
 	}
@@ -49,6 +48,8 @@ void	last_cmd(t_state *state)
 	int	fd[2];
 
 	array_env(state);
+	fd[0] = STDIN_FILENO;
+	fd[1] = STDOUT_FILENO;
 	pipe(pipefd);
 	pid = fork();
 	if (pid < 0)

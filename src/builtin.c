@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/28 15:50:45 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:03:33 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	builtin_export(t_state *state)
 		free(line);
 		return ;
 	}
-	value = ft_strdup(line + len + 1);
 	if (line[len] != '=')
 	{
 		value = NULL;
 		ft_setexp(key, value, state);
 		return ;
 	}
+	value = ft_strdup(line + len + 1);
 	ft_setenv(key, value, state);
 	ft_setexp(key, value, state);
 }

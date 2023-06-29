@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/28 15:49:27 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:05:11 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ int	ft_setexp(char *key, char *newvalue, t_state *state)
 	if (find != NULL)
 	{
 		free(find->value);
-		find->value = ft_strdup(newvalue);
+		if (newvalue == NULL)
+			find->value = NULL;
+		else
+			find->value = ft_strdup(newvalue);
 		return (0);
 	}
 	else //add if not existent

@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 13:47:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/28 14:34:41 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:21:25 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ void	create_env(t_state *state, char **envi)
 		if (ft_strchr(envi[i], '=') != NULL)
 		{
 			len = ft_strchr(envi[i], '=') - envi[i];
-			key = malloc(len + 2);
-			strncpy(key, envi[i], len);
-			key[len + 1] = '\0';
+			key = malloc(len + 1);
+			ft_memcpy(key, envi[i], len);
+			key[len] = '\0';
 			value = ft_strdup(ft_strchr(envi[i], '=') + 1);
 			newenv = ft_newenv(key, value);
 			ft_addenv_back(&state->env, newenv);
