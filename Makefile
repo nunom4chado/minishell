@@ -39,9 +39,9 @@ SRC			:=	main.c \
 				cmd.c \
 				env_utils.c \
 				env.c \
-				exp_utils.c \
-				exp.c \
 				expand.c \
+				export_utils.c \
+				export.c \
 				list_utils.c \
 				path.c \
 				signals.c \
