@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:40:07 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:43:49 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,6 @@ void	lst_token_clear(t_token **lst, void (*del)(void *));
 
 int		lexar(t_state *state, char *input);
 char	*ft_split_specialchar(char *input, t_state *state);
-char	*ft_split_quotes(t_state *state, char *input);
-char	*advance_quotes(char *input, char quote_type, t_state *state);
 char	*create_token(char *input, char *end, t_tk_type type, t_state *state);
 char	*handle_normal_token(char *input, t_state *state);
 int		validate_last_token(t_state *state);
@@ -151,14 +149,13 @@ int		has_heredocs(t_state *state);
 
 void	expand(t_state *state);
 char	*skip_undefined_var(char *str, int start, int end);
-char	*ft_expand_var(char *str, int start, char *expandable, int end);
 void	ft_tilde_expand(t_token *token, t_state *state);
 void	sanitize_invalid_variables(t_token *token);
 char	*find_var_name(char *str);
 int		can_expand(const char *str, char quote_mode);
 int		toggle_quote_mode(const char c, char *quote_mode);
 char	*append_char(char *str, char c);
-char	*append_var(char *new, char *var_name, t_state *state);
+char	*append_var(char *str, char *var_name, t_state *state);
 
 /* -------------------------------- Clean up -------------------------------- */
 
