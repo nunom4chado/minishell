@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 14:23:45 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:34:17 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,102 @@ void	ft_tilde_expand(t_token *token, t_state *state)
 			token->word = tmp;
 		}
 	}
+}
+
+/**
+ * Determine if its possible to expand a variable in a char *.
+ * 
+ * @param str any char *
+ * @param quote_mode a char to determine which mode the str should be consider
+ * eg: single quote, double quote or none (null-byte)
+ * 
+ * @note str[0] must be '$'
+ * @note str[0 + 1] cannot be '\0'
+ * @note str[0 + 1] cannot be a quote
+ * @note quote_mode cannot be single quote
+ * 
+ * @return 1 if true
+ * @return 0 if false
+*/
+int		can_expand(const char *str, char quote_mode)
+{
+	if (*str == '$' && *(str + 1) && !ft_is_quote(*(str + 1)) && quote_mode != '\'')
+		return (1);
+	return (0);
+}
+
+/**
+ * Toggle quote mode. When str[0] is a quote and quote mode is off (null-byte), it
+ * sets the quote_mode to that type of quote. On later call, when it finds the same
+ * quote type, it will set it back to null-byte
+ * 
+ * @param str any char *
+ * @param a pointer to the char to set the quote type
+ * 
+ * @return 1 if toggle occurred
+ * @return 0 otherwise
+*/
+int	toggle_quote_mode(const char c, char *quote_mode)
+{
+	if(ft_is_quote(c))
+	{
+		if (*quote_mode == c)
+		{
+			*quote_mode = 0;
+			return (1);
+		}
+		if (*quote_mode == 0)
+		{
+			*quote_mode = c;
+			return (1);
+		}
+	}
+	return (0);
+}
+
+/**
+ * Append a char to the str
+ * 
+ * @param str any char *
+ * @param c any char
+ * 
+ * @return the resulting char *
+ * 
+ * @note will free the str passed in the argument
+*/
+char	*append_char(char *str, char c)
+{
+	char	*tmp;
+
+	tmp = malloc(ft_strlen(str) + 2);
+	ft_memcpy(tmp, str, ft_strlen(str));
+	tmp[ft_strlen(str)] = c;
+	tmp[ft_strlen(str) + 1] = '\0';
+	free(str);
+	return (tmp);
+}
+
+char	*append_var(char *new, char *var_name, t_state *state)
+{
+	char	*tmp;
+	char	*nb;
+	
+	if (*var_name == '?')
+	{
+		nb = ft_itoa(state->exit_status);
+		tmp = ft_strjoin(new, nb);
+		free(new);
+		free(nb);
+		free(var_name);
+		return(tmp);
+	}
+	char *env_name = ft_strjoin(var_name, "=");
+	if (ft_getenv(env_name, state))
+	{
+		tmp = ft_strjoin(new, ft_getenv(env_name, state));
+		free(new);
+		new = tmp;
+	}
+	free(env_name);
+	return (new);
 }

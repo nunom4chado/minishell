@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 17:26:39 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:34:49 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,78 +14,32 @@
 
 void	expand_and_remove_quotes(t_token *token, t_state *state)
 {
-	char *old;
-	char *new;
-	char quote;
-	char *var_name;
-	char *nb;
-	char *tmp;
+	char	*old;
+	char	*new;
+	char	quote_mode;
+	char	*var_name;
 
 	old = token->word;
 	new = ft_calloc(1, 1);
-	quote = 0;
-	while(*old)
+	quote_mode = 0;
+	while (*old)
 	{
-		// toggle quote and advance to next position
-		if (ft_is_quote(*old))
+		if (toggle_quote_mode(*old, &quote_mode))
 		{
-			if (quote == *old)
-			{
-				quote = 0;
-				old++;
-				continue ;
-			}
-			if (quote == 0)
-			{
-				quote = *old;
-				old++;
-				continue ;
-			}
+			old++;
+			continue ;
 		}
-
-		// Means it can expand the variable
-		if (*old == '$' && *(old + 1) && !ft_is_quote(*(old + 1)) && quote != '\'')
+		if (can_expand(old, quote_mode))
 		{
 			var_name = find_var_name(old + 1);
-			if (*var_name == '?')
-			{
-				nb = ft_itoa(state->exit_status);
-				tmp = ft_strjoin(new, nb);
-				free(new);
-				free(nb);
-				free(var_name);
-				new = tmp;
-				old += 2;
-				continue ;
-			}
-
-			char *env_name = ft_strjoin(var_name, "=");
-			if (ft_getenv(env_name, state))
-			{
-				tmp = ft_strjoin(new, ft_getenv(env_name, state));
-				free(new);
-				new = tmp;
-			}
-
+			new = append_var(new, var_name, state);
 			old += 1 + ft_strlen(var_name);
-			free(env_name);
 			free(var_name);
 			continue ;
 		}
-
-		// copy normal chars
-
-		tmp = malloc(ft_strlen(new) + 2);
-		ft_memcpy(tmp, new, ft_strlen(new));
-		tmp[ft_strlen(new)] = *old;
-		tmp[ft_strlen(new) + 1] = '\0';
-
-		free(new);
-		new = tmp;
-
+		new = append_char(new, *old);
 		old++;
 	}
-
 	free(token->word);
 	token->word = new;
 }
@@ -100,40 +54,19 @@ void	remove_quotes(t_token *token)
 {
 	char *old;
 	char *new;
-	char quote;
-	char *tmp;
+	char quote_mode;
 
 	old = token->word;
 	new = ft_calloc(1, 1);
-	quote = 0;
+	quote_mode = 0;
 	while(*old)
 	{
-		// toggle quote and advance to next position
-		if (ft_is_quote(*old))
+		if (toggle_quote_mode(*old, &quote_mode))
 		{
-			if (quote == *old)
-			{
-				quote = 0;
-				old++;
-				continue ;
-			}
-			if (quote == 0)
-			{
-				quote = *old;
-				old++;
-				continue ;
-			}
+			old++;
+			continue ;
 		}
-
-		// copy normal chars
-		tmp = malloc(ft_strlen(new) + 2);
-		ft_memcpy(tmp, new, ft_strlen(new));
-		tmp[ft_strlen(new)] = *old;
-		tmp[ft_strlen(new) + 1] = '\0';
-
-		free(new);
-		new = tmp;
-
+		new = append_char(new, *old);
 		old++;
 	}
 
