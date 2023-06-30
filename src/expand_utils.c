@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 17:42:13 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:23:45 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,30 @@
 */
 char	*find_var_name(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str[i] == '?')
-		return(ft_substr(str, 0, 1));
+		return (ft_substr(str, 0, 1));
 	if (!ft_isalpha(str[i]) && str[i] != '_')
-		return(ft_substr(str, 0, 1));
-	while(str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+		return (ft_substr(str, 0, 1));
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
-	return(ft_substr(str, 0, i));
+	return (ft_substr(str, 0, i));
 }
 
 /**
- * Expand tilde in a token.
+ * Expand tilde '~' in a token.
  *
- * @note It will only expand if the first char is '~' and the second is '\0' or '/'
+ * @note It will only expand if the first char is '~' and the
+ * second is '\0' or '/'
  *
  * @param token pointer to the token to be expanded
  * @param state pointer to the program state struct
+ * 
+ * TODO: remove = in ft_getenv after merge
 */
-void ft_tilde_expand(t_token *token, t_state *state)
+void	ft_tilde_expand(t_token *token, t_state *state)
 {
 	char	*tmp;
 
@@ -52,7 +55,6 @@ void ft_tilde_expand(t_token *token, t_state *state)
 	{
 		if (token->word[1] == '\0' || token->word[1] == '/')
 		{
-			// TODO: remove =
 			tmp = ft_strjoin(ft_getenv("HOME=", state), token->word + 1);
 			free(token->word);
 			token->word = tmp;
