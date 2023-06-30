@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 12:20:29 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:11:11 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char **envp)
 		last_cmd(&g_state);
 		wait(NULL);
 		*/
-		lst_token_clear(&g_state.tokens, free);
+		clean_last_cmd(&g_state);
 		count++;
 	}
 	rl_clear_history();

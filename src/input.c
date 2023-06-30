@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 12:15:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:10:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,5 @@ int process_input(t_state *state)
     expand(state);
     print_tokens(state);
 	
-	// TODO: call this after running parser and use clean_last_cmd() to clean both input and list of tokens
-	free(state->input);
     return (0);
 }
