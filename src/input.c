@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 20:07:41 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 10:55:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,50 +27,18 @@ char *prompt_style(t_state *state)
 }
 
 /**
- * Checks if tokens have heredocs
-*/
-int	has_heredocs(t_state *state)
-{
-	t_token *token;
-
-	if (!state->tokens)
-		return (0);
-	token = state->tokens;
-	while (token)
-	{
-		if (token->type == HEREDOC)
-			return (1);
-		token = token->next;
-	}
-    return (0);
-}
-
-/**
- * Check if the last token is a pipe
+ * Process input will do lexical analysis which will split the input into a list
+ * of tokens. Apply variable expansions and remove quotes. Lastly the parser
+ * will create a list of the order of the execution of all the commands.
  * 
- * @return 1 if true
- * @return 0 if false
-*/
-int pending_pipe(t_state *state)
-{
-    t_token *last;
-
-	last = lst_last_token(state->tokens);
-    if ((last && *(last->word) == '|'))
-		return (1);
-    return (0);
-}
-
-/**
- * Process inserted input.
- *
- * Do lexical analysis;
- * If has pending pipe or heredocs means user can still enter subsquent inputs;
- *
- * Return 1 on syntax error or incomplete input (heredocs, pending pipes), 0 if successful.
- * This will make reprompt until the user enter a complete, valid command
- *
- * TODO: make sure history it cannot build history if starts with space
+ * @param input char * from the readline
+ * @param state pointer to the state struct
+ * 
+ * @return 0 when syntax is ok
+ * @return 1 on syntax error
+ * 
+ * TODO: check if the history command displays a list of previous commands
+ * TODO: handle heredocs
 */
 int process_input(char *input, t_state *state)
 {
