@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 16:34:32 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:22:17 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int		handle_builtin(t_state *state, int *count);
 
 /* ---------------------------------- Init ---------------------------------- */
 
-void    init_state(t_state *state, char **environ);
+void	init_state(t_state *state, char **envp);
 
 /* ------------------------------ Process input ----------------------------- */
 

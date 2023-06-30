@@ -6,15 +6,21 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 10:59:25 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:22:00 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_state(t_state *state, char **environ)
+/**
+ * Function responsible to initialize the state struct
+ * 
+ * @param state pointer to the state struct
+ * @param envp from the main argument
+*/
+void	init_state(t_state *state, char **envp)
 {
-	state->envp = environ;
+	state->envp = envp;
 	state->input = NULL;
 	state->tokens = NULL;
 }
