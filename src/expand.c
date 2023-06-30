@@ -6,18 +6,61 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 16:34:49 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:51:33 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	*create_expanded_str(char *str, t_state *state)
+{
+	char	*new;
+	char	quote_mode;
+	char	*var_name;
+
+	new = ft_calloc(1, 1);
+	quote_mode = 0;
+	while (*str)
+	{
+		if (toggle_quote_mode(*str, &quote_mode))
+		{
+			str++;
+			continue ;
+		}
+		if (can_expand(str, quote_mode))
+		{
+			var_name = find_var_name(str + 1);
+			new = append_var(new, var_name, state);
+			str += 1 + ft_strlen(var_name);
+			free(var_name);
+			continue ;
+		}
+		new = append_char(new, *str);
+		str++;
+	}
+	return (new);
+}
+
 void	expand_and_remove_quotes(t_token *token, t_state *state)
+{
+	char	*tmp;
+
+	tmp = create_expanded_str(token->word, state);
+	free(token->word);
+	token->word = tmp;
+}
+
+/**
+ * Remove quotes inside a token.
+ *
+ * @note It will remove only quotes that should be removed,
+ * Eg. asdf"asd'sdf"sdf -> asdfasd'sdfsdf
+*/
+void	remove_quotes(t_token *token)
 {
 	char	*old;
 	char	*new;
 	char	quote_mode;
-	char	*var_name;
 
 	old = token->word;
 	new = ft_calloc(1, 1);
@@ -29,47 +72,9 @@ void	expand_and_remove_quotes(t_token *token, t_state *state)
 			old++;
 			continue ;
 		}
-		if (can_expand(old, quote_mode))
-		{
-			var_name = find_var_name(old + 1);
-			new = append_var(new, var_name, state);
-			old += 1 + ft_strlen(var_name);
-			free(var_name);
-			continue ;
-		}
 		new = append_char(new, *old);
 		old++;
 	}
-	free(token->word);
-	token->word = new;
-}
-
-/**
- * Remove quotes inside a token.
- *
- * @note It will remove only quotes that should be removed,
- * Eg. asdf"asd'sdf"sdf -> asdfasd'sdfsdf
-*/
-void	remove_quotes(t_token *token)
-{
-	char *old;
-	char *new;
-	char quote_mode;
-
-	old = token->word;
-	new = ft_calloc(1, 1);
-	quote_mode = 0;
-	while(*old)
-	{
-		if (toggle_quote_mode(*old, &quote_mode))
-		{
-			old++;
-			continue ;
-		}
-		new = append_char(new, *old);
-		old++;
-	}
-
 	free(token->word);
 	token->word = new;
 }
@@ -84,7 +89,7 @@ void	remove_quotes(t_token *token)
 */
 void	expand(t_state *state)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = state->tokens;
 	while (token)
