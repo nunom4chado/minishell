@@ -6,17 +6,23 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:06:49 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 20:13:58 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:12:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	clean_input(char *input, t_state *state)
+void	clean_last_cmd(t_state *state)
 {
-	free(input);
+	free(state->input);
 	lst_token_clear(&(state->tokens), free);
 }
 
-// TODO: clean_all() used before closing the program
-// this will clean the env and export lists too
+void	clean_all(t_state *state)
+{
+	if (state->input)
+		free(state->input);
+	if (state->tokens)
+		lst_token_clear(&(state->tokens), free);
+	// TODO: clean env and export
+}

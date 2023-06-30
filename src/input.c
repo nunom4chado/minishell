@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 10:55:24 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:15:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,26 @@ char *prompt_style(t_state *state)
  * of tokens. Apply variable expansions and remove quotes. Lastly the parser
  * will create a list of the order of the execution of all the commands.
  * 
- * @param input char * from the readline
  * @param state pointer to the state struct
  * 
  * @return 0 when syntax is ok
- * @return 1 on syntax error
+ * @return 1 on syntax error or empty input
  * 
  * TODO: check if the history command displays a list of previous commands
  * TODO: handle heredocs
 */
-int process_input(char *input, t_state *state)
+int process_input(t_state *state)
 {
-    if(lexar(state, input))
+	if (!ft_strlen(state->input))
+	{
+		free(state->input);
+		return (1);
+	}
+	
+	add_history(state->input);
+    if(lexar(state, state->input))
     {
-        clean_input(input, state);
+        clean_last_cmd(state);
         return (1);
     }
 
@@ -54,6 +60,8 @@ int process_input(char *input, t_state *state)
     print_tokens(state);
     expand(state);
     print_tokens(state);
-
+	
+	// TODO: call this after running parser and use clean_last_cmd() to clean both input and list of tokens
+	free(state->input);
     return (0);
 }

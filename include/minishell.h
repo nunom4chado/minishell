@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 10:56:56 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:22:28 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void    init_state(t_state *state, char **environ);
 
 /* ------------------------------ Process input ----------------------------- */
 
-int		process_input(char *input, t_state *state);
+int		process_input(t_state *state);
 char	*prompt_style(t_state *state);
 
 /* ------------------------------- List Tokens ------------------------------ */
@@ -157,7 +157,8 @@ char	*find_var_name(char *str);
 
 /* -------------------------------- Clean up -------------------------------- */
 
-void	clean_input(char *input, t_state *state);
+void	clean_last_cmd(t_state *state);
+void	clean_all(t_state *state);
 
 /* ---------------------------------- Debug --------------------------------- */
 
@@ -165,9 +166,10 @@ void	print_tokens(t_state *state);
 
 /* --------------------------------- Signals ------------------------------- */
 
+void	register_signals(void);
 void	handle_ctrl_c(int signo);
 int		handle_ctrl_d(char *cmd, t_state *state);
-int		typed_exit(char *cmd);
+int		typed_exit(t_state *state);
 
 /* --------------------------------- Errors --------------------------------- */
 
