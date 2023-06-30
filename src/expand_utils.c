@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 16:34:17 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:18:05 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,18 @@ void	ft_tilde_expand(t_token *token, t_state *state)
  * @return 1 if true
  * @return 0 if false
 */
-int		can_expand(const char *str, char quote_mode)
+int	can_expand(const char *str, char quote_mode)
 {
-	if (*str == '$' && *(str + 1) && !ft_is_quote(*(str + 1)) && quote_mode != '\'')
+	if (*str == '$' && *(str + 1) && !ft_is_quote(*(str + 1))
+		&& quote_mode != '\'')
 		return (1);
 	return (0);
 }
 
 /**
- * Toggle quote mode. When str[0] is a quote and quote mode is off (null-byte), it
- * sets the quote_mode to that type of quote. On later call, when it finds the same
- * quote type, it will set it back to null-byte
+ * Toggle quote mode. When str[0] is a quote and quote mode is off (null-byte),
+ * it sets the quote_mode to that type of quote. On later call, when it finds
+ * the same quote type, it will set it back to null-byte
  * 
  * @param str any char *
  * @param a pointer to the char to set the quote type
@@ -97,7 +98,7 @@ int		can_expand(const char *str, char quote_mode)
 */
 int	toggle_quote_mode(const char c, char *quote_mode)
 {
-	if(ft_is_quote(c))
+	if (ft_is_quote(c))
 	{
 		if (*quote_mode == c)
 		{
@@ -135,27 +136,41 @@ char	*append_char(char *str, char c)
 	return (tmp);
 }
 
-char	*append_var(char *new, char *var_name, t_state *state)
+/**
+ * Append a variable to a char *
+ * 
+ * @param str any char *
+ * @param var_name name of the variable
+ * @param state pointer to the state struct
+ * 
+ * @return New char * with the appended variable
+ * 
+ * @note will free previous str
+ * 
+ * TODO: remove = and env_name
+*/
+char	*append_var(char *str, char *var_name, t_state *state)
 {
 	char	*tmp;
 	char	*nb;
-	
+	char	*env_name;
+
 	if (*var_name == '?')
 	{
 		nb = ft_itoa(state->exit_status);
-		tmp = ft_strjoin(new, nb);
-		free(new);
+		tmp = ft_strjoin(str, nb);
+		free(str);
 		free(nb);
 		free(var_name);
-		return(tmp);
+		return (tmp);
 	}
-	char *env_name = ft_strjoin(var_name, "=");
+	env_name = ft_strjoin(var_name, "=");
 	if (ft_getenv(env_name, state))
 	{
-		tmp = ft_strjoin(new, ft_getenv(env_name, state));
-		free(new);
-		new = tmp;
+		tmp = ft_strjoin(str, ft_getenv(env_name, state));
+		free(str);
+		str = tmp;
 	}
 	free(env_name);
-	return (new);
+	return (str);
 }

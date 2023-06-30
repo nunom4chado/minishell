@@ -6,13 +6,22 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 16:51:33 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:12:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*create_expanded_str(char *str, t_state *state)
+/**
+ * Creates a new char * that will expand variables and remove quotes that
+ * should be removed.
+ * 
+ * @param str any char *
+ * @param state pointer to state struct
+ * 
+ * @return The resulting char *
+*/
+char	*expand_and_remove_quotes(char *str, t_state *state)
 {
 	char	*new;
 	char	quote_mode;
@@ -39,15 +48,6 @@ char	*create_expanded_str(char *str, t_state *state)
 		str++;
 	}
 	return (new);
-}
-
-void	expand_and_remove_quotes(t_token *token, t_state *state)
-{
-	char	*tmp;
-
-	tmp = create_expanded_str(token->word, state);
-	free(token->word);
-	token->word = tmp;
 }
 
 /**
@@ -90,6 +90,7 @@ void	remove_quotes(t_token *token)
 void	expand(t_state *state)
 {
 	t_token	*token;
+	char	*tmp;
 
 	token = state->tokens;
 	while (token)
@@ -99,7 +100,9 @@ void	expand(t_state *state)
 		else
 		{
 			ft_tilde_expand(token, state);
-			expand_and_remove_quotes(token, state);
+			tmp = expand_and_remove_quotes(token->word, state);
+			free(token->word);
+			token->word = tmp;
 		}
 		token = token->next;
 	}
