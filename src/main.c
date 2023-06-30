@@ -6,26 +6,18 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 20:07:12 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 11:05:59 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern char	**environ;
-
 t_state		g_state;
 
 /**
- * Pressing Ctr-c will print ^C after prompt a return a new, clean prompt
+ * Pressing Ctr-c will print ^C after prompt and return a new, clean prompt
  *
- * If prompt is in pipe mode, or with heredocs open, must exit them and
- * display the normal prompt.
- *
- * Will always set exit status of 130.
- *
- * TODO: we must add to history is input is imcompleted
- * add inputed lines (this happens inputs ending with pipes or heredocs)
+ * @note Will always set exit status to 130.
 */
 void	handle_ctrl_c(int signo)
 {
@@ -40,13 +32,15 @@ void	handle_ctrl_c(int signo)
 	rl_redisplay();
 }
 
-int	main()
+int	main(int argc, char **argv, char **envp)
 {
+	(void)argc;
+	(void)argv;
 	int		count;
 
 	count = 1;
 
-	init_state(&g_state, environ);
+	init_state(&g_state, envp);
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
@@ -66,7 +60,6 @@ int	main()
 		//g_state.cmd = ft_strdup(input);
 		//free(input);
 
-		//g_state.cmd = expand(&g_state);
 /*
 
 		if (handle_builtin(&g_state, &count))
