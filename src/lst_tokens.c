@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:55:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 20:01:03 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:40:07 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "minishell.h"
 
-t_token	*lst_new_token(void *word, t_tk_type type)
+t_token	*lst_token_new(void *word, t_tk_type type)
 {
 	t_token	*node;
 
@@ -29,7 +29,7 @@ t_token	*lst_new_token(void *word, t_tk_type type)
 	return (node);
 }
 
-t_token	*lst_last_token(t_token *lst)
+t_token	*lst_token_last(t_token *lst)
 {
 	if (lst)
 	{
@@ -51,7 +51,7 @@ void	lst_token_add_back(t_token **lst, t_token *new)
 		*lst = new;
 		return ;
 	}
-	tail = lst_last_token(*lst);
+	tail = lst_token_last(*lst);
 	tail->next = new;
 	new->prev = tail;
 }

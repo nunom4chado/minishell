@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:32:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:40:07 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ char	*prompt_style(t_state *state);
 
 /* ------------------------------- List Tokens ------------------------------ */
 
-t_token	*lst_new_token(void *word, t_tk_type type);
-t_token	*lst_last_token(t_token *lst);
+t_token	*lst_token_new(void *word, t_tk_type type);
+t_token	*lst_token_last(t_token *lst);
 void	lst_token_add_back(t_token **lst, t_token *new);
 void	lst_token_clear(t_token **lst, void (*del)(void *));
 

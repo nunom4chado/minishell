@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:52:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:36:21 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:40:07 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*create_token(char *input, char *end, t_tk_type type, t_state *state)
 	if (*end)
 	{
 		word = ft_substr(input, 0, end - input + 1);
-		node = lst_new_token(word, type);
+		node = lst_token_new(word, type);
 		lst_token_add_back(&state->tokens, node);
 		return (end + 1);
 	}
@@ -136,7 +136,7 @@ char	*handle_normal_token(char *input, t_state *state)
 		}
 		i++;
 	}
-	last = lst_last_token(state->tokens);
+	last = lst_token_last(state->tokens);
 	if (last && last->type == HEREDOC)
 		return (create_token(input, input + i - 1, HEREDOC_DELIMITER, state));
 	return (create_token(input, input + i - 1, WORD, state));
@@ -146,7 +146,7 @@ int	validate_last_token(t_state *state)
 {
 	t_token	*last;
 
-	last = lst_last_token(state->tokens);
+	last = lst_token_last(state->tokens);
 	if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
 	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
@@ -193,7 +193,7 @@ int	validate_token_sequence(char *input, t_state *state)
 
 	if (!state->tokens && *input == '|')
 		return (1);
-	last = lst_last_token(state->tokens);
+	last = lst_token_last(state->tokens);
 	if (last && ft_is_specialchar(*(last->word)))
 	{
 		if (ft_is_redirect(*last->word) \
@@ -217,7 +217,7 @@ int	pending_pipe(t_state *state)
 {
 	t_token	*last;
 
-	last = lst_last_token(state->tokens);
+	last = lst_token_last(state->tokens);
 	if ((last && *(last->word) == '|'))
 		return (1);
 	return (0);
