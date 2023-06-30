@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:22:17 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:32:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define PROMPT_PIPE_HEREDOC "pipe heredoc> "
 
 # define CODE_CTR_C 130
+# define CODE_SYNTAX_ERROR 2
 
 /* -------------------------------------------------------------------------- */
 /*                                   Structs                                  */
