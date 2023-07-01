@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exp.c                                              :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/29 17:05:11 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/01 13:48:24 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	print_export(t_state *state)
 {
-	t_export *lst = state->exp;
+	t_export	*lst;
+
+	lst = state->exp;
 	while (lst)
 	{
 		if (lst->value == NULL)
@@ -24,12 +26,13 @@ void	print_export(t_state *state)
 		lst = lst->next;
 	}
 }
+
 t_export	*findexp(t_state *state, char *key)
 {
 	t_export	*find;
 
 	find = state->exp;
-	while(find != NULL)
+	while (find != NULL)
 	{
 		if (ft_strcmp(key, find->key) == 0)
 		{
@@ -48,20 +51,18 @@ int	ft_setexp(char *key, char *newvalue, t_state *state)
 	find = findexp(state, key);
 	if (find != NULL)
 	{
-		free(find->value);
 		if (newvalue == NULL)
 			find->value = NULL;
 		else
 			find->value = ft_strdup(newvalue);
 		return (0);
 	}
-	else //add if not existent
+	else
 	{
 		newexp = ft_newexp(key, newvalue);
 		ft_addexp(&state->exp, newexp);
 		return (0);
 	}
-
 	return (-1);
 }
 
@@ -70,7 +71,7 @@ char	*ft_getexp(char *key, t_state *state)
 	t_export	*find;
 
 	find = state->exp;
-	while(find != NULL)
+	while (find != NULL)
 	{
 		if (ft_strcmp(key, find->key) == 0)
 		{

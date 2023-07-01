@@ -45,6 +45,8 @@ SRC			:=	main.c \
 				list_utils.c \
 				path.c \
 				signals.c \
+				unset_utils.c \
+				unset.c \
 				utils.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))

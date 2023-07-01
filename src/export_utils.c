@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exp_utils.c                                        :+:      :+:    :+:   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:20:10 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/29 17:18:32 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/01 14:29:54 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 t_export	*ft_newexp(void *key, void	*value)
 {
 	t_export	*new_node;
+
 	new_node = malloc(sizeof(t_export));
 	if (!new_node)
 		return (0);
@@ -37,7 +38,8 @@ void	ft_addexp(t_export **lst, t_export *new)
 	else
 	{
 		current = *lst;
-		while (current->next != NULL && ft_strcmp(current->next->key, new->key) < 0)
+		while (current->next != NULL
+			&& ft_strcmp(current->next->key, new->key) < 0)
 			current = current->next;
 		new->next = current->next;
 		current->next = new;
@@ -46,11 +48,11 @@ void	ft_addexp(t_export **lst, t_export *new)
 
 void	create_exp(t_state *state, char **envi)
 {
-	char	*key;
-	char	*value;
-	int		len;
+	char		*key;
+	char		*value;
+	int			len;
 	t_export	*newexp;
-	int		i;
+	int			i;
 
 	i = -1;
 	state->exp = NULL;
@@ -68,4 +70,3 @@ void	create_exp(t_state *state, char **envi)
 		}
 	}
 }
-

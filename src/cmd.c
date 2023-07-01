@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/06/29 16:22:08 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/01 13:38:42 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	array_env(t_state *state)
 {
-	int	num;
-	int	i;
+	int		num;
+	int		i;
 	t_env	*current;
 	char	*string;
 
@@ -44,12 +44,10 @@ void	last_cmd(t_state *state)
 {
 	char	**comand;
 	pid_t	pid;
-	int	pipefd[2];
-	int	fd[2];
+	int		pipefd[2];
+	int		fd[2];
 
 	array_env(state);
-	fd[0] = STDIN_FILENO;
-	fd[1] = STDOUT_FILENO;
 	pipe(pipefd);
 	pid = fork();
 	if (pid < 0)

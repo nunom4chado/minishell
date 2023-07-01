@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/28 14:22:15 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/01 13:36:55 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,26 @@ typedef struct s_state
 	t_export	*exp;
 }		t_state;
 
-/* --------------------------------- Signals ------------------------------- */
-void	handle_ctrl_c(int signo);
-int		handle_ctrl_d(char *cmd);
-int		typed_exit(char *cmd);
-/* ------------------------------------------------------------------------- */
+/*-------------------------------- Builtin -------------------------------*/
+int		handle_builtin(t_state *state, int *count);
+/*------------------------------------------------------------------------*/
 
-/* --------------------------------- Path ---------------------------------- */
-char	*path(char *cmd, char **envp);
+/* --------------------------------- CD_CMD -------------------------------- */
+void	cd_cmd(t_state *state);
 /* ------------------------------------------------------------------------- */
 
 /* --------------------------------- CMD ----------------------------------- */
 void	last_cmd(t_state *state);
 /* ------------------------------------------------------------------------- */
 
-/* --------------------------------- CD_CMD -------------------------------- */
-void	cd_cmd(t_state *state);
-/* ------------------------------------------------------------------------- */
+/*-------------------------------- Env Utils ------------------------------*/
+t_env	*ft_newenv(void *key, void *value);
+void	ft_addenv_back(t_env **lst, t_env *new);
+void	create_env(t_state *state, char **envi);
+/*------------------------------------------------------------------------*/
 
 /* --------------------------------- Env ----------------------------------- */
+t_env	*findenv(t_state *state, char *key);
 int		ft_setenv(char *key, char *newvalue, t_state *state);
 char	*ft_getenv(char *key, t_state *state);
 /* ------------------------------------------------------------------------- */
@@ -97,29 +98,11 @@ char	*ft_getenv(char *key, t_state *state);
 char	*expand(t_state *state);
 /* ------------------------------------------------------------------------- */
 
-/* --------------------------------- Utils --------------------------------- */
-void	free_split(char **args);
-int		ft_strcmp(char *s1, char *s2);
-char	*ft_strcat(char *dest, char *src);
-char	*ft_read_until(char *cmd);
-int		handle_builtin(t_state *state, int *count);
-int	ft_split_words(t_state *state, char *input);
-/* ------------------------------------------------------------------------- */
-
-/* ------------------------------- List Utils ------------------------------- */
-void	ft_word_add_back(t_word **lst, t_word *new);
-t_word	*ft_last_word(t_word *lst);
-t_word	*ft_new_word(void *word, int space);
-void	ft_wordclear(t_word **lst, void (*del)(void *));
-
-
-
-t_env	*ft_envlast(t_env *lst);
-void	ft_addenv_back(t_env **lst, t_env *new);
-t_env	*ft_newenv(void *key, void *value);
-void	create_env(t_state *state, char **envi);
-
-
+/*-------------------------------- Export Utils ------------------------------*/
+t_export	*ft_newexp(void *key, void	*value);
+void	ft_addexp(t_export **lst, t_export *new);
+void	create_exp(t_state *state, char **envi);
+/*----------------------------------------------------------------------------*/
 
 /*--------------------------------- Export -------------------------------*/
 void	print_export(t_state *state);
@@ -128,17 +111,54 @@ int	ft_setexp(char *key, char *newvalue, t_state *state);
 char	*ft_getexp(char *key, t_state *state);
 /*------------------------------------------------------------------------*/
 
+/* ------------------------------- List Utils ------------------------------- */
+void	ft_word_add_back(t_word **lst, t_word *new);
+t_word	*ft_last_word(t_word *lst);
+t_word	*ft_new_word(void *word, int space);
+void	ft_wordclear(t_word **lst, void (*del)(void *));
+/*------------------------------------------------------------------------*/
+
+/* --------------------------------- Path ---------------------------------- */
+char	*path(char *cmd, char **envp);
+/* ------------------------------------------------------------------------- */
+
+/* --------------------------------- Signals ------------------------------- */
+void	handle_ctrl_c(int signo);
+int		handle_ctrl_d(char *cmd);
+int		typed_exit(char *cmd);
+/* ------------------------------------------------------------------------- */
+
+/*-------------------------------- Unset Utils ------------------------------*/
+void	ft_expdelone(t_export *lst);
+void	ft_envdelone(t_env *lst);
+/*------------------------------------------------------------------------*/
+
+/*-------------------------------- Unset ------------------------------*/
+void	unset_expvariables(t_state *state, char *key);
+void	unset_envvariables(t_state *state, char *key);
+/*------------------------------------------------------------------------*/
+
+/* --------------------------------- Utils --------------------------------- */
+void	free_split(char **args);
+int		ft_strcmp(char *s1, char *s2);
+char	*ft_strcat(char *dest, char *src);
+char	*ft_read_until(char *cmd);
+int	ft_split_words(t_state *state, char *input);
+/* ------------------------------------------------------------------------- */
 
 
 
 
 
-/*-------------------------------- Export Utils ------------------------------*/
-t_export	*ft_newexp(void *key, void	*value);
-/* t_export	*ft_explast(t_export *lst);
-void	ft_addexp_back(t_export **lst, t_export *new); */
-void	ft_addexp(t_export **lst, t_export *new);
-void	create_exp(t_state *state, char **envi);
-/*----------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
 
 #endif

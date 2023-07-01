@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/28 12:58:09 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/01 13:50:22 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	print_env(t_state *state)
 {
-	t_env *lst = state->env;
+	t_env	*lst;
+
+	lst = state->env;
 	while (lst)
 	{
 		printf("word: %s%s\n", lst->key, lst->value);
@@ -27,7 +29,7 @@ t_env	*findenv(t_state *state, char *key)
 	t_env	*find;
 
 	find = state->env;
-	while(find != NULL)
+	while (find != NULL)
 	{
 		if (ft_strcmp(key, find->key) == 0)
 		{
@@ -50,15 +52,12 @@ int	ft_setenv(char *key, char *newvalue, t_state *state)
 		find->value = ft_strdup(newvalue);
 		return (0);
 	}
-	else //add if not existent
+	else
 	{
-		newenv = malloc(sizeof(t_env));
-		newenv->key = ft_strdup(key);
-		newenv->value = ft_strdup(newvalue);
+		newenv = ft_newenv(key, newvalue);
 		ft_addenv_back(&state->env, newenv);
 		return (0);
 	}
-
 	return (-1);
 }
 
@@ -67,7 +66,7 @@ char	*ft_getenv(char *key, t_state *state)
 	t_env	*find;
 
 	find = state->env;
-	while(find != NULL)
+	while (find != NULL)
 	{
 		if (ft_strcmp(key, find->key) == 0)
 		{
