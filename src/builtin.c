@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/01 14:19:24 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/03 16:10:36 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	handle_builtin(t_state *state, int *count)
 {
 	char	**comand;
 
-	comand = ft_split(state->cmd, ' ');
+	comand = ft_split(state->input, ' ');
 	if (ft_strcmp(comand[0], "cd") == 0)
 	{
 		cd_cmd(state);
