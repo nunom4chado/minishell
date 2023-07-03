@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 15:32:07 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:07:42 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,71 @@
 
 extern char **environ;
 
-int	main(int argc, char **argv)
+void	print_words(t_state *state)
+{
+	t_env *lst = state->env;
+	while (lst)
+	{
+		printf("word: %s=%s\n", lst->key, lst->value);
+		lst = lst->next;
+	}
+}
+
+int	main()
 {
 	char	*input;
 	int		count;
 	t_state	state;
 
-
-	errno = 0;
 	count = 1;
-	(void)argc;
-	(void)argv;
-	state.envp = environ;
+	create_env(&state, environ);
+	create_exp(&state, environ);
+	
+	/* printf("---------------------\n");
+	print_words(&state);
+	printf("---------------------\n"); */
+
+
+	//state.envp = environ;
+	state.words = NULL;
 
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
+
 	while (1)
 	{
 		input = readline("minishell$ ");
+		add_history(input);
+
 		if (handle_ctrl_d(input) || typed_exit(input))
 			break ;
-		state.cmd = ft_strdup(input);
-		add_history(input);
-		free(input);
-		state.cmd = expand(&state);
-		if (state.cmd[0] == 'c' && state.cmd[1] == 'd' && (state.cmd[2] == ' ' || state.cmd[2] == '\0'))
+
+		if(ft_split_words(&state, input))
 		{
-			cd_cmd(&state);
-			count++;
+			printf("error: unclosed quote\n");
+			free(input);
+			ft_wordclear(&state.words, free);
 			continue ;
 		}
 
-	/* 	if (fork1() == 0)
-			runcmd(parseinput(input)); // parsecmd() and runcmd() */
+		state.cmd = ft_strdup(input);
+		free(input);
+
+		state.cmd = expand(&state);
+
+
+		if (handle_builtin(&state, &count))
+			continue ;
+
+
+		/*
+		if (fork1() == 0)
+			runcmd(parseinput(input)); // parsecmd() and runcmd()
+		*/
 
 		last_cmd(&state);
 		wait(NULL);
+		ft_wordclear(&state.words, free);
 		count++;
 	}
 	rl_clear_history();

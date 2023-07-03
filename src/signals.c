@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/07 14:54:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:04:25 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ int	handle_ctrl_d(char *cmd)
 	return (0);
 }
 
+/**
+ * TODO: memory leak, old cmd leaking
+ * need to move to built-ins because of the following test
+ *
+ * export TEST=exit
+ * $TEST
+ *
+ * should expand and exit the shell
+*/
 int	typed_exit(char *cmd)
 {
 	cmd = ft_strtrim(cmd, " \t\v");

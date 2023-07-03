@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:13:02 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/05/17 17:14:55 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/01 13:48:48 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ char	**get_paths(char **envp)
 	int		i;
 
 	i = 0;
-	while (!ft_strnstr(envp[i], "PATH=", 5))
+	paths = NULL;
+	while (ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
+	if (envp[i] == NULL)
+		return (NULL);
 	paths = ft_split(envp[i] + 5, ':');
 	return (paths);
 }
