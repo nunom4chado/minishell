@@ -3,71 +3,107 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/12 16:11:32 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:12:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_expand(char *cmd, int i, char *expand, int over)
+/**
+ * Creates a new char * that will expand variables and remove quotes that
+ * should be removed.
+ * 
+ * @param str any char *
+ * @param state pointer to state struct
+ * 
+ * @return The resulting char *
+*/
+char	*expand_and_remove_quotes(char *str, t_state *state)
 {
-	char	*total;
+	char	*new;
+	char	quote_mode;
+	char	*var_name;
 
-	total = malloc(ft_strlen(cmd) + ft_strlen(expand) - 1);
-	ft_memcpy(total, cmd, i);
-	total[i] = '\0';
-	ft_strcat(total, expand);
-	ft_strcat(total, cmd + i + 1 + over);
-	free(cmd);
-	return (total);
-}
-
-char	*ft_del_non_var(char *cmd, int i, int over)
-{
-	char	*total;
-
-	total = malloc(ft_strlen(cmd) - over + i + 1);
-	ft_memcpy(total, cmd, i);
-	total[i] = '\0';
-	ft_strcat(total, cmd + i + 1 + over);
-	free(cmd);
-	return (total);
-}
-
-char	*expand(t_state *state)
-{
-	int i;
-	char	*envari;
-
-	i = 0;
-	while (state->cmd[i])
+	new = ft_calloc(1, 1);
+	quote_mode = 0;
+	while (*str)
 	{
-		if (state->cmd[i] == '~')
+		if (toggle_quote_mode(*str, &quote_mode))
 		{
-			if (ft_getenv("HOME=", state))
-			{
-				state->cmd = ft_expand(state->cmd, i, ft_getenv("HOME=", state), 0);
-				return(expand(state));
-			}
+			str++;
+			continue ;
 		}
-		if (state->cmd[i] == '$')
+		if (can_expand(str, quote_mode))
 		{
-			envari = ft_read_until(state->cmd + i + 1);
-			if (ft_getenv(envari, state))
-			{
-				state->cmd = ft_expand(state->cmd, i, ft_getenv(envari, state), ft_strlen(envari) - 1);
-				return(expand(state));
-			}
-			else
-			{
-				state->cmd = ft_del_non_var(state->cmd, i, ft_strlen(envari) - 1);
-				return (expand(state));
-			}
+			var_name = find_var_name(str + 1);
+			new = append_var(new, var_name, state);
+			str += 1 + ft_strlen(var_name);
+			free(var_name);
+			continue ;
 		}
-		i++;
+		new = append_char(new, *str);
+		str++;
 	}
-	return (state->cmd);
+	return (new);
+}
+
+/**
+ * Remove quotes inside a token.
+ *
+ * @note It will remove only quotes that should be removed,
+ * Eg. asdf"asd'sdf"sdf -> asdfasd'sdfsdf
+*/
+void	remove_quotes(t_token *token)
+{
+	char	*old;
+	char	*new;
+	char	quote_mode;
+
+	old = token->word;
+	new = ft_calloc(1, 1);
+	quote_mode = 0;
+	while (*old)
+	{
+		if (toggle_quote_mode(*old, &quote_mode))
+		{
+			old++;
+			continue ;
+		}
+		new = append_char(new, *old);
+		old++;
+	}
+	free(token->word);
+	token->word = new;
+}
+
+/**
+ * Apply variable expansions in token list
+ *
+ * @param state pointer to the state struct
+ *
+ * @note Expansions will not occur when the token is an HEREDOC_DELIMITER,
+ * only quote removal will be applied
+*/
+void	expand(t_state *state)
+{
+	t_token	*token;
+	char	*tmp;
+
+	token = state->tokens;
+	while (token)
+	{
+		if (token->type == HEREDOC_DELIMITER)
+			remove_quotes(token);
+		else
+		{
+			ft_tilde_expand(token, state);
+			tmp = expand_and_remove_quotes(token->word, state);
+			free(token->word);
+			token->word = tmp;
+		}
+		token = token->next;
+	}
 }

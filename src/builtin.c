@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/01 14:19:24 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:32:43 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	builtin_export(t_state *state)
 	int		len;
 
 	len = 0;
-	line = ft_strtrim(state->cmd + 6, " \t\v");
+	line = state->cmd[1];
+	printf("arg %s\n", line);
 	while (line[len] != '\0' && line[len] != '=')
 		len++;
 	key = ft_substr(line, 0, len);
@@ -78,7 +79,7 @@ void	builtin_unset(t_state *state)
 	int		len;
 
 	len = 0;
-	line = ft_strtrim(state->cmd + 5, " \t\v");
+	line = state->cmd[1];
 	while (line[len] != '\0')
 		len++;
 	key = ft_substr(line, 0, len);
@@ -90,7 +91,7 @@ int	handle_builtin(t_state *state, int *count)
 {
 	char	**comand;
 
-	comand = ft_split(state->cmd, ' ');
+	comand = state->cmd;
 	if (ft_strcmp(comand[0], "cd") == 0)
 	{
 		cd_cmd(state);

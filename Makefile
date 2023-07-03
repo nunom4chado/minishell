@@ -36,13 +36,22 @@ LIB			=	$(LIB_PATH)$(LIB_NAME)
 SRC			:=	main.c \
 				builtin.c \
 				cd_cmd.c \
+				cleanup.c \
 				cmd.c \
+				debug.c \
 				env_utils.c \
 				env.c \
+				errors.c \
+				expand_utils.c \
 				expand.c \
 				export_utils.c \
 				export.c \
-				list_utils.c \
+				init.c \
+				input.c \
+				lexar_utils.c \
+				lexar.c \
+				lst_tokens.c \
+				parser.c \
 				path.c \
 				signals.c \
 				unset_utils.c \

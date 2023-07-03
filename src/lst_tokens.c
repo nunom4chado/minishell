@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_utils.c                                       :+:      :+:    :+:   */
+/*   lst_tokens.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 17:30:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/13 17:57:51 by jodos-sa         ###   ########.fr       */
+/*   Created: 2023/06/29 19:55:01 by numartin          #+#    #+#             */
+/*   Updated: 2023/07/03 16:53:21 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_word	*ft_new_word(void *word, int space)
-{
-	t_word	*node;
 
-	node = malloc(sizeof(t_word));
+#include "minishell.h"
+
+t_token	*lst_token_new(void *word, t_tk_type type)
+{
+	t_token	*node;
+
+	node = malloc(sizeof(t_token));
 	if (!node)
 		return (0);
+	node->type = type;
 	node->word = word;
-	node->space = space;
 	node->next = NULL;
+	node->prev = NULL;
 	return (node);
 }
 
-t_word	*ft_last_word(t_word *lst)
+t_token	*lst_token_last(t_token *lst)
 {
 	if (lst)
 	{
@@ -36,9 +40,9 @@ t_word	*ft_last_word(t_word *lst)
 	return (NULL);
 }
 
-void	ft_word_add_back(t_word **lst, t_word *new)
+void	lst_token_add_back(t_token **lst, t_token *new)
 {
-	t_word	*tail;
+	t_token	*tail;
 
 	if (!new)
 		return ;
@@ -47,14 +51,15 @@ void	ft_word_add_back(t_word **lst, t_word *new)
 		*lst = new;
 		return ;
 	}
-	tail = ft_last_word(*lst);
+	tail = lst_token_last(*lst);
 	tail->next = new;
+	new->prev = tail;
 }
 
-void	ft_wordclear(t_word **lst, void (*del)(void *))
+void	lst_token_clear(t_token **lst, void (*del)(void *))
 {
-	t_word	*temp;
-	t_word	*next_node;
+	t_token	*temp;
+	t_token	*next_node;
 
 	if (!lst || !del)
 		return ;
@@ -67,4 +72,19 @@ void	ft_wordclear(t_word **lst, void (*del)(void *))
 		temp = next_node;
 	}
 	*lst = NULL;
+}
+
+int	lst_token_size(t_token *lst)
+{
+	int		i;
+	t_token	*token;
+
+	token = lst;
+	i = 0;
+	while(token)
+	{
+		i++;
+		token = token->next;
+	}
+	return (i);
 }

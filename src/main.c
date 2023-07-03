@@ -3,85 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/26 15:07:42 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:29:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern char **environ;
+t_state		g_state;
 
-void	print_words(t_state *state)
+/**
+ * TODO: is count necessary??
+*/
+int	main(int argc, char **argv, char **envp)
 {
-	t_env *lst = state->env;
-	while (lst)
-	{
-		printf("word: %s=%s\n", lst->key, lst->value);
-		lst = lst->next;
-	}
-}
-
-int	main()
-{
-	char	*input;
+	(void)argc;
+	(void)argv;
 	int		count;
-	t_state	state;
 
 	count = 1;
-	create_env(&state, environ);
-	create_exp(&state, environ);
-	
-	/* printf("---------------------\n");
-	print_words(&state);
-	printf("---------------------\n"); */
-
-
-	//state.envp = environ;
-	state.words = NULL;
-
-	signal(SIGINT, handle_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	init_state(&g_state, envp);
+	register_signals();
+	create_env(&g_state, envp);
+	create_exp(&g_state, envp);
+	register_signals();
 
 	while (1)
 	{
-		input = readline("minishell$ ");
-		add_history(input);
-
-		if (handle_ctrl_d(input) || typed_exit(input))
+		g_state.input = readline(prompt_style(&g_state));
+		if (handle_ctrl_d(g_state.input, &g_state) || typed_exit(&g_state))
 			break ;
+		if (process_input(&g_state))
+			continue ;
 
-		if(ft_split_words(&state, input))
+		if (handle_builtin(&g_state, &count))
 		{
-			printf("error: unclosed quote\n");
-			free(input);
-			ft_wordclear(&state.words, free);
+			clean_last_cmd(&g_state);
 			continue ;
 		}
-
-		state.cmd = ft_strdup(input);
-		free(input);
-
-		state.cmd = expand(&state);
-
-
-		if (handle_builtin(&state, &count))
-			continue ;
-
-
 		/*
 		if (fork1() == 0)
 			runcmd(parseinput(input)); // parsecmd() and runcmd()
 		*/
 
-		last_cmd(&state);
+		last_cmd(&g_state);
 		wait(NULL);
-		ft_wordclear(&state.words, free);
+		clean_last_cmd(&g_state);
 		count++;
 	}
 	rl_clear_history();
-	free(state.cmd);
+	clean_all(&g_state);
 	return (EXIT_SUCCESS);
 }

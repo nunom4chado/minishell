@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/01 13:38:42 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:13:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	last_cmd(t_state *state)
 	int		pipefd[2];
 	int		fd[2];
 
+	fd[0] = 0;
+	fd[1] = 0;
 	array_env(state);
 	pipe(pipefd);
 	pid = fork();
@@ -54,7 +56,7 @@ void	last_cmd(t_state *state)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
 	{
-		comand = ft_split(state->cmd, ' ');
+		comand = state->cmd;
 		close(pipefd[1]);
 		dup2(fd[1], STDOUT_FILENO);
 		dup2(pipefd[0], STDIN_FILENO);
