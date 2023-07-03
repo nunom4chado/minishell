@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/03 15:56:46 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:12:52 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	cd_cmd(t_state *state)
 {
 	char	*path;
 
-	path = ft_strtrim(state->cmd + 2, " \t\v");
+	path = state->cmd[1];
 	if (path == NULL || *path == '\0')
 		path = ft_getenv("HOME", state);
 	else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')

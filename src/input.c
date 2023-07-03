@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 14:10:44 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:21:54 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ char *prompt_style(t_state *state)
  * Process input will do lexical analysis which will split the input into a list
  * of tokens. Apply variable expansions and remove quotes. Lastly the parser
  * will create a list of the order of the execution of all the commands.
- * 
+ *
  * @param state pointer to the state struct
- * 
+ *
  * @return 0 when syntax is ok
  * @return 1 on syntax error or empty input
- * 
+ *
  * TODO: check if the history command displays a list of previous commands
  * TODO: handle heredocs
 */
@@ -46,7 +46,7 @@ int process_input(t_state *state)
 		free(state->input);
 		return (1);
 	}
-	
+
 	add_history(state->input);
     if(lexar(state, state->input))
     {
@@ -57,9 +57,13 @@ int process_input(t_state *state)
     if (has_heredocs(state))
 		ft_putendl_fd("\nTODO: handle heredocs\n", 2);
 
-    print_tokens(state);
+    //print_tokens(state);
     expand(state);
-    print_tokens(state);
-	
+    //print_tokens(state);
+
+	state->cmd = compose_cmd(state);
+
+	//print_arr_str(state->cmd, "testing compose_cmd");
+
     return (0);
 }

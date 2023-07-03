@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 16:09:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:29:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 
 		if (handle_builtin(&g_state, &count))
+		{
+			clean_last_cmd(&g_state);
 			continue ;
+		}
 		/*
 		if (fork1() == 0)
 			runcmd(parseinput(input)); // parsecmd() and runcmd()

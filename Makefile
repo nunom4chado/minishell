@@ -51,6 +51,7 @@ SRC			:=	main.c \
 				lexar_utils.c \
 				lexar.c \
 				lst_tokens.c \
+				parser.c \
 				path.c \
 				signals.c \
 				unset_utils.c \

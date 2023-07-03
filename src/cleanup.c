@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:06:49 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 14:16:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:27:20 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ void	clean_last_cmd(t_state *state)
 {
 	free(state->input);
 	lst_token_clear(&(state->tokens), free);
+	clean_cmd(state->cmd);
 }
 
 /**
  * Free all memory of the program.
  * Usefull to call before exiting the program
- * 
+ *
  * TODO: clean env and export inside this function
 */
 void	clean_all(t_state *state)
@@ -34,4 +35,13 @@ void	clean_all(t_state *state)
 		free(state->input);
 	if (state->tokens)
 		lst_token_clear(&(state->tokens), free);
+}
+
+void	clean_cmd(char **arr)
+{
+	while(arr && *arr)
+	{
+		free(*arr);
+		arr++;
+	}
 }

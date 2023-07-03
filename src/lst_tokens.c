@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:55:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:40:07 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 16:53:21 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,19 @@ void	lst_token_clear(t_token **lst, void (*del)(void *))
 		temp = next_node;
 	}
 	*lst = NULL;
+}
+
+int	lst_token_size(t_token *lst)
+{
+	int		i;
+	t_token	*token;
+
+	token = lst;
+	i = 0;
+	while(token)
+	{
+		i++;
+		token = token->next;
+	}
+	return (i);
 }

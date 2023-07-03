@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 16:48:16 by numartin         ###   ########.fr       */
+/*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
+/*   Updated: 2023/07/03 17:21:38 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Function responsible to initialize the state struct
- *
- * @param state pointer to the state struct
- * @param envp from the main argument
-*/
-void	init_state(t_state *state, char **envp)
+
+
+char	**compose_cmd(t_state *state)
 {
-	state->envp = envp;
-	state->input = NULL;
-	state->tokens = NULL;
-	state->cmd = NULL;
+	char	**cmd;
+	t_token	*token;
+	int	len;
+	int	i;
+
+	len = lst_token_size(state->tokens);
+	if (!len)
+		return (NULL);
+	cmd = malloc(sizeof(char *) * (len + 1));
+	if (!cmd)
+		return (NULL);
+	token = state->tokens;
+	i = 0;
+	while(i < len)
+	{
+		cmd[i] = ft_strdup(token->word);
+		token = token->next;
+		i++;
+	}
+	cmd[i] = NULL;
+	return (cmd);
 }

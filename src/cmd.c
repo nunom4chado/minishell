@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/03 15:55:04 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:13:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	last_cmd(t_state *state)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
 	{
-		comand = ft_split(state->cmd, ' ');
+		comand = state->cmd;
 		close(pipefd[1]);
 		dup2(fd[1], STDOUT_FILENO);
 		dup2(pipefd[0], STDIN_FILENO);

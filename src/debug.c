@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:28:39 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 15:48:41 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:16:18 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,18 @@ void	print_words(t_state *state)
 		printf("word: %s=%s\n", lst->key, lst->value);
 		lst = lst->next;
 	}
+}
+
+void	print_arr_str(char **arr, char *msg)
+{
+	int i;
+
+	printf("DEBUG - %s\n", msg);
+	i = 0;
+	while(arr && arr[i])
+	{
+		printf("%s\n", arr[i]);
+		i++;
+	}
+	printf("\n");
 }

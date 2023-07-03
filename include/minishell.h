@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 16:07:22 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:28:01 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_state
 {
 	int		exit_status;
 	char	*input;
-	char	*cmd;
+	char	**cmd;
 	char	**envp;
 	t_env	*env;
 	t_export	*exp;
@@ -114,6 +114,7 @@ void	cd_cmd(t_state *state);
 
 void	clean_last_cmd(t_state *state);
 void	clean_all(t_state *state);
+void	clean_cmd(char **arr);
 
 /* --------------------------------- CMD ----------------------------------- */
 
@@ -122,6 +123,7 @@ void	last_cmd(t_state *state);
 /* ---------------------------------- Debug --------------------------------- */
 
 void	print_tokens(t_state *state);
+void	print_arr_str(char **arr, char *msg);
 
 /* --------------------------------- Env ----------------------------------- */
 
@@ -182,6 +184,11 @@ t_token	*lst_token_new(void *word, t_tk_type type);
 t_token	*lst_token_last(t_token *lst);
 void	lst_token_add_back(t_token **lst, t_token *new);
 void	lst_token_clear(t_token **lst, void (*del)(void *));
+int		lst_token_size(t_token *lst);
+
+/* --------------------------------- Parser --------------------------------- */
+
+char	**compose_cmd(t_state *state);
 
 /* --------------------------------- Path ---------------------------------- */
 
