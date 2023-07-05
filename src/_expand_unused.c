@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_unused.c                                    :+:      :+:    :+:   */
+/*   _expand_unused.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 17:24:55 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/29 17:42:09 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:33:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,44 +60,6 @@ void ft_variable_expand(t_token *token, t_state *state)
 		}
 		ptr++;
 	}
-}
-
-/**
- * Remove invalid variable from the token
- *
- * @note In this implementation, if the next character after '$' is not
- * '_', alpha char or '?', both the first and second chars will be
- * skipped and not saved
- *
- * @param token pointer to a token
-*/
-void	sanitize_invalid_variables(t_token *token)
-{
-	char *sanitized;
-	char *aux;
-	char *old;
-
-	old = token->word;
-	sanitized = malloc(ft_strlen(old) + 1);
-	// TODO: handle error
-	aux = sanitized;
-	while (*old)
-	{
-		if (*old == '$' && *(old + 1))
-		{
-			if(!ft_isalpha(*(old + 1)) && *(old + 1) != '_' && *(old + 1) != '?')
-			{
-				old = old + 2;
-				continue ;
-			}
-		}
-		*aux = *old;
-		aux++;
-		old++;
-	}
-	*aux = '\0';
-	free(token->word);
-	token->word = sanitized;
 }
 
 /**

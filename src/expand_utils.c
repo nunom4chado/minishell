@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/05 15:58:15 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:35:14 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*find_var_name(char *str)
  *
  * @param token pointer to the token to be expanded
  * @param state pointer to the program state struct
- * 
+ *
 */
 void	ft_tilde_expand(t_token *token, t_state *state)
 {
@@ -63,16 +63,16 @@ void	ft_tilde_expand(t_token *token, t_state *state)
 
 /**
  * Determine if its possible to expand a variable in a char *.
- * 
+ *
  * @param str any char *
  * @param quote_mode a char to determine which mode the str should be consider
  * eg: single quote, double quote or none (null-byte)
- * 
+ *
  * @note str[0] must be '$'
  * @note str[0 + 1] cannot be '\0'
  * @note str[0 + 1] cannot be a quote
  * @note quote_mode cannot be single quote
- * 
+ *
  * @return 1 if true
  * @return 0 if false
 */
@@ -88,10 +88,10 @@ int	can_expand(const char *str, char quote_mode)
  * Toggle quote mode. When str[0] is a quote and quote mode is off (null-byte),
  * it sets the quote_mode to that type of quote. On later call, when it finds
  * the same quote type, it will set it back to null-byte
- * 
+ *
  * @param str any char *
  * @param a pointer to the char to set the quote type
- * 
+ *
  * @return 1 if toggle occurred
  * @return 0 otherwise
 */
@@ -115,12 +115,12 @@ int	toggle_quote_mode(const char c, char *quote_mode)
 
 /**
  * Append a char to the str
- * 
+ *
  * @param str any char *
  * @param c any char
- * 
+ *
  * @return the resulting char *
- * 
+ *
  * @note will free the str passed in the argument
 */
 char	*append_char(char *str, char c)
@@ -137,16 +137,14 @@ char	*append_char(char *str, char c)
 
 /**
  * Append a variable to a char *
- * 
+ *
  * @param str any char *
  * @param var_name name of the variable
  * @param state pointer to the state struct
- * 
+ *
  * @return New char * with the appended variable
- * 
+ *
  * @note will free previous str
- * 
- * TODO: remove = and env_name
 */
 char	*append_var(char *str, char *var_name, t_state *state)
 {

@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 17:21:54 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:35:28 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char *prompt_style(t_state *state)
  * @return 0 when syntax is ok
  * @return 1 on syntax error or empty input
  *
- * TODO: check if the history command displays a list of previous commands
  * TODO: handle heredocs
 */
 int process_input(t_state *state)
