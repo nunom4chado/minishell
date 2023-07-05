@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:18:05 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:58:15 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ char	*find_var_name(char *str)
  * @param token pointer to the token to be expanded
  * @param state pointer to the program state struct
  * 
- * TODO: remove = in ft_getenv after merge
 */
 void	ft_tilde_expand(t_token *token, t_state *state)
 {
@@ -55,7 +54,7 @@ void	ft_tilde_expand(t_token *token, t_state *state)
 	{
 		if (token->word[1] == '\0' || token->word[1] == '/')
 		{
-			tmp = ft_strjoin(ft_getenv("HOME=", state), token->word + 1);
+			tmp = ft_strjoin(ft_getenv("HOME", state), token->word + 1);
 			free(token->word);
 			token->word = tmp;
 		}
@@ -153,7 +152,6 @@ char	*append_var(char *str, char *var_name, t_state *state)
 {
 	char	*tmp;
 	char	*nb;
-	char	*env_name;
 
 	if (*var_name == '?')
 	{
@@ -164,13 +162,11 @@ char	*append_var(char *str, char *var_name, t_state *state)
 		free(var_name);
 		return (tmp);
 	}
-	env_name = ft_strjoin(var_name, "=");
-	if (ft_getenv(env_name, state))
+	if (ft_getenv(var_name, state))
 	{
-		tmp = ft_strjoin(str, ft_getenv(env_name, state));
+		tmp = ft_strjoin(str, ft_getenv(var_name, state));
 		free(str);
 		str = tmp;
 	}
-	free(env_name);
 	return (str);
 }
