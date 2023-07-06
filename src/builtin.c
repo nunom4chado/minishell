@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 15:43:59 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:18:31 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,36 @@ void	builtin_unset(t_state *state, char **cmd)
 	}
 }
 
+void	builtin_echo(char **cmd)
+{
+	int	i;
+	int	nl;
+
+	i = 0;
+	nl = 1;
+	if (cmd == NULL && cmd[i] == NULL)
+		return ;
+	if (!ft_strcmp(cmd[i], "-n"))
+	{
+		nl = 0;
+		i++;
+	}
+	while (cmd[i])
+	{
+		printf("%s", cmd[i]);
+		if (cmd [i + 1])
+			printf(" ");
+		i++;
+	}
+	if (nl)
+		printf("\n");
+}
+
+
 void	execute_builtin(char **cmd, t_state *state)
 {
 	if (ft_strcmp(cmd[0], "echo") == 0)
-		printf("TODO: implement echo\n");
+		builtin_echo(cmd + 1);
 	else if (ft_strcmp(cmd[0], "cd") == 0)
 		cd_cmd(state);
 	else if (ft_strcmp(cmd[0], "pwd") == 0)
