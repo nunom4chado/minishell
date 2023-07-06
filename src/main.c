@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 17:29:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 12:01:01 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,11 @@
 
 t_state		g_state;
 
-/**
- * TODO: is count necessary??
-*/
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	int		count;
 
-	count = 1;
 	init_state(&g_state, envp);
 	register_signals();
 	create_env(&g_state, envp);
@@ -33,25 +28,26 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		g_state.input = readline(prompt_style(&g_state));
-		if (handle_ctrl_d(g_state.input, &g_state) || typed_exit(&g_state))
+		if (handle_ctrl_d(g_state.input, &g_state))
 			break ;
 		if (process_input(&g_state))
 			continue ;
 
-		if (handle_builtin(&g_state, &count))
+		if (is_builtin(g_state.cmd))
+			execute_builtin(g_state.cmd, &g_state);
+		else
 		{
-			clean_last_cmd(&g_state);
-			continue ;
+			last_cmd(&g_state);
+			wait(NULL);
 		}
+
+
 		/*
 		if (fork1() == 0)
 			runcmd(parseinput(input)); // parsecmd() and runcmd()
 		*/
 
-		last_cmd(&g_state);
-		wait(NULL);
 		clean_last_cmd(&g_state);
-		count++;
 	}
 	rl_clear_history();
 	clean_all(&g_state);
