@@ -3,16 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 17:21:38 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:07:41 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	has_pipe(t_state *state)
+{
+	t_token	*token;
 
+	token = state->tokens;
+	while (token)
+	{
+		if (token->type == PIPE)
+			return (1);
+		token = token->next;
+	}
+	return (0);
+}
 
 char	**compose_cmd(t_state *state)
 {

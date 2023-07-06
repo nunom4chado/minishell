@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 12:07:56 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:34:46 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,49 +57,61 @@ int	only_export(t_state *state, char *key)
 	return (1);
 }
 
-void	builtin_export(t_state *state)
+void	export_single(char *cmd, t_state *state)
 {
-	char	*line;
 	char	*key;
 	char	*value;
 	int		len;
 
 	len = 0;
-	line = state->cmd[1];
-	printf("arg %s\n", line);
-	while (line[len] != '\0' && line[len] != '=')
+	while (cmd[len] != '\0' && cmd[len] != '=')
 		len++;
-	key = ft_substr(line, 0, len);
+	key = ft_substr(cmd, 0, len);
 	if (!is_valid_key(key))
 	{
-		printf("export: %s: not a valid identifier\n", line);
+		printf("export: %s: not a valid identifier\n", cmd);
 		free(key);
-		free(line);
 		return ;
 	}
-	if (line[len] != '=')
+	if (cmd[len] != '=')
 	{
 		if (!only_export(state, key))
 			return ;
 	}
-	value = ft_strdup(line + len + 1);
+	value = ft_strdup(cmd + len + 1);
 	ft_setenv(key, value, state);
 	ft_setexp(key, value, state);
 }
 
-void	builtin_unset(t_state *state)
+void	builtin_export(t_state *state, char **cmd)
 {
-	char	*line;
+	int	i;
+
+	i = -1;
+	if (has_pipe(state))
+		return ;
+	while (cmd[++i])
+		export_single(cmd[i], state);
+}
+
+void	builtin_unset(t_state *state, char **cmd)
+{
 	char	*key;
 	int		len;
+	int		i;
 
-	len = 0;
-	line = state->cmd[1];
-	while (line[len] != '\0')
-		len++;
-	key = ft_substr(line, 0, len);
-	unset_expvariables(state, key);
-	unset_envvariables(state, key);
+	if (has_pipe(state))
+		return ;
+	i = -1;
+	while (cmd[++i])
+	{
+		len = 0;
+		while (cmd[i][len] != '\0')
+			len++;
+		key = ft_substr(cmd[i], 0, len);
+		unset_expvariables(state, key);
+		unset_envvariables(state, key);
+	}
 }
 
 void	execute_builtin(char **cmd, t_state *state)
@@ -115,10 +127,10 @@ void	execute_builtin(char **cmd, t_state *state)
 		if (cmd[1] == NULL)
 			print_export(state);
 		else
-			builtin_export(state);
+			builtin_export(state, cmd + 1);
 	}
 	else if (ft_strcmp(cmd[0], "unset") == 0)
-		builtin_unset(state);
+		builtin_unset(state, cmd + 1);
 	else if (ft_strcmp(cmd[0], "env") == 0)
 		printf("TODO: no env??\n");
 	else if (ft_strcmp(cmd[0], "exit") == 0)
