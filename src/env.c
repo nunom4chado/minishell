@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/01 13:50:22 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:46:37 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_env(t_state *state)
 	lst = state->env;
 	while (lst)
 	{
-		printf("word: %s%s\n", lst->key, lst->value);
+		printf("%s%s\n", lst->key, lst->value);
 		lst = lst->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 15:34:46 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:43:59 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,10 @@ void	execute_builtin(char **cmd, t_state *state)
 	else if (ft_strcmp(cmd[0], "unset") == 0)
 		builtin_unset(state, cmd + 1);
 	else if (ft_strcmp(cmd[0], "env") == 0)
-		printf("TODO: no env??\n");
+	{
+		if (cmd[1] == NULL)
+			print_env(state);
+	}
 	else if (ft_strcmp(cmd[0], "exit") == 0)
 		exit_builtin(cmd, state);
 }
