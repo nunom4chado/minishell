@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 17:28:01 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 12:03:01 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ typedef struct s_state
 
 /*-------------------------------- Builtin -------------------------------*/
 
-int		handle_builtin(t_state *state, int *count);
+void	execute_builtin(char **cmd, t_state *state);
+int		is_builtin(char **cmd);
+void	exit_builtin(char **cmd, t_state *state);
 
 /* --------------------------------- CD_CMD -------------------------------- */
 
@@ -199,7 +201,6 @@ char	*path(char *cmd, char **envp);
 void	register_signals(void);
 void	handle_ctrl_c(int signo);
 int		handle_ctrl_d(char *cmd, t_state *state);
-int		typed_exit(t_state *state);
 
 /*-------------------------------- Unset ------------------------------*/
 

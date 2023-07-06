@@ -6,11 +6,26 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 17:32:43 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 12:07:56 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * Exit the shell with status code saved on state and free all memory.
+ * 
+ * @note exit will only work if has 0 arguments
+*/
+void	exit_builtin(char **cmd, t_state *state)
+{
+	if (!cmd[1])
+	{
+		printf("exit\n");
+		clean_all(state);
+		exit(state->exit_status);
+	}
+}
 
 int	is_valid_key(char *key)
 {
@@ -87,33 +102,25 @@ void	builtin_unset(t_state *state)
 	unset_envvariables(state, key);
 }
 
-int	handle_builtin(t_state *state, int *count)
+void	execute_builtin(char **cmd, t_state *state)
 {
-	char	**comand;
-
-	comand = state->cmd;
-	if (ft_strcmp(comand[0], "cd") == 0)
-	{
+	if (ft_strcmp(cmd[0], "echo") == 0)
+		printf("TODO: implement echo\n");
+	else if (ft_strcmp(cmd[0], "cd") == 0)
 		cd_cmd(state);
-		*count = *count + 1;
-		return (1);
-	}
-	if (ft_strcmp(comand[0], "export") == 0)
+	else if (ft_strcmp(cmd[0], "pwd") == 0)
+		printf("TODO: implemete pwd. MUST be an builtin and NOT use the bin pwd\n");
+	else if (ft_strcmp(cmd[0], "export") == 0)
 	{
-		if (comand[1] == NULL)
-		{
+		if (cmd[1] == NULL)
 			print_export(state);
-			return (1);
-		}
-		builtin_export(state);
-		*count = *count + 1;
-		return (1);
+		else
+			builtin_export(state);
 	}
-	if (ft_strcmp(comand[0], "unset") == 0)
-	{
+	else if (ft_strcmp(cmd[0], "unset") == 0)
 		builtin_unset(state);
-		*count += 1;
-		return (1);
-	}
-	return (0);
+	else if (ft_strcmp(cmd[0], "env") == 0)
+		printf("TODO: no env??\n");
+	else if (ft_strcmp(cmd[0], "exit") == 0)
+		exit_builtin(cmd, state);
 }

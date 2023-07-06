@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 14:08:51 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 11:51:06 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,3 @@ int	handle_ctrl_d(char *cmd, t_state *state)
 	return (0);
 }
 
-/**
- * TODO: move this to built-ins
- * need to move to built-ins because of the following test
- *
- * export TEST=exit
- * $TEST
- *
- * should expand and exit the shell
-*/
-int	typed_exit(t_state *state)
-{
-	char *cmd;
-
-	cmd = ft_strtrim(state->input, " \t\v");
-	if (strcmp(cmd, "exit") == 0)
-	{
-		printf("exit\n");
-		free(cmd);
-		return (1);
-	}
-	free(cmd);
-	return (0);
-}

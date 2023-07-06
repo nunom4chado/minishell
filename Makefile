@@ -34,6 +34,7 @@ LIB_NAME	=	libft.a
 LIB			=	$(LIB_PATH)$(LIB_NAME)
 
 SRC			:=	main.c \
+				builtin_utils.c \
 				builtin.c \
 				cd_cmd.c \
 				cleanup.c \
