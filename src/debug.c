@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:28:39 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 17:16:18 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:46:46 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,6 @@ void	print_tokens(t_state *state)
 		token = token->next;
 	}
 	printf("\n");
-}
-
-void	print_words(t_state *state)
-{
-	t_env *lst = state->env;
-	while (lst)
-	{
-		printf("word: %s=%s\n", lst->key, lst->value);
-		lst = lst->next;
-	}
 }
 
 void	print_arr_str(char **arr, char *msg)

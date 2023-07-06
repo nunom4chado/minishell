@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 15:34:59 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:46:00 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void	create_env(t_state *state, char **envi);
 t_env	*findenv(t_state *state, char *key);
 int		ft_setenv(char *key, char *newvalue, t_state *state);
 char	*ft_getenv(char *key, t_state *state);
+void	print_env(t_state *state);
 
 /* --------------------------------- Errors --------------------------------- */
 
