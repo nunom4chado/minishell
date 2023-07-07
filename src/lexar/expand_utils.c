@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/05 16:35:14 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:00:29 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,6 @@ char	*append_char(char *str, char c)
  * @param state pointer to the state struct
  *
  * @return New char * with the appended variable
- *
- * @note will free previous str
 */
 char	*append_var(char *str, char *var_name, t_state *state)
 {
@@ -157,7 +155,6 @@ char	*append_var(char *str, char *var_name, t_state *state)
 		tmp = ft_strjoin(str, nb);
 		free(str);
 		free(nb);
-		free(var_name);
 		return (tmp);
 	}
 	if (ft_getenv(var_name, state))
