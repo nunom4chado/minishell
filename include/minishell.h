@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 17:02:10 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/07 18:24:17 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ void	cd_cmd(t_state *state);
 
 void	clean_last_cmd(t_state *state);
 void	clean_all(t_state *state);
-void	clean_cmd(char **arr);
 
 /* --------------------------------- CMD ----------------------------------- */
 
@@ -145,7 +144,6 @@ void	print_env(t_state *state);
 void	expand(t_state *state);
 char	*skip_undefined_var(char *str, int start, int end);
 void	ft_tilde_expand(t_token *token, t_state *state);
-void	sanitize_invalid_variables(t_token *token);
 char	*find_var_name(char *str);
 int		can_expand(const char *str, char quote_mode);
 int		toggle_quote_mode(const char c, char *quote_mode);
@@ -164,7 +162,7 @@ char	*ft_getexp(char *key, t_state *state);
 
 /* ---------------------------------- Init ---------------------------------- */
 
-void	init_state(t_state *state, char **envp);
+void	init_state(t_state *state);
 
 /* ---------------------------------- Input --------------------------------- */
 
@@ -209,10 +207,10 @@ int		handle_ctrl_d(char *cmd, t_state *state);
 
 void	ft_expdelone(t_export *lst);
 void	ft_envdelone(t_env *lst);
+void	ft_delete_export(t_export *lst);
+void	ft_delete_env(t_env *lst);
 void	unset_expvariables(t_state *state, char *key);
 void	unset_envvariables(t_state *state, char *key);
-
-
 
 /* --------------------------------- Utils --------------------------------- */
 int		ft_is_space(char c);

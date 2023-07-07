@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 12:01:01 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/07 18:24:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 
-	init_state(&g_state, envp);
+	init_state(&g_state);
 	register_signals();
 	create_env(&g_state, envp);
 	create_exp(&g_state, envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:06:49 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 17:17:00 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/07 18:20:51 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,23 @@
 void	clean_last_cmd(t_state *state)
 {
 	free(state->input);
+	state->input = NULL;
 	lst_token_clear(&(state->tokens), free);
+	state->tokens = NULL;
 	free_split(state->cmd);
+	state->cmd = NULL;
 }
 
 /**
  * Free all memory of the program.
  * Usefull to call before exiting the program
- *
- * TODO: clean env and export inside this function
 */
 void	clean_all(t_state *state)
 {
-	if (state->input)
-		free(state->input);
 	if (state->tokens)
 		lst_token_clear(&(state->tokens), free);
-}
-
-void	clean_cmd(char **arr)
-{
-	while(arr && *arr)
-	{
-		free(*arr);
-		arr++;
-	}
+	if (state->env)
+		ft_delete_env(state->env);
+	if (state->exp)
+		ft_delete_export(state->exp);
 }

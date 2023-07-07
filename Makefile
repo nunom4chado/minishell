@@ -19,7 +19,7 @@ _GONE		=	\e[2K\r
 
 NAME		:=	minishell
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS		:=	-Wall -Werror -Wextra -g #-fsanitize=address
 DEPS		:=	-lreadline -lXext -lX11 -lm
 
 
@@ -48,7 +48,7 @@ BUILTIN		:=	builtin_utils.c \
 
 EXECUTE		:=	cmd.c \
 				path.c
-				
+
 EXPORT		:=	env_utils.c \
 				env.c \
 				export_utils.c \
@@ -130,6 +130,9 @@ fclean: clean
 	@make -sC $(LIB_PATH) fclean
 	@rm -f $(NAME)
 	@printf "\033[2K\r$(_RED) '"$(NAME)"' has been deleted. $(_END)\n"
+
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_supression ./minishell
 
 re: fclean all
 
