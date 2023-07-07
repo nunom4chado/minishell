@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/03 17:13:08 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:16:56 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	array_env(t_state *state)
 		string = ft_strjoin(current->key, "=");
 		state->envp[i] = ft_strjoin(string, current->value);
 		current = current->next;
+		free(string);
 		i++;
 	}
 	state->envp[i] = NULL;
@@ -63,10 +64,14 @@ void	last_cmd(t_state *state)
 		if (comand[0] && path(comand[0], state->envp))
 		{
 			execve(path(comand[0], state->envp), comand, state->envp);
-			free_split(comand);
+			//free_split(comand);
 			exit(EXIT_SUCCESS);
 		}
+		state->exit_status = CODE_CMD_NOT_FOUND;
+		printf("%s: command not found\n", comand[0]);
+		//free_split(comand);
 		exit(EXIT_FAILURE);
 	}
 	close(pipefd[0]);
+	free_split(state->envp);
 }

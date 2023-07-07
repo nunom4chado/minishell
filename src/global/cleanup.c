@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:06:49 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 17:27:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:17:00 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	clean_last_cmd(t_state *state)
 {
 	free(state->input);
 	lst_token_clear(&(state->tokens), free);
-	clean_cmd(state->cmd);
+	free_split(state->cmd);
 }
 
 /**
