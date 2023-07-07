@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 16:18:31 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:28:17 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,13 @@ void	builtin_echo(char **cmd)
 		printf("\n");
 }
 
+void	builtin_pwd()
+{
+	char	pwd[256];
+
+	getcwd(pwd, sizeof(pwd));
+	printf("%s\n", pwd);
+}
 
 void	execute_builtin(char **cmd, t_state *state)
 {
@@ -147,7 +154,7 @@ void	execute_builtin(char **cmd, t_state *state)
 	else if (ft_strcmp(cmd[0], "cd") == 0)
 		cd_cmd(state);
 	else if (ft_strcmp(cmd[0], "pwd") == 0)
-		printf("TODO: implemete pwd. MUST be an builtin and NOT use the bin pwd\n");
+		builtin_pwd();
 	else if (ft_strcmp(cmd[0], "export") == 0)
 	{
 		if (cmd[1] == NULL)
