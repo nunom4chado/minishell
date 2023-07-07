@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 14:28:17 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/07 15:13:23 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,47 @@ void	exit_builtin(char **cmd, t_state *state)
 	}
 }
 
-int	is_valid_key(char *key)
+int	is_valid_key_unset(char *key, char *type)
 {
 	int	i;
 
 	i = 0;
 	if (!(ft_isalpha(key[i]) || key[i] == '_'))
+	{
+		printf("minishell: %s: `%s': not a valid identifier\n", type, key);
 		return (0);
+	}
 	i++;
 	while (key[i] != '\0')
 	{
-		if (!(ft_isalnum(key[i]) || key[i] == '_' || key[i] == '='))
+		if (!(ft_isalnum(key[i]) || key[i] == '_') || key[i] == '=' )
+		{
+			printf("minishell: %s: `%s': not a valid identifier\n", type, key);
 			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	is_valid_key(char *key, char *cmd, char *type)
+{
+	int	i;
+
+	i = 0;
+	if (!(ft_isalpha(cmd[i]) || cmd[i] == '_'))
+	{
+		printf("minishell: %s: `%s': not a valid identifier\n", type, cmd);
+		return (0);
+	}
+	i++;
+	while (key[i] != '\0')
+	{
+		if (!(ft_isalnum(key[i]) || key[i] == '_'))
+		{
+			printf("minishell: %s: `%s': not a valid identifier\n", type, key);
+			return (0);
+		}
 		i++;
 	}
 	return (1);
@@ -67,9 +96,8 @@ void	export_single(char *cmd, t_state *state)
 	while (cmd[len] != '\0' && cmd[len] != '=')
 		len++;
 	key = ft_substr(cmd, 0, len);
-	if (!is_valid_key(key))
+	if (!is_valid_key(key, cmd, "export"))
 	{
-		printf("export: %s: not a valid identifier\n", cmd);
 		free(key);
 		return ;
 	}
@@ -105,6 +133,8 @@ void	builtin_unset(t_state *state, char **cmd)
 	i = -1;
 	while (cmd[++i])
 	{
+		if (!is_valid_key_unset(cmd[i], "unset"))
+			continue;
 		len = 0;
 		while (cmd[i][len] != '\0')
 			len++;
