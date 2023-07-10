@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 16:48:16 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/07 18:24:04 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@
  * @param state pointer to the state struct
  * @param envp from the main argument
 */
-void	init_state(t_state *state, char **envp)
+void	init_state(t_state *state)
 {
-	state->envp = envp;
+	state->exit_status = 0;
+	state->env = NULL;
+	state->exp = NULL;
 	state->input = NULL;
 	state->tokens = NULL;
 	state->cmd = NULL;
+	state->envp = NULL;
 }

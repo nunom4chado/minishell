@@ -19,45 +19,77 @@ _GONE		=	\e[2K\r
 
 NAME		:=	minishell
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS		:=	-Wall -Werror -Wextra -g #-fsanitize=address
 DEPS		:=	-lreadline -lXext -lX11 -lm
 
 
 INCLUDE		=	-I ./include/\
 				-I ./libft/
 
-SRC_DIR		:=	./src/
-OBJ_DIR		:=	./obj/
-
 LIB_PATH	=	./libft/
 LIB_NAME	=	libft.a
 LIB			=	$(LIB_PATH)$(LIB_NAME)
 
-SRC			:=	main.c \
-				builtin_utils.c \
+SRC_DIR		:=	./src/
+OBJ_DIR		:=	./obj/
+
+BUILTIN_DIR	:=	builtin/
+EXECUTE_DIR	:=	execute/
+EXPORT_DIR	:=	export/
+GLOBAL_DIR	:=	global/
+LEXAR_DIR	:=	lexar/
+PARSER_DIR	:=	parser/
+SIGNALS_DIR	:=	signals/
+
+
+BUILTIN		:=	builtin_utils.c \
 				builtin.c \
-				cd_cmd.c \
-				cleanup.c \
-				cmd.c \
-				debug.c \
-				env_utils.c \
+				cd_cmd.c
+
+EXECUTE		:=	cmd.c \
+				path.c
+
+EXPORT		:=	env_utils.c \
 				env.c \
-				errors.c \
-				expand_utils.c \
-				expand.c \
 				export_utils.c \
 				export.c \
+				unset_utils.c \
+				unset.c
+
+GLOBAL		:=	cleanup.c \
+				debug.c \
+				errors.c \
 				init.c \
+				utils.c
+
+LEXAR		:=	expand_utils.c \
+				expand.c \
 				input.c \
 				lexar_utils.c \
 				lexar.c \
-				lst_tokens.c \
-				parser.c \
-				path.c \
-				signals.c \
-				unset_utils.c \
-				unset.c \
-				utils.c
+				lst_tokens.c
+
+PARSER		:=	parser.c
+
+SIGNALS		:=	signals.c
+
+BUILTIN_SRC	:=	$(addprefix $(BUILTIN_DIR), $(BUILTIN))
+EXECUTE_SRC	:=	$(addprefix $(EXECUTE_DIR), $(EXECUTE))
+EXPORT_SRC	:=	$(addprefix $(EXPORT_DIR), $(EXPORT))
+GLOBAL_SRC	:=	$(addprefix $(GLOBAL_DIR), $(GLOBAL))
+LEXAR_SRC	:=	$(addprefix $(LEXAR_DIR), $(LEXAR))
+PARSER_SRC	:=	$(addprefix $(PARSER_DIR), $(PARSER))
+SIGNALS_SRC	:=	$(addprefix $(SIGNALS_DIR), $(SIGNALS))
+
+
+SRC			:=	$(BUILTIN_SRC) \
+				$(EXECUTE_SRC) \
+				$(EXPORT_SRC) \
+				$(GLOBAL_SRC) \
+				$(LEXAR_SRC) \
+				$(PARSER_SRC) \
+				$(SIGNALS_SRC) \
+				main.c
 
 SOURCES		:=	$(addprefix $(SRC_DIR), $(SRC))
 OBJS		:=	$(SRC:.c=.o)
@@ -81,6 +113,13 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	@mkdir -p $@
+	@mkdir -p $@/builtin
+	@mkdir -p $@/execute
+	@mkdir -p $@/export
+	@mkdir -p $@/global
+	@mkdir -p $@/lexar
+	@mkdir -p $@/parser
+	@mkdir -p $@/signals
 
 clean:
 	@make -sC $(LIB_PATH) clean
@@ -91,6 +130,9 @@ fclean: clean
 	@make -sC $(LIB_PATH) fclean
 	@rm -f $(NAME)
 	@printf "\033[2K\r$(_RED) '"$(NAME)"' has been deleted. $(_END)\n"
+
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_supression ./minishell
 
 re: fclean all
 

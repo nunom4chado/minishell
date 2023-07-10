@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/05 16:35:28 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:39:57 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int process_input(t_state *state)
 	add_history(state->input);
     if(lexar(state, state->input))
     {
+		state->exit_status = CODE_SYNTAX_ERROR;
         clean_last_cmd(state);
         return (1);
     }

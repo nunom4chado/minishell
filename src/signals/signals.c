@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 11:51:06 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:32:50 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_state g_state;
+extern t_state		g_state;
 
 /**
  * All signals must registered inside this function to keep them in on location
@@ -31,10 +31,7 @@ void	register_signals(void)
 void	handle_ctrl_c(int signo)
 {
 	(void)signo;
-
-	//printf("debugging ctr-c 1\n");
 	g_state.exit_status = CODE_CTR_C;
-
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -51,4 +48,3 @@ int	handle_ctrl_d(char *cmd, t_state *state)
 	}
 	return (0);
 }
-
