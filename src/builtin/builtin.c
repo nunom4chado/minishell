@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 17:16:39 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:07:36 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,9 +157,12 @@ void	builtin_echo(char **cmd)
 	{
 		i = 0;
 		nl = 1;
-		if ((cmd == NULL && cmd[i] == NULL))
+		if (!cmd || !cmd[i])
+		{
+			printf("\n");
 			return ;
-		if (!ft_strcmp(cmd[i], "-n"))
+		}
+		while (ft_strcmp(cmd[i], "-n") == 0)
 		{
 			nl = 0;
 			i++;
