@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 16:39:57 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:35:28 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int process_input(t_state *state)
     expand(state);
     //print_tokens(state);
 
-	state->cmd = compose_cmd(state);
+	parse_and_execute(state);
 
 	//print_arr_str(state->cmd, "testing compose_cmd");
 

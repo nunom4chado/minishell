@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 18:24:17 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:47:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 # define CODE_CTR_C 130
 # define CODE_SYNTAX_ERROR 2
 # define CODE_CMD_NOT_FOUND 127
+
+# define IN 0
+# define OUT 1
 
 /* -------------------------------------------------------------------------- */
 /*                                   Structs                                  */
@@ -190,6 +193,7 @@ int		lst_token_size(t_token *lst);
 
 /* --------------------------------- Parser --------------------------------- */
 
+void	parse_and_execute(t_state *state);
 int		has_pipe(t_state *state);
 char	**compose_cmd(t_state *state);
 
