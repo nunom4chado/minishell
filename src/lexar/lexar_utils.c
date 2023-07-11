@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:52:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 14:51:36 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:55:40 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,8 @@ int	validate_last_token(t_state *state)
 	t_token	*last;
 
 	last = lst_token_last(state->tokens);
+	if (!last)
+		return (1);
 	if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
 	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
