@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 11:47:24 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:27:58 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,11 @@
 typedef enum e_tk_type
 {
 	WORD,
-	EXEC,
-	ARG,
 	PIPE,
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
+	REDIR_FILE,
 	HEREDOC,
 	HEREDOC_DELIMITER,
 }	t_tk_type;
@@ -120,10 +119,13 @@ void	cd_cmd(t_state *state);
 
 void	clean_last_cmd(t_state *state);
 void	clean_all(t_state *state);
+void	free_2d_array(char **ptr);
 
 /* --------------------------------- CMD ----------------------------------- */
 
 void	last_cmd(t_state *state);
+void	execute(char **cmd);
+void	array_env(t_state *state);
 
 /* ---------------------------------- Debug --------------------------------- */
 
@@ -141,6 +143,8 @@ char	*ft_getenv(char *key, t_state *state);
 void	print_env(t_state *state);
 
 /* --------------------------------- Errors --------------------------------- */
+
+void	print_error(char *msg, int error);
 
 /* --------------------------------- Expand -------------------------------- */
 
@@ -196,6 +200,8 @@ int		lst_token_size(t_token *lst);
 void	parse_and_execute(t_state *state);
 int		has_pipe(t_state *state);
 char	**compose_cmd(t_state *state);
+char	**create_command_array(t_token *token, t_token *pipe);
+void	here_doc_input(char *eof, int *save_fd);
 
 /* --------------------------------- Path ---------------------------------- */
 
@@ -206,6 +212,7 @@ char	*path(char *cmd, char **envp);
 void	register_signals(void);
 void	handle_ctrl_c(int signo);
 int		handle_ctrl_d(char *cmd, t_state *state);
+void	define_exec_signals(void);
 
 /*-------------------------------- Unset ------------------------------*/
 

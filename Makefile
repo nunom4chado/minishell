@@ -19,7 +19,7 @@ _GONE		=	\e[2K\r
 
 NAME		:=	minishell
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -g #-fsanitize=address
+CFLAGS		:=	-Wall -Werror -Wextra -g -fsanitize=address
 DEPS		:=	-lreadline -lXext -lX11 -lm
 
 
@@ -47,7 +47,8 @@ BUILTIN		:=	builtin_utils.c \
 				cd_cmd.c
 
 EXECUTE		:=	cmd.c \
-				path.c
+				path.c \
+				execute.c
 
 EXPORT		:=	env_utils.c \
 				env.c \
@@ -69,7 +70,9 @@ LEXAR		:=	expand_utils.c \
 				lexar.c \
 				lst_tokens.c
 
-PARSER		:=	parser.c
+PARSER		:=	parser.c \
+				heredoc.c \
+				create_cmd.c
 
 SIGNALS		:=	signals.c
 

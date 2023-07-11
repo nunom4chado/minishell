@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:28:39 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 15:46:46 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/11 14:51:33 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@ void	print_tokens(t_state *state)
 	t_token		*token;
 	const char	*token_types[] = {
 		"WORD",
-		"EXEC",
-		"ARG",
 		"PIPE",
 		"REDIR_IN",
 		"REDIR_OUT",
 		"REDIR_APPEND",
+		"REDIR_FILE",
 		"HEREDOC",
 		"HEREDOC_DELIMITER"
 	};
