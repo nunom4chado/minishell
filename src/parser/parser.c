@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 15:09:47 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:41:37 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	redirect_output(char *file, int flags)
 {
 	int	fd_file;
 
-	fd_file = open(file, flags, 0777);
+	fd_file = open(file, flags, 0644);
 	if (fd_file == -1)
 		print_error(strerror(errno), 1);
 	else

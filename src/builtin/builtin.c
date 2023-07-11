@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 15:13:23 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:22:16 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * Exit the shell with status code saved on state and free all memory.
- * 
+ *
  * @note exit will only work if has 0 arguments
 */
 void	exit_builtin(char **cmd, t_state *state)
@@ -182,7 +182,7 @@ void	execute_builtin(char **cmd, t_state *state)
 	if (ft_strcmp(cmd[0], "echo") == 0)
 		builtin_echo(cmd + 1);
 	else if (ft_strcmp(cmd[0], "cd") == 0)
-		cd_cmd(state);
+		cd_cmd(state, cmd + 1);
 	else if (ft_strcmp(cmd[0], "pwd") == 0)
 		builtin_pwd();
 	else if (ft_strcmp(cmd[0], "export") == 0)

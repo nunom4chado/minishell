@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 15:01:42 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:39:04 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
  * Function responsible to initialize the state struct
  *
  * @param state pointer to the state struct
- * @param envp from the main argument
 */
 void	init_state(t_state *state)
 {
@@ -25,5 +24,4 @@ void	init_state(t_state *state)
 	state->exp = NULL;
 	state->input = NULL;
 	state->tokens = NULL;
-	state->envp = NULL;
 }

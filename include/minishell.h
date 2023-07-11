@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 15:27:58 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:27:14 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,6 @@ typedef struct s_state
 {
 	int		exit_status;
 	char	*input;
-	char	**cmd;
-	char	**envp;
 	t_env	*env;
 	t_export	*exp;
 	t_token	*tokens;
@@ -113,7 +111,7 @@ void	exit_builtin(char **cmd, t_state *state);
 
 /* --------------------------------- CD_CMD -------------------------------- */
 
-void	cd_cmd(t_state *state);
+void	cd_cmd(t_state *state, char **cmd);
 
 /* -------------------------------- Clean up -------------------------------- */
 
@@ -123,9 +121,9 @@ void	free_2d_array(char **ptr);
 
 /* --------------------------------- CMD ----------------------------------- */
 
-void	last_cmd(t_state *state);
+//void	last_cmd(t_state *state);
 void	execute(char **cmd);
-void	array_env(t_state *state);
+char	**array_env(t_state *state);
 
 /* ---------------------------------- Debug --------------------------------- */
 
@@ -206,6 +204,7 @@ void	here_doc_input(char *eof, int *save_fd);
 /* --------------------------------- Path ---------------------------------- */
 
 char	*path(char *cmd, char **envp);
+char	*get_absolute_path(char *cmd, char *path_variable);
 
 /* --------------------------------- Signals ------------------------------- */
 
