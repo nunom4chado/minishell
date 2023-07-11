@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 16:59:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:54:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_env(t_state *state)
 	lst = state->env;
 	while (lst)
 	{
-		printf("%s%s\n", lst->key, lst->value);
+		printf("%s=%s\n", lst->key, lst->value);
 		lst = lst->next;
 	}
 	state->exit_status = 0;
