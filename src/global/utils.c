@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/03 15:41:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:30:17 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,15 @@ char	*ft_read_until(char *cmd)
 	str[x] = '=';
 	str[++x] = '\0';
 	return (str);
+}
+
+int	ft_isnumber(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }

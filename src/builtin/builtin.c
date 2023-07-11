@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 18:07:36 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:35:58 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,32 @@ extern t_state		g_state;
 */
 void	exit_builtin(char **cmd, t_state *state)
 {
-	if (!cmd[1])
+	int	len;
+
+	len = -1;
+	while (cmd[++len]);
+	printf("exit\n");
+	if (len > 2)
 	{
-		printf("exit\n");
-		clean_all(state);
-		exit(state->exit_status);
+		print_error("too many arguments", 1);
+		return ;
 	}
+	if (len == 1)
+		clean_all(state);
+	if (len == 2)
+	{
+		if (ft_isnumber(cmd[1]))
+		{
+			clean_all(state);
+			exit((char)ft_atoi(cmd[1]));
+		}
+		else
+		{
+			print_error("numeric argument required", 2);
+			clean_all(state);
+		}
+	}
+	exit(state->exit_status);
 }
 
 int	is_valid_key_unset(char *key, char *type)
