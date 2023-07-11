@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 16:22:16 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:58:57 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern t_state		g_state;
 
 /**
  * Exit the shell with status code saved on state and free all memory.
@@ -120,6 +122,7 @@ void	builtin_export(t_state *state, char **cmd)
 		return ;
 	while (cmd[++i])
 		export_single(cmd[i], state);
+	g_state.exit_status = 0;
 }
 
 void	builtin_unset(t_state *state, char **cmd)
@@ -142,6 +145,7 @@ void	builtin_unset(t_state *state, char **cmd)
 		unset_expvariables(state, key);
 		unset_envvariables(state, key);
 	}
+	state->exit_status = 0;
 }
 
 void	builtin_echo(char **cmd)
@@ -151,7 +155,7 @@ void	builtin_echo(char **cmd)
 
 	i = 0;
 	nl = 1;
-	if (cmd == NULL && cmd[i] == NULL)
+	if ((cmd == NULL && cmd[i] == NULL))
 		return ;
 	if (!ft_strcmp(cmd[i], "-n"))
 	{
@@ -167,6 +171,7 @@ void	builtin_echo(char **cmd)
 	}
 	if (nl)
 		printf("\n");
+	g_state.exit_status = 0;
 }
 
 void	builtin_pwd()
@@ -175,6 +180,7 @@ void	builtin_pwd()
 
 	getcwd(pwd, sizeof(pwd));
 	printf("%s\n", pwd);
+	g_state.exit_status = 0;
 }
 
 void	execute_builtin(char **cmd, t_state *state)

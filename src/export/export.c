@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/01 13:48:24 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:58:35 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	print_export(t_state *state)
 			printf("%s%s=\"%s\"\n", lst->dec, lst->key, lst->value);
 		lst = lst->next;
 	}
+	state->exit_status = 0;
 }
 
 t_export	*findexp(t_state *state, char *key)
