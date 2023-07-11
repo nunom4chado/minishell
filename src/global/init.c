@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 15:39:04 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:12:16 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	init_state(t_state *state)
 	state->exit_status = 0;
 	state->env = NULL;
 	state->exp = NULL;
+	state->echo = 1;
 	state->input = NULL;
 	state->tokens = NULL;
 }

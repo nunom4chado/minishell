@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 16:46:24 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:13:57 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern t_state		g_state;
 
 int	has_pipe(t_state *state)
 {
@@ -71,7 +73,10 @@ static void	redirect_input(char *file, int flags)
 
 	fd_file = open(file, flags);
 	if (fd_file == -1)
+	{
 		print_error(strerror(errno), 1);
+		g_state.echo = 0;
+	}
 	else
 	{
 		dup2(fd_file, IN);

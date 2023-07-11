@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 11:35:28 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:04:52 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ int process_input(t_state *state)
         clean_last_cmd(state);
         return (1);
     }
-
+/*
     if (has_heredocs(state))
 		ft_putendl_fd("\nTODO: handle heredocs\n", 2);
+*/
 
     //print_tokens(state);
     expand(state);

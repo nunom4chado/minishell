@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 16:58:57 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:16:39 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,25 +153,29 @@ void	builtin_echo(char **cmd)
 	int	i;
 	int	nl;
 
-	i = 0;
-	nl = 1;
-	if ((cmd == NULL && cmd[i] == NULL))
-		return ;
-	if (!ft_strcmp(cmd[i], "-n"))
+	if (g_state.echo)
 	{
-		nl = 0;
-		i++;
+		i = 0;
+		nl = 1;
+		if ((cmd == NULL && cmd[i] == NULL))
+			return ;
+		if (!ft_strcmp(cmd[i], "-n"))
+		{
+			nl = 0;
+			i++;
+		}
+		while (cmd[i])
+		{
+			printf("%s", cmd[i]);
+			if (cmd [i + 1])
+				printf(" ");
+			i++;
+		}
+		if (nl)
+			printf("\n");
+		g_state.exit_status = 0;
 	}
-	while (cmd[i])
-	{
-		printf("%s", cmd[i]);
-		if (cmd [i + 1])
-			printf(" ");
-		i++;
-	}
-	if (nl)
-		printf("\n");
-	g_state.exit_status = 0;
+	g_state.echo = 1;
 }
 
 void	builtin_pwd()
