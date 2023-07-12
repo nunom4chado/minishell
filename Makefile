@@ -134,9 +134,12 @@ fclean: clean
 	@rm -f $(NAME)
 	@printf "\033[2K\r$(_RED) '"$(NAME)"' has been deleted. $(_END)\n"
 
+re: fclean all
+
+rerun: re
+	@./$(NAME)
+
 valgrind:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_supression ./minishell
 
-re: fclean all
-
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re valgrind rerun
