@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 18:35:58 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:31:30 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,10 @@ int	is_valid_key(char *key, char *cmd, char *type)
 	return (1);
 }
 
-int	only_export(t_state *state, char *key)
+void	only_export(t_state *state, char *key)
 {
-	char	*value;
-
 	if (ft_getexp(key, state) == NULL)
-	{
-		value = NULL;
-		ft_setexp(key, value, state);
-		return (0);
-	}
-	return (1);
+		ft_setexp(key, NULL, state);
 }
 
 void	export_single(char *cmd, t_state *state)
@@ -125,8 +118,8 @@ void	export_single(char *cmd, t_state *state)
 	}
 	if (cmd[len] != '=')
 	{
-		if (!only_export(state, key))
-			return ;
+		only_export(state, key);
+		return ;
 	}
 	value = ft_strdup(cmd + len + 1);
 	ft_setenv(key, value, state);
