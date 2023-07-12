@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 18:45:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:40:53 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		clean_last_cmd(&g_state);
 	}
-	rl_clear_history();
 	clean_all(&g_state);
 	return (EXIT_SUCCESS);
 }
