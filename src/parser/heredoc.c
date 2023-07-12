@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 12:07:31 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 19:03:51 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern t_state		g_state;
 
-#define TMP_FILE	"/tmp/minihell_temporary_file"
+#define TMP_FILE	"/tmp/minishell_heredoc"
 
 
 void	interrupt_here_document(int signal)
@@ -45,7 +45,7 @@ static	void	get_and_write_input(int tmp_fd, char *eof)
 		input = readline("> ");
 		if (!input)
 		{
-			print_error("here-document delimited by end-of-file", 0);
+			print_error("warning: here-document delimited by end-of-file", 0);
 			close(tmp_fd);
 			exit(0);
 		}
@@ -87,6 +87,7 @@ void	here_doc_input(char *eof, int *save_fd)
 	int		pid;
 	int		status;
 
+	printf("handle heredoc with delimiter %s\n", eof);
 	tmp_fd = create_temporary_file();
 	if (tmp_fd == -1)
 		return ;
@@ -105,4 +106,5 @@ void	here_doc_input(char *eof, int *save_fd)
 	make_tmp_file_input();
 	dup2(save_fd_out, STDOUT_FILENO);
 	close(save_fd_out);
+	printf("finish heredoc with delimiter %s\n", eof);
 }
