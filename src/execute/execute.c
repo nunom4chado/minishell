@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 16:32:01 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 15:34:37 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,17 @@ static int	add_path_to_cmd_name(char **cmd)
 
 	if (!cmd[0] || (!is_path_defined(&path_variable)))
 		return (0);
-	cmd_name = get_absolute_path(cmd[0], path_variable);
-	if (!cmd_name)
+	if (!is_executable(cmd[0]))
 	{
-		print_error("minishell: command not found.", 127);
-		return (0);
+		cmd_name = get_absolute_path(cmd[0], path_variable);
+		if (!cmd_name)
+		{
+			print_error("minishell: command not found.", 127);
+			return (0);
+		}
+		free(cmd[0]);
+		cmd[0] = cmd_name;
 	}
-	free(cmd[0]);
-	cmd[0] = cmd_name;
 	return (1);
 }
 

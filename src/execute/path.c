@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:13:02 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/11 16:27:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 15:35:20 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*get_possible_path(char *envpath, char *cmd)
 	return (path);
 }
 
-static int	is_executable(char *cmd_path)
+int	is_executable(char *cmd_path)
 {
 	if (!access(cmd_path, F_OK))
 		return (1);

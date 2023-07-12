@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 10:57:34 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 15:37:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void	free_2d_array(char **ptr);
 //void	last_cmd(t_state *state);
 void	execute(char **cmd);
 char	**array_env(t_state *state);
+int		is_executable(char *cmd_path);
 
 /* ---------------------------------- Debug --------------------------------- */
 
