@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 14:53:30 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/12 17:12:00 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void	builtin_unset(t_state *state, char **cmd)
 		key = ft_substr(cmd[i], 0, len);
 		unset_expvariables(state, key);
 		unset_envvariables(state, key);
+		free(key);
 	}
 	state->exit_status = 0;
 }
