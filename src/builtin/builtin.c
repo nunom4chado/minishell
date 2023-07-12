@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 14:49:19 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:53:30 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	exit_builtin(char **cmd, t_state *state)
 	int	len;
 
 	len = -1;
+	if (has_pipe(state))
+		return ;
 	while (cmd[++len]);
 	printf("exit\n");
 	if (len > 2)
