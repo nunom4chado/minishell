@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 14:31:30 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:49:19 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,14 @@ void	export_single(char *cmd, t_state *state)
 	if (cmd[len] != '=')
 	{
 		only_export(state, key);
+		free(key);
 		return ;
 	}
 	value = ft_strdup(cmd + len + 1);
 	ft_setenv(key, value, state);
 	ft_setexp(key, value, state);
+	free(key);
+	free(value);
 }
 
 void	builtin_export(t_state *state, char **cmd)

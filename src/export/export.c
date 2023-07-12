@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/12 10:57:22 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:39:08 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,11 @@ int	ft_setexp(char *key, char *newvalue, t_state *state)
 	t_export	*find;
 
 	find = findexp(state, key);
-	if (find != NULL)
+	if (find)
 	{
-		if (newvalue == NULL)
-			find->value = NULL;
-		else
-			find->value = ft_strdup(newvalue);
+		if (find->value != NULL)
+			free(find->value);
+		find->value = ft_strdup(newvalue);
 		return (0);
 	}
 	else
