@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/11 16:58:35 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:57:22 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	print_export(t_state *state)
 	while (lst)
 	{
 		if (lst->value == NULL)
-			printf("%s%s\n", lst->dec, lst->key);
+			printf("declare -x %s\n", lst->key);
 		else
-			printf("%s%s=\"%s\"\n", lst->dec, lst->key, lst->value);
+			printf("declare -x %s=\"%s\"\n", lst->key, lst->value);
 		lst = lst->next;
 	}
 	state->exit_status = 0;

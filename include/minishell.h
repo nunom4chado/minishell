@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 18:30:46 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:57:34 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ typedef struct s_env
 
 typedef struct s_export
 {
-	char	*dec;
 	char	*key;
 	char	*value;
 	struct	s_export	*next;
