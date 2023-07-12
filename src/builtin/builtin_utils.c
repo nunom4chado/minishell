@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:21:06 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 12:06:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:22:35 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 /**
  * Checks if a command is a builtin
- * 
+ *
  * @return 1 if true
  * @return 0 if false
 */
 int	is_builtin(char **cmd)
 {
-	if (!cmd)
+	if (!cmd || !*cmd)
 		return (0);
 	if (ft_strcmp(cmd[0], "echo") == 0)
         return (1);
