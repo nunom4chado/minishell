@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/13 15:38:23 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:55:31 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	expand(t_state *state);
 char	*skip_undefined_var(char *str, int start, int end);
 void	ft_tilde_expand(t_token *token, t_state *state);
 char	*find_var_name(char *str);
-int		can_expand(const char *str, char quote_mode);
+int		can_expand(const char *str, char *quote_mode);
 int		toggle_quote_mode(const char c, char *quote_mode);
 char	*append_char(char *str, char c);
 char	*append_var(char *str, char *var_name, t_state *state);
