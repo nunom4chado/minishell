@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:37:16 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/07 17:16:56 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:43:48 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	array_env(t_state *state)
+char	**array_env(t_state *state)
 {
 	int		num;
 	int		i;
 	t_env	*current;
 	char	*string;
+	char	**env;
 
 	num = 0;
 	current = state->env;
@@ -26,21 +27,23 @@ void	array_env(t_state *state)
 		num++;
 		current = current->next;
 	}
-	state->envp = ft_calloc(sizeof(char **), num + 1);
+	env = ft_calloc(sizeof(char **), num + 1);
 	current = state->env;
 	i = 0;
 	while (current != NULL)
 	{
 		string = ft_strjoin(current->key, "=");
-		state->envp[i] = ft_strjoin(string, current->value);
+		env[i] = ft_strjoin(string, current->value);
 		current = current->next;
 		free(string);
 		i++;
 	}
-	state->envp[i] = NULL;
+	env[i] = NULL;
+	return (env);
 }
 
 /* This one is the last cmd not the open cmd */
+/*
 void	last_cmd(t_state *state)
 {
 	char	**comand;
@@ -75,3 +78,4 @@ void	last_cmd(t_state *state)
 	close(pipefd[0]);
 	free_split(state->envp);
 }
+*/

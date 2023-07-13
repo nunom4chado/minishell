@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 16:00:29 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:54:31 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,15 @@ void	ft_tilde_expand(t_token *token, t_state *state)
  * @return 1 if true
  * @return 0 if false
 */
-int	can_expand(const char *str, char quote_mode)
+int	can_expand(const char *str, char *quote_mode)
 {
+	if (*str == '$' && ft_is_quote(*(str + 1)))
+	{
+		*quote_mode = *(str + 1);
+		return (1);
+	}
 	if (*str == '$' && *(str + 1) && !ft_is_quote(*(str + 1))
-		&& quote_mode != '\'')
+		&& *quote_mode != '\'')
 		return (1);
 	return (0);
 }
@@ -127,6 +132,8 @@ char	*append_char(char *str, char c)
 {
 	char	*tmp;
 
+	if (!str || !c)
+		return (NULL);
 	tmp = malloc(ft_strlen(str) + 2);
 	ft_memcpy(tmp, str, ft_strlen(str));
 	tmp[ft_strlen(str)] = c;

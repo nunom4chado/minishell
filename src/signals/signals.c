@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 16:32:50 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:28:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,25 @@ int	handle_ctrl_d(char *cmd, t_state *state)
 		return (1);
 	}
 	return (0);
+}
+
+void	interrupt_process(int signal)
+{
+	(void)signal;
+	g_state.exit_status = 130;
+	write(1, "\n", 1);
+}
+
+static void	quit_process(int signal)
+{
+	(void)signal;
+	g_state.exit_status = 131;
+	printf("Quit (core dumped)\n");
+}
+
+
+void	define_exec_signals(void)
+{
+	signal(SIGINT, interrupt_process);
+	signal(SIGQUIT, quit_process);
 }

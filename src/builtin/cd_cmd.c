@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/03 17:12:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:35:16 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,16 @@ int	handle_cd(char *path, t_state *state)
 	return (state->exit_status);
 }
 
-void	cd_cmd(t_state *state)
+void	cd_cmd(t_state *state, char **cmd)
 {
-	char	*path;
+	char *path;
 
-	path = state->cmd[1];
+	path = cmd[0];
+	if (cmd[0] && cmd[1])
+	{
+		print_error("too many arguments", 1);
+		return ;
+	}
 	if (path == NULL || *path == '\0')
 		path = ft_getenv("HOME", state);
 	else if (*path == '-' && *(path + 1) == '-' && *(path + 2) == '\0')

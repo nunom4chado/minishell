@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/01 13:48:24 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:39:08 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ void	print_export(t_state *state)
 	while (lst)
 	{
 		if (lst->value == NULL)
-			printf("%s%s\n", lst->dec, lst->key);
+			printf("declare -x %s\n", lst->key);
 		else
-			printf("%s%s=\"%s\"\n", lst->dec, lst->key, lst->value);
+			printf("declare -x %s=\"%s\"\n", lst->key, lst->value);
 		lst = lst->next;
 	}
+	state->exit_status = 0;
 }
 
 t_export	*findexp(t_state *state, char *key)
@@ -49,12 +50,11 @@ int	ft_setexp(char *key, char *newvalue, t_state *state)
 	t_export	*find;
 
 	find = findexp(state, key);
-	if (find != NULL)
+	if (find)
 	{
-		if (newvalue == NULL)
-			find->value = NULL;
-		else
-			find->value = ft_strdup(newvalue);
+		if (find->value != NULL)
+			free(find->value);
+		find->value = ft_strdup(newvalue);
 		return (0);
 	}
 	else

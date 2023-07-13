@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:06:49 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 18:20:51 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:40:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	clean_last_cmd(t_state *state)
 	state->input = NULL;
 	lst_token_clear(&(state->tokens), free);
 	state->tokens = NULL;
-	free_split(state->cmd);
-	state->cmd = NULL;
 }
 
 /**
@@ -38,4 +36,20 @@ void	clean_all(t_state *state)
 		ft_delete_env(state->env);
 	if (state->exp)
 		ft_delete_export(state->exp);
+	rl_clear_history();
+}
+
+void	free_2d_array(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+		i++;
+	while (i > 0)
+	{
+		free(ptr[i - 1]);
+		i--;
+	}
+	free(ptr);
 }

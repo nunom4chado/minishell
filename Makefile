@@ -47,7 +47,8 @@ BUILTIN		:=	builtin_utils.c \
 				cd_cmd.c
 
 EXECUTE		:=	cmd.c \
-				path.c
+				path.c \
+				execute.c
 
 EXPORT		:=	env_utils.c \
 				env.c \
@@ -69,7 +70,9 @@ LEXAR		:=	expand_utils.c \
 				lexar.c \
 				lst_tokens.c
 
-PARSER		:=	parser.c
+PARSER		:=	parser.c \
+				heredoc.c \
+				create_cmd.c
 
 SIGNALS		:=	signals.c
 
@@ -131,9 +134,12 @@ fclean: clean
 	@rm -f $(NAME)
 	@printf "\033[2K\r$(_RED) '"$(NAME)"' has been deleted. $(_END)\n"
 
-valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_supression ./minishell
-
 re: fclean all
 
-.PHONY: all clean fclean re
+rerun: re
+	@./$(NAME)
+
+valgrind: re
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_supression ./minishell
+
+.PHONY: all clean fclean re valgrind revalgrind rerun

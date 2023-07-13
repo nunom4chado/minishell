@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 16:39:57 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:04:52 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,16 @@ int process_input(t_state *state)
         clean_last_cmd(state);
         return (1);
     }
-
+/*
     if (has_heredocs(state))
 		ft_putendl_fd("\nTODO: handle heredocs\n", 2);
+*/
 
     //print_tokens(state);
     expand(state);
     //print_tokens(state);
 
-	state->cmd = compose_cmd(state);
+	parse_and_execute(state);
 
 	//print_arr_str(state->cmd, "testing compose_cmd");
 

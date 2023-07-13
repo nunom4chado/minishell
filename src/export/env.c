@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/06 15:46:37 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:38:11 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ void	print_env(t_state *state)
 	lst = state->env;
 	while (lst)
 	{
-		printf("%s%s\n", lst->key, lst->value);
+		printf("%s=%s\n", lst->key, lst->value);
 		lst = lst->next;
 	}
+	state->exit_status = 0;
 }
 
 t_env	*findenv(t_state *state, char *key)
@@ -46,7 +47,7 @@ int	ft_setenv(char *key, char *newvalue, t_state *state)
 	t_env	*find;
 
 	find = findenv(state, key);
-	if (find != NULL)
+	if (find)
 	{
 		free(find->value);
 		find->value = ft_strdup(newvalue);

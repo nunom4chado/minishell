@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:52:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:40:07 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:55:40 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int	steps_next_occurrence(char *input)
 
 /**
  * Determine if the current char is a metachar and returns it.
- * 
+ *
  * @note special characters are ['|', '>', '>>', '<', '<<']
- * 
+ *
  * @return char * of the current meta character
  * @return empty char * if there are no metachars at the current position
 */
@@ -111,7 +111,7 @@ char	*ft_split_specialchar(char *input, t_state *state)
 }
 
 /**
- * 
+ *
  * TODO: update exit status for all errors
 */
 char	*handle_normal_token(char *input, t_state *state)
@@ -139,6 +139,8 @@ char	*handle_normal_token(char *input, t_state *state)
 	last = lst_token_last(state->tokens);
 	if (last && last->type == HEREDOC)
 		return (create_token(input, input + i - 1, HEREDOC_DELIMITER, state));
+	if (last && (last->type == REDIR_IN || last->type == REDIR_OUT || last->type == REDIR_APPEND))
+		return (create_token(input, input + i - 1, REDIR_FILE, state));
 	return (create_token(input, input + i - 1, WORD, state));
 }
 
@@ -147,6 +149,8 @@ int	validate_last_token(t_state *state)
 	t_token	*last;
 
 	last = lst_token_last(state->tokens);
+	if (!last)
+		return (1);
 	if (ft_strcmp(last->word, "<") == 0 || ft_strcmp(last->word, "<<") == 0 || \
 	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
@@ -166,15 +170,15 @@ int	validate_last_token(t_state *state)
 /**
  * Checks if the previous token is a special char
  * and can be used with the current token
- * 
+ *
  * Valid: [prev, cur]
  * ["|", ">>"]
  * ["|", ">"]
  * ["|", "<"]
  * ["|", "<<"]
- * 
+ *
  * First token CANNOT be a |
- * 
+ *
  * Errors: [prev, cur]
  * [">>", ">"]
  * [">", ">"]
@@ -209,7 +213,7 @@ int	validate_token_sequence(char *input, t_state *state)
 
 /**
  * Check if the last token is a pipe
- * 
+ *
  * @return 1 if true
  * @return 0 if false
 */
@@ -225,7 +229,7 @@ int	pending_pipe(t_state *state)
 
 /**
  * Checks if tokens have heredocs
- * 
+ *
  * @return 1 if true
  * @return o if false
 */

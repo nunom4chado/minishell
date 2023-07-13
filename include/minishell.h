@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 18:24:17 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:55:31 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@
 # define CODE_SYNTAX_ERROR 2
 # define CODE_CMD_NOT_FOUND 127
 
+# define IN 0
+# define OUT 1
+
 /* -------------------------------------------------------------------------- */
 /*                                   Structs                                  */
 /* -------------------------------------------------------------------------- */
@@ -55,12 +58,11 @@
 typedef enum e_tk_type
 {
 	WORD,
-	EXEC,
-	ARG,
 	PIPE,
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
+	REDIR_FILE,
 	HEREDOC,
 	HEREDOC_DELIMITER,
 }	t_tk_type;
@@ -82,7 +84,6 @@ typedef struct s_env
 
 typedef struct s_export
 {
-	char	*dec;
 	char	*key;
 	char	*value;
 	struct	s_export	*next;
@@ -92,8 +93,7 @@ typedef struct s_state
 {
 	int		exit_status;
 	char	*input;
-	char	**cmd;
-	char	**envp;
+	int		echo;
 	t_env	*env;
 	t_export	*exp;
 	t_token	*tokens;
@@ -111,16 +111,20 @@ void	exit_builtin(char **cmd, t_state *state);
 
 /* --------------------------------- CD_CMD -------------------------------- */
 
-void	cd_cmd(t_state *state);
+void	cd_cmd(t_state *state, char **cmd);
 
 /* -------------------------------- Clean up -------------------------------- */
 
 void	clean_last_cmd(t_state *state);
 void	clean_all(t_state *state);
+void	free_2d_array(char **ptr);
 
 /* --------------------------------- CMD ----------------------------------- */
 
-void	last_cmd(t_state *state);
+//void	last_cmd(t_state *state);
+void	execute(char **cmd, int	*save_fd);
+char	**array_env(t_state *state);
+int		is_executable(char *cmd_path);
 
 /* ---------------------------------- Debug --------------------------------- */
 
@@ -139,13 +143,15 @@ void	print_env(t_state *state);
 
 /* --------------------------------- Errors --------------------------------- */
 
+void	print_error(char *msg, int error);
+
 /* --------------------------------- Expand -------------------------------- */
 
 void	expand(t_state *state);
 char	*skip_undefined_var(char *str, int start, int end);
 void	ft_tilde_expand(t_token *token, t_state *state);
 char	*find_var_name(char *str);
-int		can_expand(const char *str, char quote_mode);
+int		can_expand(const char *str, char *quote_mode);
 int		toggle_quote_mode(const char c, char *quote_mode);
 char	*append_char(char *str, char c);
 char	*append_var(char *str, char *var_name, t_state *state);
@@ -190,18 +196,23 @@ int		lst_token_size(t_token *lst);
 
 /* --------------------------------- Parser --------------------------------- */
 
+void	parse_and_execute(t_state *state);
 int		has_pipe(t_state *state);
 char	**compose_cmd(t_state *state);
+char	**create_command_array(t_token *token, t_token *pipe);
+void	here_doc_input(char *eof, int *save_fd);
 
 /* --------------------------------- Path ---------------------------------- */
 
 char	*path(char *cmd, char **envp);
+char	*get_absolute_path(char *cmd, char *path_variable);
 
 /* --------------------------------- Signals ------------------------------- */
 
 void	register_signals(void);
 void	handle_ctrl_c(int signo);
 int		handle_ctrl_d(char *cmd, t_state *state);
+void	define_exec_signals(void);
 
 /*-------------------------------- Unset ------------------------------*/
 
@@ -222,5 +233,9 @@ void	free_split(char **args);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_read_until(char *cmd);
+int		ft_isnumber(char *str);
+
+
+void	restore_std_fds(int *save_fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:20:10 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/01 14:29:54 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:45:47 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ t_export	*ft_newexp(void *key, void	*value)
 	new_node = malloc(sizeof(t_export));
 	if (!new_node)
 		return (0);
-	new_node->dec = ft_strdup("declare -x ");
-	new_node->key = key;
-	new_node->value = value;
+	new_node->key = ft_strdup(key);
+	new_node->value = ft_strdup(value);
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -68,5 +67,7 @@ void	create_exp(t_state *state, char **envi)
 			newexp = ft_newexp(key, value);
 			ft_addexp(&state->exp, newexp);
 		}
+		free(key);
+		free(value);
 	}
 }

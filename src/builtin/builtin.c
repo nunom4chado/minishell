@@ -3,28 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 15:13:23 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:00:39 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern t_state		g_state;
+
 /**
  * Exit the shell with status code saved on state and free all memory.
- * 
+ *
  * @note exit will only work if has 0 arguments
 */
 void	exit_builtin(char **cmd, t_state *state)
 {
-	if (!cmd[1])
+	int	len;
+	int exit_code;
+
+	len = -1;
+	if (has_pipe(state))
+		return ;
+	while (cmd[++len]);
+	printf("exit\n");
+	if (len > 2)
 	{
-		printf("exit\n");
-		clean_all(state);
-		exit(state->exit_status);
+		print_error("too many arguments", 1);
+		return ;
 	}
+	if (len == 1)
+		clean_all(state);
+	if (len == 2)
+	{
+		if (ft_isnumber(cmd[1]))
+		{
+			clean_all(state);
+			exit_code = (char)ft_atoi(cmd[1]);
+			free_2d_array(cmd);
+			exit(exit_code);
+		}
+		else
+		{
+			print_error("numeric argument required", 2);
+			clean_all(state);
+		}
+	}
+	free_2d_array(cmd);
+	exit(state->exit_status);
 }
 
 int	is_valid_key_unset(char *key, char *type)
@@ -73,17 +101,10 @@ int	is_valid_key(char *key, char *cmd, char *type)
 	return (1);
 }
 
-int	only_export(t_state *state, char *key)
+void	only_export(t_state *state, char *key)
 {
-	char	*value;
-
 	if (ft_getexp(key, state) == NULL)
-	{
-		value = NULL;
-		ft_setexp(key, value, state);
-		return (0);
-	}
-	return (1);
+		ft_setexp(key, NULL, state);
 }
 
 void	export_single(char *cmd, t_state *state)
@@ -103,12 +124,15 @@ void	export_single(char *cmd, t_state *state)
 	}
 	if (cmd[len] != '=')
 	{
-		if (!only_export(state, key))
-			return ;
+		only_export(state, key);
+		free(key);
+		return ;
 	}
 	value = ft_strdup(cmd + len + 1);
 	ft_setenv(key, value, state);
 	ft_setexp(key, value, state);
+	free(key);
+	free(value);
 }
 
 void	builtin_export(t_state *state, char **cmd)
@@ -120,6 +144,7 @@ void	builtin_export(t_state *state, char **cmd)
 		return ;
 	while (cmd[++i])
 		export_single(cmd[i], state);
+	g_state.exit_status = 0;
 }
 
 void	builtin_unset(t_state *state, char **cmd)
@@ -141,7 +166,9 @@ void	builtin_unset(t_state *state, char **cmd)
 		key = ft_substr(cmd[i], 0, len);
 		unset_expvariables(state, key);
 		unset_envvariables(state, key);
+		free(key);
 	}
+	state->exit_status = 0;
 }
 
 void	builtin_echo(char **cmd)
@@ -149,24 +176,32 @@ void	builtin_echo(char **cmd)
 	int	i;
 	int	nl;
 
-	i = 0;
-	nl = 1;
-	if (cmd == NULL && cmd[i] == NULL)
-		return ;
-	if (!ft_strcmp(cmd[i], "-n"))
+	if (g_state.echo)
 	{
-		nl = 0;
-		i++;
+		i = 0;
+		nl = 1;
+		if (!cmd || !cmd[i])
+		{
+			printf("\n");
+			return ;
+		}
+		while (ft_strcmp(cmd[i], "-n") == 0)
+		{
+			nl = 0;
+			i++;
+		}
+		while (cmd[i])
+		{
+			printf("%s", cmd[i]);
+			if (cmd [i + 1])
+				printf(" ");
+			i++;
+		}
+		if (nl)
+			printf("\n");
+		g_state.exit_status = 0;
 	}
-	while (cmd[i])
-	{
-		printf("%s", cmd[i]);
-		if (cmd [i + 1])
-			printf(" ");
-		i++;
-	}
-	if (nl)
-		printf("\n");
+	g_state.echo = 1;
 }
 
 void	builtin_pwd()
@@ -175,6 +210,7 @@ void	builtin_pwd()
 
 	getcwd(pwd, sizeof(pwd));
 	printf("%s\n", pwd);
+	g_state.exit_status = 0;
 }
 
 void	execute_builtin(char **cmd, t_state *state)
@@ -182,7 +218,7 @@ void	execute_builtin(char **cmd, t_state *state)
 	if (ft_strcmp(cmd[0], "echo") == 0)
 		builtin_echo(cmd + 1);
 	else if (ft_strcmp(cmd[0], "cd") == 0)
-		cd_cmd(state);
+		cd_cmd(state, cmd + 1);
 	else if (ft_strcmp(cmd[0], "pwd") == 0)
 		builtin_pwd();
 	else if (ft_strcmp(cmd[0], "export") == 0)

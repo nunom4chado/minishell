@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 13:00:34 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/07 18:18:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:57:53 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	ft_expdelone(t_export *lst)
 {
 	if (!lst)
 		return ;
-	free(lst->dec);
 	free(lst->key);
 	free(lst->value);
 	free(lst);
