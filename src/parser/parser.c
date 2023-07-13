@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 17:13:57 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:38:12 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ static void	create_pipe(t_token *pipe_token, int *old_pipe_in)
 	close(new_pipe[IN]);
 }
 
-static void	restore_std_fds(int *save_fd)
+void	restore_std_fds(int *save_fd)
 {
 	dup2(save_fd[IN], STDIN_FILENO);
 	close(save_fd[IN]);
@@ -151,7 +151,7 @@ void	command_parser(t_token *token_lst, t_token *pipe, int *old_pipe_in)
 	check_redirects(token_lst, pipe, save_fd);
 	cmd = create_command_array(token_lst, pipe);
 	//print_arr_str(cmd, "cmd and args");
-	execute(cmd);
+	execute(cmd, save_fd);
 	free_2d_array(cmd);
 	restore_std_fds(save_fd);
 }

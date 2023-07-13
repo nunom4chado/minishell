@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 15:34:37 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:38:35 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_path_defined(char **path_variable)
 	return (1);
 }
 
-static int	add_path_to_cmd_name(char **cmd)
+static int	add_path_to_cmd_name(char **cmd, int *save_fd)
 {
 	char	*cmd_name;
 	char	*path_variable;
@@ -40,6 +40,7 @@ static int	add_path_to_cmd_name(char **cmd)
 		cmd_name = get_absolute_path(cmd[0], path_variable);
 		if (!cmd_name)
 		{
+			restore_std_fds(save_fd);
 			print_error("minishell: command not found.", 127);
 			return (0);
 		}
@@ -49,14 +50,14 @@ static int	add_path_to_cmd_name(char **cmd)
 	return (1);
 }
 
-static void	execute_cmd(char **cmd)
+static void	execute_cmd(char **cmd, int	*save_fd)
 {
 	int		pid;
 	int		status;
 	char	**env;
 
 
-	if (!cmd[0] || !add_path_to_cmd_name(cmd))
+	if (!cmd[0] || !add_path_to_cmd_name(cmd, save_fd))
 		return ;
 	pid = fork();
 	define_exec_signals();
@@ -71,7 +72,7 @@ static void	execute_cmd(char **cmd)
 		g_state.exit_status = WEXITSTATUS(status);
 }
 
-void	execute(char **cmd)
+void	execute(char **cmd, int	*save_fd)
 {
 	int	i;
 
@@ -79,5 +80,5 @@ void	execute(char **cmd)
 	if (is_builtin(cmd))
 		execute_builtin(&cmd[i], &g_state);
 	else
-		execute_cmd(&cmd[i]);
+		execute_cmd(&cmd[i], save_fd);
 }

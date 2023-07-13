@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 15:37:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:38:23 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	free_2d_array(char **ptr);
 /* --------------------------------- CMD ----------------------------------- */
 
 //void	last_cmd(t_state *state);
-void	execute(char **cmd);
+void	execute(char **cmd, int	*save_fd);
 char	**array_env(t_state *state);
 int		is_executable(char *cmd_path);
 
@@ -234,5 +234,8 @@ int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcat(char *dest, char *src);
 char	*ft_read_until(char *cmd);
 int		ft_isnumber(char *str);
+
+
+void	restore_std_fds(int *save_fd);
 
 #endif
