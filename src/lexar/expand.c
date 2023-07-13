@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/06/30 17:12:12 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:49:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 /**
  * Creates a new char * that will expand variables and remove quotes that
  * should be removed.
- * 
+ *
  * @param str any char *
  * @param state pointer to state struct
- * 
+ *
  * @return The resulting char *
 */
 char	*expand_and_remove_quotes(char *str, t_state *state)
@@ -36,7 +36,7 @@ char	*expand_and_remove_quotes(char *str, t_state *state)
 			str++;
 			continue ;
 		}
-		if (can_expand(str, quote_mode))
+		if (can_expand(str, &quote_mode))
 		{
 			var_name = find_var_name(str + 1);
 			new = append_var(new, var_name, state);
