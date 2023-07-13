@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/13 15:08:36 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:53:47 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	interrupt_here_document(int signal)
 {
 	(void)signal;
 	g_state.exit_status = 130;
+	clean_all(&g_state);
 	write(1, "\n", 1);
 	exit(130);
 }
@@ -47,6 +48,7 @@ static	void	get_and_write_input(int tmp_fd, char *eof)
 		{
 			print_error("warning: here-document delimited by end-of-file", 0);
 			close(tmp_fd);
+			clean_all(&g_state);
 			exit(0);
 		}
 		if (ft_strcmp(input, eof))

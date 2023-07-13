@@ -19,7 +19,7 @@ _GONE		=	\e[2K\r
 
 NAME		:=	minishell
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS		:=	-Wall -Werror -Wextra -g #-fsanitize=address
 DEPS		:=	-lreadline -lXext -lX11 -lm
 
 
@@ -139,7 +139,7 @@ re: fclean all
 rerun: re
 	@./$(NAME)
 
-valgrind:
+valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_supression ./minishell
 
-.PHONY: all clean fclean re valgrind rerun
+.PHONY: all clean fclean re valgrind revalgrind rerun

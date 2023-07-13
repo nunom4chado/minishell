@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 16:17:17 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 17:12:00 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:00:39 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ extern t_state		g_state;
 void	exit_builtin(char **cmd, t_state *state)
 {
 	int	len;
+	int exit_code;
 
 	len = -1;
 	if (has_pipe(state))
@@ -40,7 +41,9 @@ void	exit_builtin(char **cmd, t_state *state)
 		if (ft_isnumber(cmd[1]))
 		{
 			clean_all(state);
-			exit((char)ft_atoi(cmd[1]));
+			exit_code = (char)ft_atoi(cmd[1]);
+			free_2d_array(cmd);
+			exit(exit_code);
 		}
 		else
 		{
@@ -48,6 +51,7 @@ void	exit_builtin(char **cmd, t_state *state)
 			clean_all(state);
 		}
 	}
+	free_2d_array(cmd);
 	exit(state->exit_status);
 }
 
