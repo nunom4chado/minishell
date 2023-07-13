@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:45:17 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/11 18:30:17 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 17:50:54 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,31 @@ char	*ft_read_until(char *cmd)
 	return (str);
 }
 
+/**
+ * Checks if the str is a valid number
+ *
+ * @param str string representing a number
+ *
+ * @note This function is used in exit.
+ * @note -1 is valid number
+ * @note -- if valid number
+ * @note --- is not valid
+ * @note --1 is not valid
+ * @note -a is not valid
+ *
+ * @return 1 if true
+ * @return 0 if false
+*/
 int	ft_isnumber(char *str)
 {
+	if (*str == '-')
+	{
+		str++;
+		if (!*str)
+			return (1);
+		if (*str == '-' && *(str + 1) == '\0')
+			return (1);
+	}
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
