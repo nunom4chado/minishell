@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/07 16:00:29 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:30:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ char	*append_char(char *str, char c)
 {
 	char	*tmp;
 
+	if (!str || !c)
+		return (NULL);
 	tmp = malloc(ft_strlen(str) + 2);
 	ft_memcpy(tmp, str, ft_strlen(str));
 	tmp[ft_strlen(str)] = c;

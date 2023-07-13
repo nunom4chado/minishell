@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/13 15:53:47 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:30:54 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static	void	get_and_write_input(int tmp_fd, char *eof)
 		else
 		{
 			close(tmp_fd);
+			clean_all(&g_state);
 			free(input);
 			break ;
 		}
