@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 19:03:51 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:08:36 by jodos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,12 @@ void	here_doc_input(char *eof, int *save_fd)
 	int		pid;
 	int		status;
 
-	printf("handle heredoc with delimiter %s\n", eof);
+	//printf("handle heredoc with delimiter %s in %d out %d\n", eof, save_fd[0], save_fd[1]);
 	tmp_fd = create_temporary_file();
 	if (tmp_fd == -1)
 		return ;
-	save_fd_out = dup(OUT);
-	dup2(save_fd[OUT], STDOUT_FILENO);
+	save_fd_out = dup(STDOUT_FILENO);
+	dup2(save_fd[STDIN_FILENO], STDIN_FILENO);
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
@@ -106,5 +106,5 @@ void	here_doc_input(char *eof, int *save_fd)
 	make_tmp_file_input();
 	dup2(save_fd_out, STDOUT_FILENO);
 	close(save_fd_out);
-	printf("finish heredoc with delimiter %s\n", eof);
+	//printf("finish heredoc with delimiter %s\n", eof);
 }
