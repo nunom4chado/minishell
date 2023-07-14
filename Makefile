@@ -42,8 +42,7 @@ PARSER_DIR	:=	parser/
 SIGNALS_DIR	:=	signals/
 
 
-BUILTIN		:=	builtin_utils.c \
-				builtin.c \
+BUILTIN		:=	builtin.c \
 				cd_cmd.c \
 				echo_cmd.c \
 				exit_cmd.c \
