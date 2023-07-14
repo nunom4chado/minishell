@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:30:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:55:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:34:55 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_exit_with_two_args(char **cmd, t_state *state)
 	{
 		clean_all(state);
 		exit_code = (char)ft_atoi(cmd[1]);
-		free_2d_array(cmd);
+		free_split(cmd);
 		exit(exit_code);
 	}
 	else
@@ -52,6 +52,6 @@ void	exit_builtin(char **cmd, t_state *state)
 		clean_all(state);
 	if (len == 2)
 		handle_exit_with_two_args(cmd, state);
-	free_2d_array(cmd);
+	free_split(cmd);
 	exit(state->exit_status);
 }

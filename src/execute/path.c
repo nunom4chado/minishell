@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:13:02 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/12 15:35:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:34:57 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*get_absolute_path(char *cmd, char *path_variable)
 		cmd_path = NULL;
 		i++;
 	}
-	free_2d_array(all_paths);
+	free_split(all_paths);
 	return (cmd_path);
 }
 

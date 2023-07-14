@@ -65,7 +65,8 @@ GLOBAL		:=	cleanup.c \
 				debug.c \
 				errors.c \
 				init.c \
-				utils.c
+				utils.c \
+				utils2.c
 
 LEXAR		:=	expand_utils.c \
 				expand.c \
