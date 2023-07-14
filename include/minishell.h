@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:38:55 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:44:06 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void		execute_builtin(char **cmd, t_state *state);
 int			is_builtin(char **cmd);
 void		exit_builtin(char **cmd, t_state *state);
 void		builtin_cd(t_state *state, char **cmd);
-void		builtin_pwd();
+void		builtin_pwd(void);
 void		builtin_echo(char **cmd);
 void		builtin_export(t_state *state, char **cmd);
 void		builtin_unset(t_state *state, char **cmd);

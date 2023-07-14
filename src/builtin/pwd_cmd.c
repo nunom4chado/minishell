@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:23:20 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:25:40 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:44:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ extern t_state		g_state;
 /**
  * Execute pwd builtin
 */
-void	builtin_pwd()
+void	builtin_pwd(void)
 {
 	char	pwd[256];
 

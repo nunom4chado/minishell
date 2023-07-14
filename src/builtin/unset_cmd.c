@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:35:53 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:37:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:42:43 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	builtin_unset(t_state *state, char **cmd)
 	while (cmd[++i])
 	{
 		if (!is_valid_key_unset(cmd[i], "unset"))
-			continue;
+			continue ;
 		len = 0;
 		while (cmd[i][len] != '\0')
 			len++;

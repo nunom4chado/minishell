@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:33:23 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:35:28 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:44:43 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	export_single(char *cmd, t_state *state)
 	free(key);
 	free(value);
 }
-
 
 void	builtin_export(t_state *state, char **cmd)
 {
