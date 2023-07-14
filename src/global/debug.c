@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 11:28:39 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 14:51:33 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:47:22 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ void	print_tokens(t_state *state)
 
 void	print_arr_str(char **arr, char *msg)
 {
-	int i;
+	int	i;
 
 	printf("DEBUG - %s\n", msg);
 	i = 0;
-	while(arr && arr[i])
+	while (arr && arr[i])
 	{
 		printf("%s\n", arr[i]);
 		i++;
