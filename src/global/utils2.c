@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 14:37:45 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 15:51:32 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:57:26 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*join_three(char *one, char *two, char *three)
 {
-	char *tmp;
-	char *final;
+	char	*tmp;
+	char	*final;
 
 	if (!(one && two && three))
 		return (NULL);
