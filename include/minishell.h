@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 15:51:45 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:08:36 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@
 
 # define IN 0
 # define OUT 1
+
+#define HEREDOC_FILE ".heredoc"
 
 /* -------------------------------------------------------------------------- */
 /*                                   Structs                                  */
@@ -195,7 +197,7 @@ void		parse_and_execute(t_state *state);
 int			has_pipe(t_state *state);
 char		**compose_cmd(t_state *state);
 char		**create_command_array(t_token *token, t_token *pipe);
-void		here_doc_input(char *eof, int *save_fd);
+void		heredoc(char *eof, int *save_fd);
 void		restore_std_fds(int *save_fd);
 
 /* --------------------------------- Path ---------------------------------- */
@@ -208,6 +210,7 @@ void		register_signals(void);
 void		handle_ctrl_c(int signo);
 int			handle_ctrl_d(char *cmd, t_state *state);
 void		register_exec_signals(void);
+void		handle_heredoc_ctrl_c(int signal);
 
 /*-------------------------------- Unset ------------------------------*/
 

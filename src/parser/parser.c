@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 14:35:07 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:08:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void	make_redirect(char *redirect, char *file, int *save_fd)
 	else if (!ft_strcmp(redirect, ">>"))
 		redirect_output(file, O_WRONLY | O_CREAT | O_APPEND);
 	else if (!ft_strcmp(redirect, "<<"))
-		here_doc_input(file, save_fd);
+		heredoc(file, save_fd);
 }
 
 void	check_redirects(t_token *current, t_token *end, int *save_fd)

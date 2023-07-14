@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/13 16:30:54 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:23:16 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,29 @@
 
 extern t_state		g_state;
 
-#define TMP_FILE	"/tmp/minishell_heredoc"
-
-
-void	interrupt_here_document(int signal)
-{
-	(void)signal;
-	g_state.exit_status = 130;
-	clean_all(&g_state);
-	write(1, "\n", 1);
-	exit(130);
-}
-
 static int	create_temporary_file(void)
 {
 	int	fd;
 
-	fd = open(TMP_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	fd = open(HEREDOC_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		print_error(strerror(errno), 1);
 	return (fd);
 }
 
-static	void	get_and_write_input(int tmp_fd, char *eof)
+/**
+ * Prompt the user to insert content and save it to tmp file
+ * 
+ * @param tmp_fd file descriptor to the tmp file
+ * @param eof heredoc delimiter
+ * 
+ * @note will stop when reaching heredoc delimiter
+*/
+static	void	heredoc_input(int tmp_fd, char *eof)
 {
 	char	*input;
 
-	signal(SIGINT, interrupt_here_document);
+	signal(SIGINT, handle_heredoc_ctrl_c);
 	while (1)
 	{
 		input = readline("> ");
@@ -65,32 +61,46 @@ static	void	get_and_write_input(int tmp_fd, char *eof)
 	exit(0);
 }
 
+/**
+ * Clean the content of the temporary file (beacause of O_TRUNC flag)
+*/
 static void	clear_tmp_file_input(void)
 {
 	int		tmp_fd;
 
-	tmp_fd = open(TMP_FILE, O_WRONLY | O_TRUNC, 0600);
+	tmp_fd = open(HEREDOC_FILE, O_WRONLY | O_TRUNC, 0644);
 	close(tmp_fd);
 }
 
-static void	make_tmp_file_input(void)
+/**
+ * Will make the heredoc file the input instead of the default input
+*/
+static void	update_input_fd(void)
 {
 	int		tmp_fd;
 
-	tmp_fd = open(TMP_FILE, O_RDONLY);
-	unlink(TMP_FILE);
+	tmp_fd = open(HEREDOC_FILE, O_RDONLY);
+	unlink(HEREDOC_FILE);
 	dup2(tmp_fd, IN);
 	close(tmp_fd);
 }
 
-void	here_doc_input(char *eof, int *save_fd)
+/**
+ * Handle heredoc. will prompt input until entered the delimiter word
+ * 
+ * @param eof delimiter word
+ * @param save_fd saved file descriptors
+ * 
+ * @note This function will create a temporary file to store user input
+ * and delete it when finished
+*/
+void	heredoc(char *eof, int *save_fd)
 {
 	int		tmp_fd;
 	int		save_fd_out;
 	int		pid;
 	int		status;
 
-	//printf("handle heredoc with delimiter %s in %d out %d\n", eof, save_fd[0], save_fd[1]);
 	tmp_fd = create_temporary_file();
 	if (tmp_fd == -1)
 		return ;
@@ -99,15 +109,14 @@ void	here_doc_input(char *eof, int *save_fd)
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
-		get_and_write_input(tmp_fd, eof);
+		heredoc_input(tmp_fd, eof);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
 		clear_tmp_file_input();
 		g_state.exit_status = 130;
 	}
-	make_tmp_file_input();
+	update_input_fd();
 	dup2(save_fd_out, STDOUT_FILENO);
 	close(save_fd_out);
-	//printf("finish heredoc with delimiter %s\n", eof);
 }
