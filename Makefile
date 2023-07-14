@@ -79,7 +79,8 @@ PARSER		:=	parser.c \
 				heredoc.c \
 				create_cmd.c
 
-SIGNALS		:=	signals.c
+SIGNALS		:=	signals_exec.c \
+				signals.c
 
 BUILTIN_SRC	:=	$(addprefix $(BUILTIN_DIR), $(BUILTIN))
 EXECUTE_SRC	:=	$(addprefix $(EXECUTE_DIR), $(EXECUTE))

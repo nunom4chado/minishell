@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/13 15:38:35 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:22:51 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	execute_cmd(char **cmd, int	*save_fd)
 	if (!cmd[0] || !add_path_to_cmd_name(cmd, save_fd))
 		return ;
 	pid = fork();
-	define_exec_signals();
+	register_exec_signals();
 	if (pid == 0)
 	{
 		env = array_env(&g_state);

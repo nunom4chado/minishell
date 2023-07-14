@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:44:06 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:22:48 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ char		*get_absolute_path(char *cmd, char *path_variable);
 void		register_signals(void);
 void		handle_ctrl_c(int signo);
 int			handle_ctrl_d(char *cmd, t_state *state);
-void		define_exec_signals(void);
+void		register_exec_signals(void);
 
 /*-------------------------------- Unset ------------------------------*/
 

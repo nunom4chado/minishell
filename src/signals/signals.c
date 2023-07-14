@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:01:40 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 15:28:44 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:29:06 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void	handle_ctrl_c(int signo)
 	rl_redisplay();
 }
 
+/**
+ * Function to run when pressing ctr-c on main process
+*/
 int	handle_ctrl_d(char *cmd, t_state *state)
 {
 	(void)state;
@@ -49,23 +52,3 @@ int	handle_ctrl_d(char *cmd, t_state *state)
 	return (0);
 }
 
-void	interrupt_process(int signal)
-{
-	(void)signal;
-	g_state.exit_status = 130;
-	write(1, "\n", 1);
-}
-
-static void	quit_process(int signal)
-{
-	(void)signal;
-	g_state.exit_status = 131;
-	printf("Quit (core dumped)\n");
-}
-
-
-void	define_exec_signals(void)
-{
-	signal(SIGINT, interrupt_process);
-	signal(SIGQUIT, quit_process);
-}
