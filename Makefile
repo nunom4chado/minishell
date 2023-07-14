@@ -44,7 +44,12 @@ SIGNALS_DIR	:=	signals/
 
 BUILTIN		:=	builtin_utils.c \
 				builtin.c \
-				cd_cmd.c
+				cd_cmd.c \
+				echo_cmd.c \
+				exit_cmd.c \
+				export_cmd.c \
+				pwd_cmd.c \
+				unset_cmd.c
 
 EXECUTE		:=	cmd.c \
 				path.c \
