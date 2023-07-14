@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 12:11:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 12:11:54 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:27:43 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,19 @@ int	pending_pipe(t_state *state)
 	last = lst_token_last(state->tokens);
 	if ((last && *(last->word) == '|'))
 		return (1);
+	return (0);
+}
+
+int	has_pipe(t_state *state)
+{
+	t_token	*token;
+
+	token = state->tokens;
+	while (token)
+	{
+		if (token->type == PIPE)
+			return (1);
+		token = token->next;
+	}
 	return (0);
 }

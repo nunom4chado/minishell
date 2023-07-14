@@ -76,8 +76,10 @@ LEXAR		:=	expand_utils.c \
 				lst_tokens.c
 
 PARSER		:=	parser.c \
+				parser_utils.c \
 				heredoc.c \
-				create_cmd.c
+				create_cmd.c \
+				redirects.c
 
 SIGNALS		:=	signals_exec.c \
 				signals_heredoc.c \

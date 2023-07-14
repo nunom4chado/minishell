@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 16:08:36 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:31:13 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,8 @@ char		**compose_cmd(t_state *state);
 char		**create_command_array(t_token *token, t_token *pipe);
 void		heredoc(char *eof, int *save_fd);
 void		restore_std_fds(int *save_fd);
+void		make_redirect(char *redirect, char *file, int *save_fd);
+void		check_redirects(t_token *current, t_token *end, int *save_fd);
 
 /* --------------------------------- Path ---------------------------------- */
 
