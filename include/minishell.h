@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 11:36:09 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 12:40:25 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,19 +163,19 @@ void		init_state(t_state *state);
 /* ---------------------------------- Input --------------------------------- */
 
 int			process_input(t_state *state);
-char		*prompt_style(t_state *state);
 
 /* ---------------------------------- Lexar --------------------------------- */
 
 int			lexar(t_state *state, char *input);
-char		*ft_split_specialchar(char *input, t_state *state);
+char		*handle_special_token(char *input, t_state *state);
 char		*create_token(char *input, char *end, t_tk_type type, \
 t_state *state);
 char		*handle_normal_token(char *input, t_state *state);
 int			validate_last_token(t_state *state);
 int			validate_token_sequence(char *input, t_state *state);
 int			pending_pipe(t_state *state);
-int			has_heredocs(t_state *state);
+int			determine_token_len(char *input, t_state *state);
+char		*get_meta_characters(char *input);
 
 /* ------------------------------- List Tokens ------------------------------ */
 

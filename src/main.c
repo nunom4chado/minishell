@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 11:41:12 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 12:16:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		register_signals();
-		g_state.input = readline(prompt_style(&g_state));
+		g_state.input = readline(PROMPT_DEFAULT);
 		if (handle_ctrl_d(g_state.input, &g_state))
 			break ;
 		if (process_input(&g_state))

@@ -67,6 +67,7 @@ LEXAR		:=	expand_utils.c \
 				expand.c \
 				input.c \
 				lexar_utils.c \
+				lexar_utils2.c \
 				lexar.c \
 				lst_tokens.c
 

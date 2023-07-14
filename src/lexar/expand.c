@@ -6,11 +6,40 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:34:38 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/13 16:49:44 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 12:15:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * Toggle quote mode. When str[0] is a quote and quote mode is off (null-byte),
+ * it sets the quote_mode to that type of quote. On later call, when it finds
+ * the same quote type, it will set it back to null-byte
+ *
+ * @param str any char *
+ * @param a pointer to the char to set the quote type
+ *
+ * @return 1 if toggle occurred
+ * @return 0 otherwise
+*/
+int	toggle_quote_mode(const char c, char *quote_mode)
+{
+	if (ft_is_quote(c))
+	{
+		if (*quote_mode == c)
+		{
+			*quote_mode = 0;
+			return (1);
+		}
+		if (*quote_mode == 0)
+		{
+			*quote_mode = c;
+			return (1);
+		}
+	}
+	return (0);
+}
 
 /**
  * Creates a new char * that will expand variables and remove quotes that

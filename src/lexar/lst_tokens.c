@@ -6,12 +6,9 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:55:01 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/03 16:53:21 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 12:13:37 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minishell.h"
-
 
 #include "minishell.h"
 
@@ -81,7 +78,7 @@ int	lst_token_size(t_token *lst)
 
 	token = lst;
 	i = 0;
-	while(token)
+	while (token)
 	{
 		i++;
 		token = token->next;
