@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 14:45:13 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:51:45 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,6 @@ void		restore_std_fds(int *save_fd);
 
 /* --------------------------------- Path ---------------------------------- */
 
-char		*path(char *cmd, char **envp);
 char		*get_absolute_path(char *cmd, char *path_variable);
 
 /* --------------------------------- Signals ------------------------------- */
@@ -229,5 +228,6 @@ int			ft_only_spaces(char *c);
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strcat(char *dest, char *src);
 int			ft_isnumber(char *str);
+char		*join_three(char *one, char *two, char *three);
 
 #endif

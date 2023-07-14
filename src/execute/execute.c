@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 14:22:51 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:53:52 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,39 @@
 
 extern t_state		g_state;
 
+/**
+ * Create a char ** from env list
+*/
+char	**array_env(t_state *state)
+{
+	int		num;
+	int		i;
+	t_env	*current;
+	char	**env;
+
+	num = 0;
+	current = state->env;
+	while (current != NULL)
+	{
+		num++;
+		current = current->next;
+	}
+	env = ft_calloc(sizeof(char **), num + 1);
+	current = state->env;
+	i = 0;
+	while (current != NULL)
+	{
+		env[i] = join_three(current->key, "=", current->value);
+		current = current->next;
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
+
+/**
+ * Check if env has the variable PATH
+*/
 static int	is_path_defined(char **path_variable)
 {
 	t_env	*path;
@@ -28,7 +61,7 @@ static int	is_path_defined(char **path_variable)
 	return (1);
 }
 
-static int	add_path_to_cmd_name(char **cmd, int *save_fd)
+static int	valid_command_path(char **cmd, int *save_fd)
 {
 	char	*cmd_name;
 	char	*path_variable;
@@ -56,8 +89,7 @@ static void	execute_cmd(char **cmd, int	*save_fd)
 	int		status;
 	char	**env;
 
-
-	if (!cmd[0] || !add_path_to_cmd_name(cmd, save_fd))
+	if (!cmd[0] || !valid_command_path(cmd, save_fd))
 		return ;
 	pid = fork();
 	register_exec_signals();

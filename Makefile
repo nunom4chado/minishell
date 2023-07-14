@@ -50,8 +50,7 @@ BUILTIN		:=	builtin.c \
 				pwd_cmd.c \
 				unset_cmd.c
 
-EXECUTE		:=	cmd.c \
-				path.c \
+EXECUTE		:=	path.c \
 				execute.c
 
 EXPORT		:=	env_utils.c \

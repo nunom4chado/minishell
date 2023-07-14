@@ -6,11 +6,24 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 14:37:45 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 14:40:28 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:51:32 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*join_three(char *one, char *two, char *three)
+{
+	char *tmp;
+	char *final;
+
+	if (!(one && two && three))
+		return (NULL);
+	tmp = ft_strjoin(one, two);
+	final = ft_strjoin(tmp, three);
+	free(tmp);
+	return (final);
+}
 
 int	ft_strcmp(char *s1, char *s2)
 {
