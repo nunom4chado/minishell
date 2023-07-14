@@ -6,9 +6,34 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 16:28:10 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 16:28:19 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:54:59 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	close_last_input_fd(int old_pipe_in)
+{
+	if (old_pipe_in != 0)
+		close(old_pipe_in);
+}
+
+/**
+ * Restore the default standard output and input
+*/
+void	restore_std_fds(int *save_fd)
+{
+	dup2(save_fd[IN], STDIN_FILENO);
+	close(save_fd[IN]);
+	dup2(save_fd[OUT], STDOUT_FILENO);
+	close(save_fd[OUT]);
+}
+
+/**
+ * Dup the default file descriptors
+*/
+void	save_std_fds(int *save_fd)
+{
+	save_fd[IN] = dup(STDIN_FILENO);
+	save_fd[OUT] = dup(STDOUT_FILENO);
+}
