@@ -6,14 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 14:28:34 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 14:28:57 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:31:50 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern t_state		g_state;
-
 
 /**
  * Function to run when pressing ctrl-c on exec
