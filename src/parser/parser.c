@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 16:55:15 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:13:10 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	create_pipe(t_token *pipe_token, int *old_pipe_in)
 	pipe(new_pipe);
 	dup2(new_pipe[OUT], STDOUT_FILENO);
 	close(new_pipe[OUT]);
-	*old_pipe_in = dup(new_pipe[IN]);
+	dup2(*old_pipe_in, new_pipe[IN]);
 	close(new_pipe[IN]);
 }
 
@@ -52,9 +52,9 @@ void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in)
 
 /**
  * check tokens until reaching a pipe.
- * 
+ *
  * @note If no pipes until the end, parse that section inside parse_command.
- * 
+ *
  * @note In case reaching a pipe, parse that section first, then recursively
  * call parse_pipe to handle other pipes
 */
