@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/15 14:20:03 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:52:06 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ static int	valid_command_path(char **cmd, int *save_fd)
 	char	*cmd_name;
 	char	*path_variable;
 
+
+	if (cmd[0] && (cmd[0][0] == '.' || cmd[0][0] == '/'))
+		return (1);
 	if (!cmd[0] || (!is_path_defined(&path_variable)))
 		return (0);
 	if (!is_executable(cmd[0]))
