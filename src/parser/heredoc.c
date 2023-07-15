@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 16:23:16 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/15 12:22:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static int	create_temporary_file(void)
 
 /**
  * Prompt the user to insert content and save it to tmp file
- * 
+ *
  * @param tmp_fd file descriptor to the tmp file
  * @param eof heredoc delimiter
- * 
+ *
  * @note will stop when reaching heredoc delimiter
 */
 static	void	heredoc_input(int tmp_fd, char *eof)
@@ -87,10 +87,10 @@ static void	update_input_fd(void)
 
 /**
  * Handle heredoc. will prompt input until entered the delimiter word
- * 
+ *
  * @param eof delimiter word
  * @param save_fd saved file descriptors
- * 
+ *
  * @note This function will create a temporary file to store user input
  * and delete it when finished
 */
@@ -105,7 +105,8 @@ void	heredoc(char *eof, int *save_fd)
 	if (tmp_fd == -1)
 		return ;
 	save_fd_out = dup(STDOUT_FILENO);
-	dup2(save_fd[STDIN_FILENO], STDIN_FILENO);
+	dup2(save_fd[OUT], STDOUT_FILENO);
+	dup2(save_fd[IN], STDIN_FILENO);
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
