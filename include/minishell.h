@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 16:56:59 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/15 13:57:58 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct s_state
 {
 	int			exit_status;
 	char		*input;
+	int			lastpid;
+	int			processes;
 	int			echo;
 	t_env		*env;
 	t_export	*exp;

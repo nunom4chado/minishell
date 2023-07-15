@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 15:53:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/15 14:20:03 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,23 +85,24 @@ static int	valid_command_path(char **cmd, int *save_fd)
 
 static void	execute_cmd(char **cmd, int	*save_fd)
 {
-	int		pid;
-	int		status;
+	//int		pid;
 	char	**env;
 
 	if (!cmd[0] || !valid_command_path(cmd, save_fd))
 		return ;
-	pid = fork();
+	g_state.lastpid = fork();
 	register_exec_signals();
-	if (pid == 0)
+	g_state.processes++;
+	if (g_state.lastpid == 0)
 	{
 		env = array_env(&g_state);
-		execve(cmd[0], cmd, env);
-		free_split(env);
+		if (execve(cmd[0], cmd, env) == -1)
+		{
+			free_split(env);
+			clean_all(&g_state);
+			exit(127);
+		}
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_state.exit_status = WEXITSTATUS(status);
 }
 
 void	execute(char **cmd, int	*save_fd)
