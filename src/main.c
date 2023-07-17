@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:15 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/17 20:24:40 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/17 20:26:32 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv, char **envp)
 	init_state(&g_state);
 	create_env(&g_state, envp);
 	create_exp(&g_state, envp);
-	printf("PID: %d\n", getpid());
+	//printf("PID: %d\n", getpid());
 	while (1)
 	{
 		register_signals();
