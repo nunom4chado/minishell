@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/15 15:52:06 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/17 20:25:24 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,43 @@ static int	valid_command_path(char **cmd, int *save_fd)
 	return (1);
 }
 
-static void	execute_cmd(char **cmd, int	*save_fd)
+/*
+void	print_open_file_descriptors(void)
 {
-	//int		pid;
+	int max_fd = 1250;
+	int fd;
+
+	for (fd = 0; fd < max_fd; fd++)
+	{
+		int flags = fcntl(fd, F_GETFL);
+		if (flags != -1)
+		{
+			printf("FILE descriptor %d is open\n", fd);
+			if (fd > 2)
+				close(fd);
+		}
+	}
+}
+*/
+
+static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in)
+{
+	int		pid;
 	char	**env;
 
 	if (!cmd[0] || !valid_command_path(cmd, save_fd))
 		return ;
-	g_state.lastpid = fork();
+	pid = fork();
 	register_exec_signals();
-	g_state.processes++;
-	if (g_state.lastpid == 0)
+	if (pid == 0)
 	{
+		//printf("saved_fd [%d,%d], old_pipe_in: %d\n", save_fd[0], save_fd[1], *old_pipe_in);
+		close(save_fd[IN]);
+		close(save_fd[OUT]);
+		if (*old_pipe_in != 0)
+			close(*old_pipe_in);
+		//printf("child process id: %d\n", getpid());
+		//print_open_file_descriptors();
 		env = array_env(&g_state);
 		if (execve(cmd[0], cmd, env) == -1)
 		{
@@ -105,10 +130,14 @@ static void	execute_cmd(char **cmd, int	*save_fd)
 			clean_all(&g_state);
 			exit(127);
 		}
+	} else
+	{
+		g_state.lastpid = pid;
+		g_state.processes++;
 	}
 }
 
-void	execute(char **cmd, int	*save_fd)
+void	execute(char **cmd, int	*save_fd, int *old_pipe_in)
 {
 	int	i;
 
@@ -116,5 +145,5 @@ void	execute(char **cmd, int	*save_fd)
 	if (is_builtin(cmd))
 		execute_builtin(&cmd[i], &g_state);
 	else
-		execute_cmd(&cmd[i], save_fd);
+		execute_cmd(&cmd[i], save_fd, old_pipe_in);
 }

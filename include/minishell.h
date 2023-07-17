@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/15 13:57:58 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/17 20:17:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void		free_split(char **ptr);
 
 /* --------------------------------- CMD ----------------------------------- */
 
-void		execute(char **cmd, int	*save_fd);
+void		execute(char **cmd, int	*save_fd, int *old_pipe_in);
 char		**array_env(t_state *state);
 int			is_executable(char *cmd_path);
 

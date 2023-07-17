@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/15 15:13:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/17 20:21:02 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ static void	create_pipe(t_token *pipe_token, int *old_pipe_in)
 	if (!pipe_token)
 		return ;
 	pipe(new_pipe);
+	//printf("NEW PIPE fds[%d,%d]\n", new_pipe[0], new_pipe[1]);
 	dup2(new_pipe[OUT], STDOUT_FILENO);
 	close(new_pipe[OUT]);
-	dup2(*old_pipe_in, new_pipe[IN]);
-	close(new_pipe[IN]);
+	//dup2(*old_pipe_in, new_pipe[IN]);
+	//dup2(new_pipe[IN], *old_pipe_in);
+	*old_pipe_in = new_pipe[IN];
 }
 
 /**
@@ -45,7 +47,7 @@ void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in)
 	create_pipe(pipe, old_pipe_in);
 	check_redirects(token_lst, pipe, save_fd);
 	cmd = create_command_array(token_lst, pipe);
-	execute(cmd, save_fd);
+	execute(cmd, save_fd, old_pipe_in);
 	free_split(cmd);
 	restore_std_fds(save_fd);
 }
