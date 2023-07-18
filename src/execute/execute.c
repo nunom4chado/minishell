@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/17 20:25:24 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:55:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static int	valid_command_path(char **cmd, int *save_fd)
 	char	*cmd_name;
 	char	*path_variable;
 
-
 	if (cmd[0] && (cmd[0][0] == '.' || cmd[0][0] == '/'))
 		return (1);
 	if (!cmd[0] || (!is_path_defined(&path_variable)))
@@ -86,25 +85,16 @@ static int	valid_command_path(char **cmd, int *save_fd)
 	return (1);
 }
 
-/*
-void	print_open_file_descriptors(void)
-{
-	int max_fd = 1250;
-	int fd;
-
-	for (fd = 0; fd < max_fd; fd++)
-	{
-		int flags = fcntl(fd, F_GETFL);
-		if (flags != -1)
-		{
-			printf("FILE descriptor %d is open\n", fd);
-			if (fd > 2)
-				close(fd);
-		}
-	}
-}
+/**
+ * Execute a command inside a child process
+ * 
+ * @note Inside the children we must closed the copy of the default file
+ * descriptors and the previous pipe in. Otherwise the child process will
+ * have open fds and 'cat | cat | ls' will not work properly.
+ * 
+ * @note In the main process we update the last pid because we want to wait
+ * for that process to finish first.
 */
-
 static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in)
 {
 	int		pid;
@@ -114,15 +104,14 @@ static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in)
 		return ;
 	pid = fork();
 	register_exec_signals();
+	g_state.lastpid = pid;
+	g_state.processes++;
 	if (pid == 0)
 	{
-		//printf("saved_fd [%d,%d], old_pipe_in: %d\n", save_fd[0], save_fd[1], *old_pipe_in);
 		close(save_fd[IN]);
 		close(save_fd[OUT]);
 		if (*old_pipe_in != 0)
 			close(*old_pipe_in);
-		//printf("child process id: %d\n", getpid());
-		//print_open_file_descriptors();
 		env = array_env(&g_state);
 		if (execve(cmd[0], cmd, env) == -1)
 		{
@@ -130,10 +119,6 @@ static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in)
 			clean_all(&g_state);
 			exit(127);
 		}
-	} else
-	{
-		g_state.lastpid = pid;
-		g_state.processes++;
 	}
 }
 

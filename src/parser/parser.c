@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/17 20:21:02 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:06:42 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,34 @@ extern t_state		g_state;
 
 /**
  * Create a pipe to communicate between processes
+ * 
+ * @paragraph The previous pipe to STDIN
+ * 
+ * @paragraph If the previous pipe was diferent that 0, means its not the
+ * original STDIN and we have to close it.
+ * 
+ * @paragraph if there is no pipe token means it's the last command and should
+ * stop there.
+ * 
+ * @paragraph create the pipe
+ * 
+ * @paragraph make STDOUT reference the reading end of the pipe,
+ * then close thatfd
+ * 
+ * @paragraph update the prev pipe in to point to the reading end of the pipe
 */
 static void	create_pipe(t_token *pipe_token, int *old_pipe_in)
 {
 	int	new_pipe[2];
 
 	dup2(*old_pipe_in, STDIN_FILENO);
-	if (*old_pipe_in != 0)
+	if (*old_pipe_in != STDIN_FILENO)
 		close(*old_pipe_in);
 	if (!pipe_token)
 		return ;
 	pipe(new_pipe);
-	//printf("NEW PIPE fds[%d,%d]\n", new_pipe[0], new_pipe[1]);
 	dup2(new_pipe[OUT], STDOUT_FILENO);
 	close(new_pipe[OUT]);
-	//dup2(*old_pipe_in, new_pipe[IN]);
-	//dup2(new_pipe[IN], *old_pipe_in);
 	*old_pipe_in = new_pipe[IN];
 }
 
@@ -86,7 +98,7 @@ void	parse_and_execute(t_state *state)
 
 	if (!state->tokens)
 		return ;
-	old_pipe_in = 0;
+	old_pipe_in = STDIN_FILENO;
 	parse_pipe(state->tokens, &old_pipe_in);
 	close_last_input_fd(old_pipe_in);
 }
