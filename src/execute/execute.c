@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/18 15:55:44 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:52:20 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static int	valid_command_path(char **cmd, int *save_fd)
 		return (0);
 	if (!is_executable(cmd[0]))
 	{
+		//printf("command %s\n", cmd[0]);
 		cmd_name = get_absolute_path(cmd[0], path_variable);
 		if (!cmd_name)
 		{
@@ -87,11 +88,11 @@ static int	valid_command_path(char **cmd, int *save_fd)
 
 /**
  * Execute a command inside a child process
- * 
+ *
  * @note Inside the children we must closed the copy of the default file
  * descriptors and the previous pipe in. Otherwise the child process will
  * have open fds and 'cat | cat | ls' will not work properly.
- * 
+ *
  * @note In the main process we update the last pid because we want to wait
  * for that process to finish first.
 */

@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 16:28:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 16:35:54 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:51:09 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	redirect_input(char *file, int flags)
 	if (fd_file == -1)
 	{
 		print_error(strerror(errno), 1);
-		g_state.echo = 0;
+		g_state.exit_status = 1;
 	}
 	else
 	{

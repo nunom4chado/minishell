@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/17 20:17:41 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:21:11 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ typedef struct s_state
 	char		*input;
 	int			lastpid;
 	int			processes;
-	int			echo;
 	t_env		*env;
 	t_export	*exp;
 	t_token		*tokens;

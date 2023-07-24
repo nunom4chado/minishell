@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:26:10 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/15 11:31:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:52:03 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,17 @@ void	builtin_echo(char **cmd)
 	int	i;
 	int	nl_flag;
 
-	if (g_state.echo)
+	i = 0;
+	nl_flag = 1;
+	if (!cmd || !cmd[i])
 	{
-		i = 0;
-		nl_flag = 1;
-		if (!cmd || !cmd[i])
-		{
-			printf("\n");
-			return ;
-		}
-		while (cmd[i] && ft_strcmp(cmd[i], "-n") == 0)
-		{
-			nl_flag = 0;
-			i++;
-		}
-		print_words(cmd, i, nl_flag);
-		g_state.exit_status = 0;
+		printf("\n");
+		return ;
 	}
-	g_state.echo = 1;
+	while (cmd[i] && ft_strcmp(cmd[i], "-n") == 0)
+	{
+		nl_flag = 0;
+		i++;
+	}
+	print_words(cmd, i, nl_flag);
 }
