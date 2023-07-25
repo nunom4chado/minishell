@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/18 16:06:42 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:18:23 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in)
 
 	save_std_fds(save_fd);
 	create_pipe(pipe, old_pipe_in);
-	check_redirects(token_lst, pipe, save_fd);
-	cmd = create_command_array(token_lst, pipe);
-	execute(cmd, save_fd, old_pipe_in);
-	free_split(cmd);
+	if (check_redirects(token_lst, pipe, save_fd) == 0)
+	{
+		cmd = create_command_array(token_lst, pipe);
+		execute(cmd, save_fd, old_pipe_in);
+		free_split(cmd);
+	}
 	restore_std_fds(save_fd);
 }
 

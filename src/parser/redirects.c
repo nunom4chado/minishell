@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 16:28:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/24 18:51:09 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:12:37 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,28 @@
 
 extern t_state		g_state;
 
-static void	redirect_output(char *file, int flags)
+static int	redirect_output(char *file, int flags)
 {
 	int	fd_file;
 
 	fd_file = open(file, flags, 0644);
 	if (fd_file == -1)
-		print_error(strerror(errno), 1);
-	else
 	{
-		dup2(fd_file, OUT);
-		close(fd_file);
+		print_error(strerror(errno), 1);
+		g_state.exit_status = 1;
+		return (1);
 	}
+	dup2(fd_file, OUT);
+	close(fd_file);
+	return (0);
 }
 
-static void	redirect_input(char *file, int flags)
+/**
+ * If file does not exist or an error ocurred must notify
+ * parser to not execute the command in that section
+ * (until reaching a pipe or end of the input)
+*/
+static int	redirect_input(char *file, int flags)
 {
 	int	fd_file;
 
@@ -37,31 +44,43 @@ static void	redirect_input(char *file, int flags)
 	{
 		print_error(strerror(errno), 1);
 		g_state.exit_status = 1;
+		return (1);
 	}
-	else
-	{
-		dup2(fd_file, IN);
-		close(fd_file);
-	}
+	dup2(fd_file, IN);
+	close(fd_file);
+	return (0);
 }
 
-void	make_redirect(char *redirect, char *file, int *save_fd)
+int	make_redirect(char *redirect, char *file, int *save_fd)
 {
+	int file_error;
+
+	file_error = 0;
 	if (!ft_strcmp(redirect, ">"))
-		redirect_output(file, O_WRONLY | O_CREAT | O_TRUNC);
+		file_error = redirect_output(file, O_WRONLY | O_CREAT | O_TRUNC);
 	else if (!ft_strcmp(redirect, "<"))
-		redirect_input(file, O_RDONLY);
+		file_error = redirect_input(file, O_RDONLY);
 	else if (!ft_strcmp(redirect, ">>"))
-		redirect_output(file, O_WRONLY | O_CREAT | O_APPEND);
+		file_error = redirect_output(file, O_WRONLY | O_CREAT | O_APPEND);
 	else if (!ft_strcmp(redirect, "<<"))
-		heredoc(file, save_fd);
+		file_error = heredoc(file, save_fd);
+	return (file_error);
 }
 
 /**
  * Check if the current token is a redirect. If it is, perform the redirect
+ * 
+ * Notice that if inside a redirect an error occur we have to toggle file_error
+ * to prevent the current command execution.
+ * 
+ * Also if a file error occur we can never set it back to 0. That's why if use it
+ * inside an if statement.
 */
-void	check_redirects(t_token *current, t_token *end, int *save_fd)
+int	check_redirects(t_token *current, t_token *end, int *save_fd)
 {
+	int	file_error;
+
+	file_error = 0;
 	while (current != end)
 	{
 		if (!current->next)
@@ -69,9 +88,11 @@ void	check_redirects(t_token *current, t_token *end, int *save_fd)
 		if (current->type == REDIR_IN || current->type == REDIR_OUT || \
 		current->type == REDIR_APPEND || current->type == HEREDOC)
 		{
-			make_redirect(current->word, current->next->word, save_fd);
+			if (make_redirect(current->word, current->next->word, save_fd))
+				file_error = 1;
 			current = current->next;
 		}
 		current = current->next;
 	}
+	return (file_error);
 }

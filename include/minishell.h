@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/24 17:21:11 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:22:40 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ void		print_error(char *msg, int error);
 /* --------------------------------- Expand -------------------------------- */
 
 void		expand(t_state *state);
-char		*skip_undefined_var(char *str, int start, int end);
 void		ft_tilde_expand(t_token *token, t_state *state);
 char		*find_var_name(char *str);
 int			can_expand(const char *str, char *quote_mode);
@@ -197,10 +196,10 @@ int			lst_token_size(t_token *lst);
 void		parse_and_execute(t_state *state);
 int			has_pipe(t_state *state);
 char		**create_command_array(t_token *token, t_token *pipe);
-void		heredoc(char *eof, int *save_fd);
+int			heredoc(char *eof, int *save_fd);
 void		restore_std_fds(int *save_fd);
-void		make_redirect(char *redirect, char *file, int *save_fd);
-void		check_redirects(t_token *current, t_token *end, int *save_fd);
+int			make_redirect(char *redirect, char *file, int *save_fd);
+int			check_redirects(t_token *current, t_token *end, int *save_fd);
 void		close_last_input_fd(int old_pipe_in);
 void		save_std_fds(int *save_fd);
 

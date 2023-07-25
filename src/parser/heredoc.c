@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/15 12:22:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:06:47 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	update_input_fd(void)
  * @note This function will create a temporary file to store user input
  * and delete it when finished
 */
-void	heredoc(char *eof, int *save_fd)
+int	heredoc(char *eof, int *save_fd)
 {
 	int		tmp_fd;
 	int		save_fd_out;
@@ -103,7 +103,7 @@ void	heredoc(char *eof, int *save_fd)
 
 	tmp_fd = create_temporary_file();
 	if (tmp_fd == -1)
-		return ;
+		return (1);
 	save_fd_out = dup(STDOUT_FILENO);
 	dup2(save_fd[OUT], STDOUT_FILENO);
 	dup2(save_fd[IN], STDIN_FILENO);
@@ -120,4 +120,5 @@ void	heredoc(char *eof, int *save_fd)
 	update_input_fd();
 	dup2(save_fd_out, STDOUT_FILENO);
 	close(save_fd_out);
+	return (0);
 }
