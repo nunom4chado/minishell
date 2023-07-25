@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 17:06:09 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 18:14:51 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,10 @@ static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in,
 	char	**env;
 
 	if (!cmd[0] || !valid_command_path(cmd, save_fd, state))
+	{
+		free_split(cmd);
 		return ;
+	}
 	pid = fork();
 	register_exec_signals();
 	state->lastpid = pid;
@@ -115,6 +118,7 @@ static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in,
 		if (execve(cmd[0], cmd, env) == -1)
 		{
 			free_split(env);
+			free_split(cmd);
 			clean_all(state);
 			exit(127);
 		}
