@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 16:28:10 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 16:54:59 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:08:12 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,13 @@ void	save_std_fds(int *save_fd)
 {
 	save_fd[IN] = dup(STDIN_FILENO);
 	save_fd[OUT] = dup(STDOUT_FILENO);
+}
+
+void	eof_heap_to_stack(char *eof, char *delimiter)
+{
+	if (!eof)
+		exit(EXIT_FAILURE);
+	ft_memset(delimiter, 0, 255);
+	ft_memmove(delimiter, eof, ft_strlen(eof));
+	free(eof);
 }

@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 14:58:03 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:07:40 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,10 +197,13 @@ int			has_pipe(t_state *state);
 char		**create_command_array(t_token *token, t_token *pipe);
 int			heredoc(char *eof, int *save_fd, t_state *state);
 void		restore_std_fds(int *save_fd);
-int			make_redirect(char *redirect, char *file, int *save_fd, t_state *state);
-int			check_redirects(t_token *current, t_token *end, int *save_fd, t_state *state);
+int			make_redirect(char *redirect, char *file, int *save_fd,
+				t_state *state);
+int			check_redirects(t_token *current, t_token *end, int *save_fd,
+				t_state *state);
 void		close_last_input_fd(int old_pipe_in);
 void		save_std_fds(int *save_fd);
+void		eof_heap_to_stack(char *eof, char *delimiter);
 
 /* --------------------------------- Path ---------------------------------- */
 

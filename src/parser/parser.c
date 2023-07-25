@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 14:57:56 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:08:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static void	create_pipe(t_token *pipe_token, int *old_pipe_in)
 /**
  * Parse a secion of tokens until pipe or end of list of tokens
 */
-void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in, t_state *state)
+void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in,
+	t_state *state)
 {
 	int		save_fd[2];
 	char	**cmd;

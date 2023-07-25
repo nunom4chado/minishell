@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 12:02:37 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:06:09 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static int	valid_command_path(char **cmd, int *save_fd, t_state *state)
 		return (0);
 	if (!is_executable(cmd[0]))
 	{
-		//printf("command %s\n", cmd[0]);
 		cmd_name = get_absolute_path(cmd[0], path_variable);
 		if (!cmd_name)
 		{
@@ -94,7 +93,8 @@ static int	valid_command_path(char **cmd, int *save_fd, t_state *state)
  * @note In the main process we update the last pid because we want to wait
  * for that process to finish first.
 */
-static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in, t_state *state)
+static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in,
+	t_state *state)
 {
 	int		pid;
 	char	**env;

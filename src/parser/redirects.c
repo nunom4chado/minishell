@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 16:28:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 14:43:32 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:09:38 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	redirect_input(char *file, int flags)
 
 int	make_redirect(char *redirect, char *file, int *save_fd, t_state *state)
 {
-	int file_error;
+	int	file_error;
 
 	file_error = 0;
 	if (!ft_strcmp(redirect, ">"))
@@ -76,7 +76,8 @@ int	make_redirect(char *redirect, char *file, int *save_fd, t_state *state)
  * Also if a file error occur we can never set it back to 0. That's why if use it
  * inside an if statement.
 */
-int	check_redirects(t_token *current, t_token *end, int *save_fd, t_state *state)
+int	check_redirects(t_token *current, t_token *end, int *save_fd,
+	t_state *state)
 {
 	int	file_error;
 
@@ -88,7 +89,8 @@ int	check_redirects(t_token *current, t_token *end, int *save_fd, t_state *state
 		if (current->type == REDIR_IN || current->type == REDIR_OUT || \
 		current->type == REDIR_APPEND || current->type == HEREDOC)
 		{
-			if (make_redirect(current->word, current->next->word, save_fd, state))
+			if (make_redirect(current->word, current->next->word,
+					save_fd, state))
 				file_error = 1;
 			current = current->next;
 		}

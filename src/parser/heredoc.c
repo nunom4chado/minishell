@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 17:02:01 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:07:58 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,6 @@ static int	create_temporary_file(void)
 	if (fd == -1)
 		print_error(strerror(errno), 1);
 	return (fd);
-}
-
-void	eof_heap_to_stack(char *eof, char *delimiter)
-{
-	if (!eof)
-		exit(EXIT_FAILURE);
-	ft_memset(delimiter, 0, 255);
-	ft_memmove(delimiter, eof, ft_strlen(eof));
-	free(eof);
 }
 
 /**
