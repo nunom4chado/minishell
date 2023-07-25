@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:30:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 14:51:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 19:36:59 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ extern int		g_exit_status;
 
 void	handle_exit_with_two_args(char **cmd, t_state *state)
 {
-	int	exit_code;
+	long long	exit_code;
 
 	if (ft_isnumber(cmd[1]))
 	{
 		clean_all(state);
-		exit_code = (char)ft_atoi(cmd[1]);
+		exit_code = (char)ft_atol(cmd[1]);
 		free_split(cmd);
 		exit(exit_code);
 	}

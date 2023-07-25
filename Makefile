@@ -51,7 +51,8 @@ BUILTIN		:=	builtin.c \
 				unset_cmd.c
 
 EXECUTE		:=	path.c \
-				execute.c
+				execute.c \
+				execute_utils.c
 
 EXPORT		:=	env_utils.c \
 				env.c \
@@ -65,7 +66,8 @@ GLOBAL		:=	cleanup.c \
 				errors.c \
 				init.c \
 				utils.c \
-				utils2.c
+				utils2.c \
+				utils3.c
 
 LEXAR		:=	expand_utils.c \
 				expand.c \

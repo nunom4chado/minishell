@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 18:14:51 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 19:50:47 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,7 @@ static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in,
 			close(*old_pipe_in);
 		env = array_env(state);
 		if (execve(cmd[0], cmd, env) == -1)
-		{
-			free_split(env);
-			free_split(cmd);
-			clean_all(state);
-			exit(127);
-		}
+			handle_execution_error(env, cmd, state);
 	}
 }
 

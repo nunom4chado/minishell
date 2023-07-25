@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 17:07:40 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 19:52:49 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void		free_split(char **ptr);
 void		execute(char **cmd, int	*save_fd, int *old_pipe_in, t_state *state);
 char		**array_env(t_state *state);
 int			is_executable(char *cmd_path);
+void		handle_execution_error(char **env, char **cmd, t_state *state);
 
 /* ---------------------------------- Debug --------------------------------- */
 
@@ -237,5 +238,6 @@ int			ft_strcmp(char *s1, char *s2);
 char		*ft_strcat(char *dest, char *src);
 int			ft_isnumber(char *str);
 char		*join_three(char *one, char *two, char *three);
+long long	ft_atol(const char *str);
 
 #endif
