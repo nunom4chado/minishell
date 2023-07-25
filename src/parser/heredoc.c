@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 12:08:08 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:02:01 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ static int	create_temporary_file(void)
 	return (fd);
 }
 
+void	eof_heap_to_stack(char *eof, char *delimiter)
+{
+	if (!eof)
+		exit(EXIT_FAILURE);
+	ft_memset(delimiter, 0, 255);
+	ft_memmove(delimiter, eof, ft_strlen(eof));
+	free(eof);
+}
+
 /**
  * Prompt the user to insert content and save it to tmp file
  *
@@ -35,7 +44,10 @@ static int	create_temporary_file(void)
 static	void	heredoc_input(int tmp_fd, char *eof, t_state *state)
 {
 	char	*input;
+	char	delimiter[255];
 
+	clean_all(state);
+	eof_heap_to_stack(eof, delimiter);
 	signal(SIGINT, handle_heredoc_ctrl_c);
 	while (1)
 	{
@@ -44,21 +56,17 @@ static	void	heredoc_input(int tmp_fd, char *eof, t_state *state)
 		{
 			print_error("warning: here-document delimited by end-of-file", 0);
 			close(tmp_fd);
-			clean_all(state);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
-		if (ft_strcmp(input, eof))
+		if (ft_strcmp(input, delimiter) != 0)
 			ft_putendl_fd(input, tmp_fd);
 		else
-		{
-			close(tmp_fd);
-			clean_all(state);
-			free(input);
 			break ;
-		}
 		free(input);
 	}
-	exit(0);
+	close(tmp_fd);
+	free(input);
+	exit(g_exit_status);
 }
 
 /**
@@ -81,7 +89,7 @@ static void	update_input_fd(void)
 
 	tmp_fd = open(HEREDOC_FILE, O_RDONLY);
 	unlink(HEREDOC_FILE);
-	dup2(tmp_fd, IN);
+	dup2(tmp_fd, STDIN_FILENO);
 	close(tmp_fd);
 }
 
@@ -101,16 +109,16 @@ int	heredoc(char *eof, int *save_fd, t_state *state)
 	int		pid;
 	int		status;
 
+	(void)state;
 	tmp_fd = create_temporary_file();
 	if (tmp_fd == -1)
 		return (1);
 	save_fd_out = dup(STDOUT_FILENO);
 	dup2(save_fd[OUT], STDOUT_FILENO);
 	dup2(save_fd[IN], STDIN_FILENO);
-	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
-		heredoc_input(tmp_fd, eof, state);
+		heredoc_input(tmp_fd, ft_strdup(eof), state);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
