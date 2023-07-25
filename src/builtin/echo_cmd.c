@@ -6,13 +6,11 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:26:10 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/24 18:52:03 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:33:17 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern t_state		g_state;
 
 /**
  * Print a series of words separated by spaces.

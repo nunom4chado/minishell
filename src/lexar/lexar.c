@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 09:37:51 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 12:10:10 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:57:09 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 /**
  * Create a token with a word or a token after a special token
@@ -20,7 +22,7 @@ char	*handle_normal_token(char *input, t_state *state)
 	int		i;
 	t_token	*last;
 
-	i = determine_token_len(input, state);
+	i = determine_token_len(input);
 	if (i == -1)
 		return (NULL);
 	last = lst_token_last(state->tokens);
@@ -43,7 +45,7 @@ char	*handle_special_token(char *input, t_state *state)
 	{
 		ft_putstr_fd("syntax error near unexpected token ", 2);
 		ft_putendl_fd(get_meta_characters(input), 2);
-		state->exit_status = CODE_SYNTAX_ERROR;
+		g_exit_status = CODE_SYNTAX_ERROR;
 		return (NULL);
 	}
 	if (*input == '|')

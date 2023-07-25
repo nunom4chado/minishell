@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:52:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 12:12:54 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:55:55 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 /**
  * Create a token. Return a pointer to the next char after
@@ -93,7 +95,7 @@ char	*get_meta_characters(char *input)
  * @return 0 or positive number on valid token
  * @return -1 when invalid
 */
-int	determine_token_len(char *input, t_state *state)
+int	determine_token_len(char *input)
 {
 	int		steps;
 	int		i;
@@ -108,7 +110,7 @@ int	determine_token_len(char *input, t_state *state)
 			if (steps == -1)
 			{
 				ft_putendl_fd("error unclosed quote", 2);
-				state->exit_status = CODE_SYNTAX_ERROR;
+				g_exit_status = CODE_SYNTAX_ERROR;
 				return (-1);
 			}
 			i = i + steps;
@@ -129,13 +131,13 @@ int	validate_last_token(t_state *state)
 	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
 		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
-		state->exit_status = CODE_SYNTAX_ERROR;
+		g_exit_status = CODE_SYNTAX_ERROR;
 		return (1);
 	}
 	if (pending_pipe(state))
 	{
 		ft_putendl_fd("error: pending pipe", 2);
-		state->exit_status = CODE_SYNTAX_ERROR;
+		g_exit_status = CODE_SYNTAX_ERROR;
 		return (1);
 	}
 	return (0);

@@ -6,13 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:35:53 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:42:43 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:42:50 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_state		g_state;
+extern int		g_exit_status;
 
 int	is_valid_key_unset(char *key, char *type)
 {
@@ -58,5 +58,5 @@ void	builtin_unset(t_state *state, char **cmd)
 		unset_envvariables(state, key);
 		free(key);
 	}
-	state->exit_status = 0;
+	g_exit_status = 0;
 }

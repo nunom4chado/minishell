@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:30:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 14:34:55 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:51:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 void	handle_exit_with_two_args(char **cmd, t_state *state)
 {
@@ -53,5 +55,5 @@ void	exit_builtin(char **cmd, t_state *state)
 	if (len == 2)
 		handle_exit_with_two_args(cmd, state);
 	free_split(cmd);
-	exit(state->exit_status);
+	exit(g_exit_status);
 }

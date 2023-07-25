@@ -6,13 +6,11 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/24 18:52:20 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:02:37 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern t_state		g_state;
 
 /**
  * Create a char ** from env list
@@ -47,11 +45,11 @@ char	**array_env(t_state *state)
 /**
  * Check if env has the variable PATH
 */
-static int	is_path_defined(char **path_variable)
+static int	is_path_defined(char **path_variable, t_state *state)
 {
 	t_env	*path;
 
-	path = findenv(&g_state, "PATH");
+	path = findenv(state, "PATH");
 	if (!path)
 	{
 		print_error("no such file or directory.", 127);
@@ -61,14 +59,14 @@ static int	is_path_defined(char **path_variable)
 	return (1);
 }
 
-static int	valid_command_path(char **cmd, int *save_fd)
+static int	valid_command_path(char **cmd, int *save_fd, t_state *state)
 {
 	char	*cmd_name;
 	char	*path_variable;
 
 	if (cmd[0] && (cmd[0][0] == '.' || cmd[0][0] == '/'))
 		return (1);
-	if (!cmd[0] || (!is_path_defined(&path_variable)))
+	if (!cmd[0] || (!is_path_defined(&path_variable, state)))
 		return (0);
 	if (!is_executable(cmd[0]))
 	{
@@ -96,40 +94,40 @@ static int	valid_command_path(char **cmd, int *save_fd)
  * @note In the main process we update the last pid because we want to wait
  * for that process to finish first.
 */
-static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in)
+static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in, t_state *state)
 {
 	int		pid;
 	char	**env;
 
-	if (!cmd[0] || !valid_command_path(cmd, save_fd))
+	if (!cmd[0] || !valid_command_path(cmd, save_fd, state))
 		return ;
 	pid = fork();
 	register_exec_signals();
-	g_state.lastpid = pid;
-	g_state.processes++;
+	state->lastpid = pid;
+	state->processes++;
 	if (pid == 0)
 	{
 		close(save_fd[IN]);
 		close(save_fd[OUT]);
 		if (*old_pipe_in != 0)
 			close(*old_pipe_in);
-		env = array_env(&g_state);
+		env = array_env(state);
 		if (execve(cmd[0], cmd, env) == -1)
 		{
 			free_split(env);
-			clean_all(&g_state);
+			clean_all(state);
 			exit(127);
 		}
 	}
 }
 
-void	execute(char **cmd, int	*save_fd, int *old_pipe_in)
+void	execute(char **cmd, int	*save_fd, int *old_pipe_in, t_state *state)
 {
 	int	i;
 
 	i = 0;
 	if (is_builtin(cmd))
-		execute_builtin(&cmd[i], &g_state);
+		execute_builtin(&cmd[i], state);
 	else
-		execute_cmd(&cmd[i], save_fd, old_pipe_in);
+		execute_cmd(&cmd[i], save_fd, old_pipe_in, state);
 }

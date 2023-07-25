@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 11:22:40 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:58:03 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ typedef struct s_export
 
 typedef struct s_state
 {
-	int			exit_status;
 	char		*input;
 	int			lastpid;
 	int			processes;
@@ -119,7 +118,7 @@ void		free_split(char **ptr);
 
 /* --------------------------------- CMD ----------------------------------- */
 
-void		execute(char **cmd, int	*save_fd, int *old_pipe_in);
+void		execute(char **cmd, int	*save_fd, int *old_pipe_in, t_state *state);
 char		**array_env(t_state *state);
 int			is_executable(char *cmd_path);
 
@@ -180,7 +179,7 @@ char		*handle_normal_token(char *input, t_state *state);
 int			validate_last_token(t_state *state);
 int			validate_token_sequence(char *input, t_state *state);
 int			pending_pipe(t_state *state);
-int			determine_token_len(char *input, t_state *state);
+int			determine_token_len(char *input);
 char		*get_meta_characters(char *input);
 
 /* ------------------------------- List Tokens ------------------------------ */
@@ -196,10 +195,10 @@ int			lst_token_size(t_token *lst);
 void		parse_and_execute(t_state *state);
 int			has_pipe(t_state *state);
 char		**create_command_array(t_token *token, t_token *pipe);
-int			heredoc(char *eof, int *save_fd);
+int			heredoc(char *eof, int *save_fd, t_state *state);
 void		restore_std_fds(int *save_fd);
-int			make_redirect(char *redirect, char *file, int *save_fd);
-int			check_redirects(t_token *current, t_token *end, int *save_fd);
+int			make_redirect(char *redirect, char *file, int *save_fd, t_state *state);
+int			check_redirects(t_token *current, t_token *end, int *save_fd, t_state *state);
 void		close_last_input_fd(int old_pipe_in);
 void		save_std_fds(int *save_fd);
 
@@ -211,7 +210,7 @@ char		*get_absolute_path(char *cmd, char *path_variable);
 
 void		register_signals(void);
 void		handle_ctrl_c(int signo);
-int			handle_ctrl_d(char *cmd, t_state *state);
+int			handle_ctrl_d(char *cmd);
 void		register_exec_signals(void);
 void		handle_heredoc_ctrl_c(int signal);
 

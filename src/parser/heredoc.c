@@ -6,13 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 11:06:47 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:08:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_state		g_state;
+extern int		g_exit_status;
 
 static int	create_temporary_file(void)
 {
@@ -32,7 +32,7 @@ static int	create_temporary_file(void)
  *
  * @note will stop when reaching heredoc delimiter
 */
-static	void	heredoc_input(int tmp_fd, char *eof)
+static	void	heredoc_input(int tmp_fd, char *eof, t_state *state)
 {
 	char	*input;
 
@@ -44,7 +44,7 @@ static	void	heredoc_input(int tmp_fd, char *eof)
 		{
 			print_error("warning: here-document delimited by end-of-file", 0);
 			close(tmp_fd);
-			clean_all(&g_state);
+			clean_all(state);
 			exit(0);
 		}
 		if (ft_strcmp(input, eof))
@@ -52,7 +52,7 @@ static	void	heredoc_input(int tmp_fd, char *eof)
 		else
 		{
 			close(tmp_fd);
-			clean_all(&g_state);
+			clean_all(state);
 			free(input);
 			break ;
 		}
@@ -94,7 +94,7 @@ static void	update_input_fd(void)
  * @note This function will create a temporary file to store user input
  * and delete it when finished
 */
-int	heredoc(char *eof, int *save_fd)
+int	heredoc(char *eof, int *save_fd, t_state *state)
 {
 	int		tmp_fd;
 	int		save_fd_out;
@@ -110,12 +110,12 @@ int	heredoc(char *eof, int *save_fd)
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
-		heredoc_input(tmp_fd, eof);
+		heredoc_input(tmp_fd, eof, state);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
 		clear_tmp_file_input();
-		g_state.exit_status = 130;
+		g_exit_status = 130;
 	}
 	update_input_fd();
 	dup2(save_fd_out, STDOUT_FILENO);

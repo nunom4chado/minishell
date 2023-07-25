@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/24 17:17:57 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:53:38 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 */
 void	init_state(t_state *state)
 {
-	state->exit_status = 0;
 	state->env = NULL;
 	state->exp = NULL;
 	state->lastpid = 0;

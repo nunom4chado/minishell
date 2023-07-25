@@ -6,13 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 13:33:23 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 13:44:43 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:40:19 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_state		g_state;
+extern int		g_exit_status;
 
 int	is_valid_key(char *key, char *cmd, char *type)
 {
@@ -80,5 +80,5 @@ void	builtin_export(t_state *state, char **cmd)
 		return ;
 	while (cmd[++i])
 		export_single(cmd[i], state);
-	g_state.exit_status = 0;
+	g_exit_status = 0;
 }

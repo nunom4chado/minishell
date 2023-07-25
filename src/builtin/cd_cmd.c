@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/14 13:39:21 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:50:52 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 /**
  * Update OLDWD
@@ -32,11 +34,11 @@ void	update_oldpwd(t_state *state)
 */
 int	handle_cd(char *path, t_state *state)
 {
-	state->exit_status = chdir(path);
-	if (state->exit_status < 0)
-		return (state->exit_status);
+	g_exit_status = chdir(path);
+	if (g_exit_status < 0)
+		return (g_exit_status);
 	update_oldpwd(state);
-	return (state->exit_status);
+	return (g_exit_status);
 }
 
 /**
@@ -53,7 +55,7 @@ void	builtin_cd(t_state *state, char **cmd)
 	if (cmd[0] && cmd[1])
 	{
 		print_error("too many arguments", 1);
-		state->exit_status = 1;
+		g_exit_status = 1;
 		return ;
 	}
 	if (path == NULL || *path == '\0')
@@ -67,7 +69,7 @@ void	builtin_cd(t_state *state, char **cmd)
 	}
 	if (handle_cd(path, state) < 0)
 	{
-		state->exit_status = 1;
+		g_exit_status = 1;
 		perror("cd");
 	}
 }

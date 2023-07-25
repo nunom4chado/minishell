@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 12:19:30 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:55:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 /**
  * Process input will do lexical analysis which will split the input into a list
@@ -32,7 +34,7 @@ int	process_input(t_state *state)
 	add_history(state->input);
 	if (lexar(state, state->input))
 	{
-		state->exit_status = CODE_SYNTAX_ERROR;
+		g_exit_status = CODE_SYNTAX_ERROR;
 		clean_last_cmd(state);
 		return (1);
 	}

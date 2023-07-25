@@ -6,13 +6,11 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:43:42 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 11:18:23 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:57:56 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern t_state		g_state;
 
 /**
  * Create a pipe to communicate between processes
@@ -50,17 +48,17 @@ static void	create_pipe(t_token *pipe_token, int *old_pipe_in)
 /**
  * Parse a secion of tokens until pipe or end of list of tokens
 */
-void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in)
+void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in, t_state *state)
 {
 	int		save_fd[2];
 	char	**cmd;
 
 	save_std_fds(save_fd);
 	create_pipe(pipe, old_pipe_in);
-	if (check_redirects(token_lst, pipe, save_fd) == 0)
+	if (check_redirects(token_lst, pipe, save_fd, state) == 0)
 	{
 		cmd = create_command_array(token_lst, pipe);
-		execute(cmd, save_fd, old_pipe_in);
+		execute(cmd, save_fd, old_pipe_in, state);
 		free_split(cmd);
 	}
 	restore_std_fds(save_fd);
@@ -74,7 +72,7 @@ void	parse_command(t_token *token_lst, t_token *pipe, int *old_pipe_in)
  * @note In case reaching a pipe, parse that section first, then recursively
  * call parse_pipe to handle other pipes
 */
-static void	parse_pipe(t_token *tokens, int *old_pipe_in)
+static void	parse_pipe(t_token *tokens, int *old_pipe_in, t_state *state)
 {
 	t_token	*current;
 
@@ -83,15 +81,15 @@ static void	parse_pipe(t_token *tokens, int *old_pipe_in)
 	{
 		if (current->type == PIPE)
 		{
-			parse_command(tokens, current, old_pipe_in);
+			parse_command(tokens, current, old_pipe_in, state);
 			tokens = current->next;
-			parse_pipe(tokens, old_pipe_in);
+			parse_pipe(tokens, old_pipe_in, state);
 			break ;
 		}
 		current = current->next;
 	}
 	if (!current)
-		parse_command(tokens, current, old_pipe_in);
+		parse_command(tokens, current, old_pipe_in, state);
 }
 
 void	parse_and_execute(t_state *state)
@@ -101,6 +99,6 @@ void	parse_and_execute(t_state *state)
 	if (!state->tokens)
 		return ;
 	old_pipe_in = STDIN_FILENO;
-	parse_pipe(state->tokens, &old_pipe_in);
+	parse_pipe(state->tokens, &old_pipe_in, state);
 	close_last_input_fd(old_pipe_in);
 }

@@ -6,11 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:38:22 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/14 12:14:47 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:54:08 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 /**
  * Find the full name of the variable
@@ -129,7 +131,7 @@ char	*append_var(char *str, char *var_name, t_state *state)
 
 	if (*var_name == '?')
 	{
-		nb = ft_itoa(state->exit_status);
+		nb = ft_itoa(g_exit_status);
 		tmp = ft_strjoin(str, nb);
 		free(str);
 		free(nb);
