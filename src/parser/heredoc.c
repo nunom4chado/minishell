@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 17:07:58 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/26 11:51:27 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	create_temporary_file(void)
 static	void	heredoc_input(int tmp_fd, char *eof, t_state *state)
 {
 	char	*input;
-	char	delimiter[255];
+	char	delimiter[10000];
 
 	clean_all(state);
 	eof_heap_to_stack(eof, delimiter);

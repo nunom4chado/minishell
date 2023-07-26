@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 16:28:10 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 17:08:12 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/26 11:55:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,13 @@ void	eof_heap_to_stack(char *eof, char *delimiter)
 {
 	if (!eof)
 		exit(EXIT_FAILURE);
-	ft_memset(delimiter, 0, 255);
+	if (ft_strlen(eof) > 9999)
+	{
+		print_error("error: EOF too long", 1);
+		free(eof);
+		exit(EXIT_FAILURE);
+	}
+	ft_memset(delimiter, 0, 10000);
 	ft_memmove(delimiter, eof, ft_strlen(eof));
 	free(eof);
 }
