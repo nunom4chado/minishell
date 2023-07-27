@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:17:35 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/25 14:50:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/27 21:02:26 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,19 @@ int	handle_cd(char *path, t_state *state)
 	return (g_exit_status);
 }
 
+int	go_old_path(char **path, t_state *state)
+{
+	*path = ft_getenv("OLDPWD", state);
+	if (!*path)
+	{
+		printf("OLDPWD not set\n");
+		g_exit_status = 1;
+		return (1);
+	}
+	printf("%s\n", ft_getenv("OLDPWD", state));
+	return (0);
+}
+
 /**
  * Execute cd builtin command
  * 
@@ -64,8 +77,8 @@ void	builtin_cd(t_state *state, char **cmd)
 		path = ft_getenv("HOME", state);
 	else if (*path == '-' && *(path + 1) == '\0')
 	{
-		printf("%s\n", ft_getenv("OLDPWD", state));
-		path = ft_getenv("OLDPWD", state);
+		if (go_old_path(&path, state))
+			return ;
 	}
 	if (handle_cd(path, state) < 0)
 	{
