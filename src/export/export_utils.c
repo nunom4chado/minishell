@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:20:10 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/12 14:45:47 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:50:53 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	create_exp(t_state *state, char **envi)
 		{
 			len = ft_strchr(envi[i], '=') - envi[i];
 			key = malloc(len + 1);
-			ft_memcpy(key, envi[i], len); 
+			ft_memcpy(key, envi[i], len);
 			key[len] = '\0';
 			value = ft_strdup(ft_strchr(envi[i], '=') + 1);
 			newexp = ft_newexp(key, value);

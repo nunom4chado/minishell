@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 13:06:49 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 10:40:41 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:35:41 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ void	clean_all(t_state *state)
 	rl_clear_history();
 }
 
-void	free_2d_array(char **ptr)
+/**
+ * Free an array of strings
+*/
+void	free_split(char **ptr)
 {
 	int	i;
 

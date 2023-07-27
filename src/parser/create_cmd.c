@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 14:32:48 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 15:08:22 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:39:44 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ static char	**fill_command_array(t_token *current, t_token *end, char **cmd)
 	return (cmd);
 }
 
+/**
+ * Create an array with the command and the arguments until reaching the
+ * end of the token list or the next pipe
+*/
 char	**create_command_array(t_token *token, t_token *pipe)
 {
 	char	**cmd;

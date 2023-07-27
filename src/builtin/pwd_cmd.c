@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   pwd_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 14:53:38 by numartin         ###   ########.fr       */
+/*   Created: 2023/07/14 13:23:20 by numartin          #+#    #+#             */
+/*   Updated: 2023/07/25 11:41:36 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern int		g_exit_status;
+
 /**
- * Function responsible to initialize the state struct
- *
- * @param state pointer to the state struct
+ * Execute pwd builtin
 */
-void	init_state(t_state *state)
+void	builtin_pwd(void)
 {
-	state->env = NULL;
-	state->exp = NULL;
-	state->lastpid = 0;
-	state->processes = 0;
-	state->input = NULL;
-	state->tokens = NULL;
+	char	pwd[256];
+
+	getcwd(pwd, sizeof(pwd));
+	printf("%s\n", pwd);
+	g_exit_status = 0;
 }

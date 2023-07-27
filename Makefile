@@ -42,13 +42,17 @@ PARSER_DIR	:=	parser/
 SIGNALS_DIR	:=	signals/
 
 
-BUILTIN		:=	builtin_utils.c \
-				builtin.c \
-				cd_cmd.c
+BUILTIN		:=	builtin.c \
+				cd_cmd.c \
+				echo_cmd.c \
+				exit_cmd.c \
+				export_cmd.c \
+				pwd_cmd.c \
+				unset_cmd.c
 
-EXECUTE		:=	cmd.c \
-				path.c \
-				execute.c
+EXECUTE		:=	path.c \
+				execute.c \
+				execute_utils.c
 
 EXPORT		:=	env_utils.c \
 				env.c \
@@ -61,20 +65,27 @@ GLOBAL		:=	cleanup.c \
 				debug.c \
 				errors.c \
 				init.c \
-				utils.c
+				utils.c \
+				utils2.c \
+				utils3.c
 
 LEXAR		:=	expand_utils.c \
 				expand.c \
 				input.c \
 				lexar_utils.c \
+				lexar_utils2.c \
 				lexar.c \
 				lst_tokens.c
 
 PARSER		:=	parser.c \
+				parser_utils.c \
 				heredoc.c \
-				create_cmd.c
+				create_cmd.c \
+				redirects.c
 
-SIGNALS		:=	signals.c
+SIGNALS		:=	signals_exec.c \
+				signals_heredoc.c \
+				signals.c
 
 BUILTIN_SRC	:=	$(addprefix $(BUILTIN_DIR), $(BUILTIN))
 EXECUTE_SRC	:=	$(addprefix $(EXECUTE_DIR), $(EXECUTE))

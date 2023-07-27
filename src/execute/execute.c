@@ -3,22 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:10:54 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/13 15:38:35 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/26 11:16:13 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_state		g_state;
+/**
+ * Create a char ** from env list
+*/
+char	**array_env(t_state *state)
+{
+	int		num;
+	int		i;
+	t_env	*current;
+	char	**env;
 
-static int	is_path_defined(char **path_variable)
+	num = 0;
+	current = state->env;
+	while (current != NULL)
+	{
+		num++;
+		current = current->next;
+	}
+	env = ft_calloc(sizeof(char **), num + 1);
+	current = state->env;
+	i = 0;
+	while (current != NULL)
+	{
+		env[i] = join_three(current->key, "=", current->value);
+		current = current->next;
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
+
+/**
+ * Check if env has the variable PATH
+*/
+static int	is_path_defined(char **path_variable, t_state *state)
 {
 	t_env	*path;
 
-	path = findenv(&g_state, "PATH");
+	path = findenv(state, "PATH");
 	if (!path)
 	{
 		print_error("no such file or directory.", 127);
@@ -28,12 +59,14 @@ static int	is_path_defined(char **path_variable)
 	return (1);
 }
 
-static int	add_path_to_cmd_name(char **cmd, int *save_fd)
+static int	valid_command_path(char **cmd, int *save_fd, t_state *state)
 {
 	char	*cmd_name;
 	char	*path_variable;
 
-	if (!cmd[0] || (!is_path_defined(&path_variable)))
+	if (cmd[0] && (cmd[0][0] == '.' || cmd[0][0] == '/'))
+		return (1);
+	if (!cmd[0] || (!is_path_defined(&path_variable, state)))
 		return (0);
 	if (!is_executable(cmd[0]))
 	{
@@ -50,35 +83,47 @@ static int	add_path_to_cmd_name(char **cmd, int *save_fd)
 	return (1);
 }
 
-static void	execute_cmd(char **cmd, int	*save_fd)
+/**
+ * Execute a command inside a child process
+ *
+ * @note Inside the children we must closed the copy of the default file
+ * descriptors and the previous pipe in. Otherwise the child process will
+ * have open fds and 'cat | cat | ls' will not work properly.
+ *
+ * @note In the main process we update the last pid because we want to wait
+ * for that process to finish first.
+*/
+static void	execute_cmd(char **cmd, int	*save_fd, int *old_pipe_in,
+	t_state *state)
 {
 	int		pid;
-	int		status;
 	char	**env;
 
-
-	if (!cmd[0] || !add_path_to_cmd_name(cmd, save_fd))
+	if (!cmd[0] || !valid_command_path(cmd, save_fd, state))
 		return ;
 	pid = fork();
-	define_exec_signals();
+	register_exec_signals();
+	state->lastpid = pid;
+	state->processes++;
 	if (pid == 0)
 	{
-		env = array_env(&g_state);
-		execve(cmd[0], cmd, env);
-		free_split(env);
+		close(save_fd[IN]);
+		close(save_fd[OUT]);
+		if (*old_pipe_in != 0)
+			close(*old_pipe_in);
+		env = array_env(state);
+		if (execve(cmd[0], cmd, env) == -1)
+			handle_execution_error(env, cmd, state);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_state.exit_status = WEXITSTATUS(status);
 }
 
-void	execute(char **cmd, int	*save_fd)
+void	execute(char **cmd, int	*save_fd, int *old_pipe_in, t_state *state)
 {
 	int	i;
 
 	i = 0;
 	if (is_builtin(cmd))
-		execute_builtin(&cmd[i], &g_state);
+		execute_builtin(&cmd[i], state);
 	else
-		execute_cmd(&cmd[i], save_fd);
+		execute_cmd(&cmd[i], save_fd, old_pipe_in, state);
 }

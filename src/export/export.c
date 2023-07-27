@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:59:07 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/12 14:39:08 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:53:06 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 void	print_export(t_state *state)
 {
@@ -25,7 +27,7 @@ void	print_export(t_state *state)
 			printf("declare -x %s=\"%s\"\n", lst->key, lst->value);
 		lst = lst->next;
 	}
-	state->exit_status = 0;
+	g_exit_status = 0;
 }
 
 t_export	*findexp(t_state *state, char *key)
