@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:37:18 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 19:52:49 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:20:18 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ void		handle_ctrl_c(int signo);
 int			handle_ctrl_d(char *cmd);
 void		register_exec_signals(void);
 void		handle_heredoc_ctrl_c(int signal);
+void		wait_and_update_main_signals(int pid, int *status);
 
 /*-------------------------------- Unset ------------------------------*/
 

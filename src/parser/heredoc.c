@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:04:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/26 11:51:27 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:19:47 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	heredoc(char *eof, int *save_fd, t_state *state)
 	pid = fork();
 	if (pid == 0)
 		heredoc_input(tmp_fd, ft_strdup(eof), state);
-	waitpid(pid, &status, 0);
+	wait_and_update_main_signals(pid, &status);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
 		clear_tmp_file_input();
