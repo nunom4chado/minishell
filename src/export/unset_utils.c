@@ -6,7 +6,7 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 13:00:34 by jodos-sa          #+#    #+#             */
-/*   Updated: 2023/07/12 10:57:53 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:49:54 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_expdelone(t_export *lst)
 
 void	ft_delete_export(t_export *lst)
 {
-	t_export *tmp;
+	t_export	*tmp;
 
 	while (lst)
 	{
@@ -44,7 +44,7 @@ void	ft_envdelone(t_env *lst)
 
 void	ft_delete_env(t_env *lst)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	while (lst)
 	{

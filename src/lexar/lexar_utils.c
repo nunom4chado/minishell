@@ -6,15 +6,24 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:52:47 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 17:55:40 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:55:55 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern int		g_exit_status;
+
 /**
- * Extract a word to create a token. Return a pointer to the next char after
+ * Create a token. Return a pointer to the next char after
  * the current word
+ * 
+ * @param input pointer to string where the token will begin
+ * @param end pointer to the end of the word
+ * @param type type of the token
+ * @param state global state
+ * 
+ * @return pointer to the next token
 */
 char	*create_token(char *input, char *end, t_tk_type type, t_state *state)
 {
@@ -78,48 +87,20 @@ char	*get_meta_characters(char *input)
 }
 
 /**
- * Split on special characters
- *
- * chars: <, <<, >, >>, |
- *
+ * Will check the length of the current token
+ * 
+ * @param input pointer to current position we are checking
+ * @param state global state
+ * 
+ * @return 0 or positive number on valid token
+ * @return -1 when invalid
 */
-char	*ft_split_specialchar(char *input, t_state *state)
+int	determine_token_len(char *input)
 {
-	if (validate_token_sequence(input, state))
-	{
-		ft_putstr_fd("syntax error near unexpected token ", 2);
-		ft_putendl_fd(get_meta_characters(input), 2);
-		return (NULL);
-	}
-	if (*input == '|')
-		return (create_token(input, input, PIPE, state));
-	if (*input == '>')
-	{
-		if (*(input + 1) == '>')
-			return (create_token(input, input + 1, REDIR_APPEND, state));
-		else
-			return (create_token(input, input, REDIR_OUT, state));
-	}
-	if (*input == '<')
-	{
-		if (*(input + 1) == '<')
-			return (create_token(input, input + 1, HEREDOC, state));
-		else
-			return (create_token(input, input, REDIR_IN, state));
-	}
-	return (input);
-}
-
-/**
- *
- * TODO: update exit status for all errors
-*/
-char	*handle_normal_token(char *input, t_state *state)
-{
-	int		i;
-	t_token	*last;
 	int		steps;
+	int		i;
 
+	steps = 0;
 	i = 0;
 	while (input[i] && !(ft_is_space(input[i]) || ft_is_specialchar(input[i])))
 	{
@@ -129,19 +110,14 @@ char	*handle_normal_token(char *input, t_state *state)
 			if (steps == -1)
 			{
 				ft_putendl_fd("error unclosed quote", 2);
-				state->exit_status = CODE_SYNTAX_ERROR;
-				return (NULL);
+				g_exit_status = CODE_SYNTAX_ERROR;
+				return (-1);
 			}
 			i = i + steps;
 		}
 		i++;
 	}
-	last = lst_token_last(state->tokens);
-	if (last && last->type == HEREDOC)
-		return (create_token(input, input + i - 1, HEREDOC_DELIMITER, state));
-	if (last && (last->type == REDIR_IN || last->type == REDIR_OUT || last->type == REDIR_APPEND))
-		return (create_token(input, input + i - 1, REDIR_FILE, state));
-	return (create_token(input, input + i - 1, WORD, state));
+	return (i);
 }
 
 int	validate_last_token(t_state *state)
@@ -155,96 +131,14 @@ int	validate_last_token(t_state *state)
 	ft_strcmp(last->word, ">") == 0 || ft_strcmp(last->word, ">>") == 0)
 	{
 		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
-		state->exit_status = CODE_SYNTAX_ERROR;
+		g_exit_status = CODE_SYNTAX_ERROR;
 		return (1);
 	}
 	if (pending_pipe(state))
 	{
 		ft_putendl_fd("error: pending pipe", 2);
-		state->exit_status = CODE_SYNTAX_ERROR;
+		g_exit_status = CODE_SYNTAX_ERROR;
 		return (1);
-	}
-	return (0);
-}
-
-/**
- * Checks if the previous token is a special char
- * and can be used with the current token
- *
- * Valid: [prev, cur]
- * ["|", ">>"]
- * ["|", ">"]
- * ["|", "<"]
- * ["|", "<<"]
- *
- * First token CANNOT be a |
- *
- * Errors: [prev, cur]
- * [">>", ">"]
- * [">", ">"]
- * [">", ">>"]
- * ["<<", "<"]
- * ... any combination of these arrows
- * ["<", "|"]
- * ["<<", "|"]
- * [">", "|"]
- * [">>", "|"]
- * ["|", "|"]
-*/
-int	validate_token_sequence(char *input, t_state *state)
-{
-	t_token	*last;
-
-	if (!state->tokens && *input == '|')
-		return (1);
-	last = lst_token_last(state->tokens);
-	if (last && ft_is_specialchar(*(last->word)))
-	{
-		if (ft_is_redirect(*last->word) \
-		&& (ft_is_redirect(*input) || *input == '|'))
-			return (1);
-		if (ft_is_redirect(*last->word) && ft_is_redirect(*input))
-			return (1);
-		if (*input == '|' && *last->word == '|')
-			return (1);
-	}
-	return (0);
-}
-
-/**
- * Check if the last token is a pipe
- *
- * @return 1 if true
- * @return 0 if false
-*/
-int	pending_pipe(t_state *state)
-{
-	t_token	*last;
-
-	last = lst_token_last(state->tokens);
-	if ((last && *(last->word) == '|'))
-		return (1);
-	return (0);
-}
-
-/**
- * Checks if tokens have heredocs
- *
- * @return 1 if true
- * @return o if false
-*/
-int	has_heredocs(t_state *state)
-{
-	t_token	*token;
-
-	if (!state->tokens)
-		return (0);
-	token = state->tokens;
-	while (token)
-	{
-		if (token->type == HEREDOC)
-			return (1);
-		token = token->next;
 	}
 	return (0);
 }

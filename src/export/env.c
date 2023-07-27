@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodos-sa <jodos-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 18:26:43 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/12 14:38:11 by jodos-sa         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:52:21 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int		g_exit_status;
 
 void	print_env(t_state *state)
 {
@@ -22,7 +24,7 @@ void	print_env(t_state *state)
 		printf("%s=%s\n", lst->key, lst->value);
 		lst = lst->next;
 	}
-	state->exit_status = 0;
+	g_exit_status = 0;
 }
 
 t_env	*findenv(t_state *state, char *key)

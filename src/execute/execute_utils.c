@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/16 16:08:02 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/25 14:53:38 by numartin         ###   ########.fr       */
+/*   Created: 2023/07/25 19:48:54 by numartin          #+#    #+#             */
+/*   Updated: 2023/07/27 14:46:20 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * Function responsible to initialize the state struct
- *
- * @param state pointer to the state struct
+ * Free all data if execution failed
 */
-void	init_state(t_state *state)
+void	handle_execution_error(char **env, char **cmd, t_state *state)
 {
-	state->env = NULL;
-	state->exp = NULL;
-	state->lastpid = 0;
-	state->processes = 0;
-	state->input = NULL;
-	state->tokens = NULL;
+	printf("minishell: command not found\n");
+	free_split(env);
+	free_split(cmd);
+	clean_all(state);
+	exit(127);
 }

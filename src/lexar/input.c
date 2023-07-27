@@ -6,25 +6,13 @@
 /*   By: numartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 15:59:32 by numartin          #+#    #+#             */
-/*   Updated: 2023/07/11 17:04:52 by numartin         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:55:30 by numartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *prompt_style(t_state *state)
-{
-	(void)state;
-	/*
-	if (pending_pipe(state) && state->heredocs)
-		return (PROMPT_PIPE_HEREDOC);
-	if (pending_pipe(state))
-		return (PROMPT_PIPE);
-	if (state->heredocs)
-		return (PROMPT_HEREDOC);
-	*/
-	return (PROMPT_DEFAULT);
-}
+extern int		g_exit_status;
 
 /**
  * Process input will do lexical analysis which will split the input into a list
@@ -35,36 +23,22 @@ char *prompt_style(t_state *state)
  *
  * @return 0 when syntax is ok
  * @return 1 on syntax error or empty input
- *
- * TODO: handle heredocs
 */
-int process_input(t_state *state)
+int	process_input(t_state *state)
 {
 	if (!ft_strlen(state->input))
 	{
 		free(state->input);
 		return (1);
 	}
-
 	add_history(state->input);
-    if(lexar(state, state->input))
-    {
-		state->exit_status = CODE_SYNTAX_ERROR;
-        clean_last_cmd(state);
-        return (1);
-    }
-/*
-    if (has_heredocs(state))
-		ft_putendl_fd("\nTODO: handle heredocs\n", 2);
-*/
-
-    //print_tokens(state);
-    expand(state);
-    //print_tokens(state);
-
+	if (lexar(state, state->input))
+	{
+		g_exit_status = CODE_SYNTAX_ERROR;
+		clean_last_cmd(state);
+		return (1);
+	}
+	expand(state);
 	parse_and_execute(state);
-
-	//print_arr_str(state->cmd, "testing compose_cmd");
-
-    return (0);
+	return (0);
 }
